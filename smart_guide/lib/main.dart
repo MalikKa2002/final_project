@@ -1,187 +1,237 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const ARCampusGuideApp());
+  runApp(ARGuideApp());
 }
 
-class ARCampusGuideApp extends StatelessWidget {
-  const ARCampusGuideApp({super.key});
-
+class ARGuideApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CampusGuideHome(),
       debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+      theme: ThemeData(fontFamily: 'Roboto'),
     );
   }
 }
 
-class CampusGuideHome extends StatelessWidget {
-  final List<Map<String, String>> locations = [
-    {
-      "title": "Azrieli College",
-      "status": "Sparsely Crowded",
-      "distance": "2.8km away",
-      "time": "32 mins"
-    },
-    {
-      "title": "Hebrew University",
-      "status": "Crowded",
-      "distance": "3.2km away",
-      "time": "35 mins"
-    }
-  ];
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.grey[200],
+        title: Row(
           children: [
-            // Location and Profile Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.location_pin, color: Colors.green),
-                      const SizedBox(width: 5),
-                      Text(
-                        "Jerusalem, IL",
-                        style: GoogleFonts.roboto(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.notifications_none, size: 28),
-                      const SizedBox(width: 10),
-                      CircleAvatar(backgroundColor: Colors.grey, radius: 20),
-                    ],
-                  )
-                ],
-              ),
+            Icon(Icons.location_on, color: Colors.green),
+            SizedBox(width: 8),
+            Text(
+              "Jerusalem, IL",
+              style: TextStyle(color: Colors.black87, fontSize: 16),
             ),
-
-            // Welcome Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child:
-                  Text("Welcome To", style: GoogleFonts.roboto(fontSize: 20)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text("AR Campus Guide",
-                  style: GoogleFonts.roboto(
-                      fontSize: 28, fontWeight: FontWeight.bold)),
-            ),
-
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
-                    suffixIcon: Icon(Icons.mic),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-
-            // Title Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Universities & Colleges",
-                    style: GoogleFonts.roboto(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(onPressed: () {}, child: Text("See all")),
-                ],
-              ),
-            ),
-
-            // Horizontal Scrollable Cards
-            // SizedBox(
-            //   height: 200,
-            //   child: ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-            //     itemCount: locations.length,
-            //     itemBuilder: (context, index) {
-            //       final location = locations[index];
-            //       return Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Stack(
-            //           children: [
-            //             Container(
-            //               width: 160,
-            //               decoration: BoxDecoration(
-            //                 color: Colors.blueGrey[100],
-            //                 borderRadius: BorderRadius.circular(12),
-            //               ),
-            //               child: Column(
-            //                 mainAxisAlignment: MainAxisAlignment.end,
-            //                 children: [
-            //                   Padding(
-            //                     padding: const EdgeInsets.all(8.0),
-            //                     child: Text(
-            //                       location["title"]!,
-            //                       style: GoogleFonts.roboto(
-            //                           fontSize: 16,
-            //                           fontWeight: FontWeight.bold,
-            //                           color: Colors.white),
-            //                     ),
-            //                   ),
-            //                   Text(
-            //                     "${location["distance"]} • ${location["time"]}",
-            //                     style:
-            //                         GoogleFonts.roboto(color: Colors.white70),
-            //                   ),
-            //                   const SizedBox(height: 10),
-            //                 ],
-            //               ),
-            //             ),
-            //             Positioned(
-            //               top: 8,
-            //               left: 8,
-            //               child: Container(
-            //                 padding: const EdgeInsets.symmetric(
-            //                     horizontal: 8, vertical: 4),
-            //                 decoration: BoxDecoration(
-            //                   color: Colors.black54,
-            //                   borderRadius: BorderRadius.circular(12),
-            //                 ),
-            //                 child: Text(
-            //                   location["status"]!,
-            //                   style: GoogleFonts.roboto(
-            //                       fontSize: 12, color: Colors.white),
-            //                 ),
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // )
           ],
         ),
+        actions: [
+          Icon(Icons.notifications_none, color: Colors.black87),
+          SizedBox(width: 16),
+          Icon(Icons.chat_bubble_outline, color: Colors.black87),
+          SizedBox(width: 16),
+          CircleAvatar(
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.person, color: Colors.white),
+          ),
+          SizedBox(width: 16),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "Welcome To",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "AR Building Guide",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(height: 16),
+          // Search Bar
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search, color: Colors.black54),
+                  suffixIcon: Icon(Icons.mic, color: Colors.black54),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 24),
+          // Section Header
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Universities & Colleges",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "See all",
+                  style: TextStyle(fontSize: 14, color: Colors.blue),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 12),
+          // Cards Section
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                UniversityCard(
+                  title: "Azrieli College",
+                  crowdStatus: "Sparsely Crowded",
+                  distance: "2.8km",
+                  time: "32 mins",
+                ),
+                UniversityCard(
+                  title: "Hebrew University",
+                  crowdStatus: "Crowded",
+                  distance: "2.8km",
+                  time: "33 mins",
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16),
+          // Bottom Placeholder
+          Container(
+            margin: EdgeInsets.all(16),
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UniversityCard extends StatelessWidget {
+  final String title;
+  final String crowdStatus;
+  final String distance;
+  final String time;
+
+  UniversityCard({
+    required this.title,
+    required this.crowdStatus,
+    required this.distance,
+    required this.time,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 16),
+      width: 250,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Center(
+              child: Icon(Icons.school, size: 50, color: Colors.grey[700]),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: Text(
+                    crowdStatus,
+                    style: TextStyle(
+                      color: Colors.blue[800],
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600, height: 1.3),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "$distance away • ⏱ $time",
+                  style: TextStyle(
+                      fontSize: 12, color: Colors.black54, height: 1.3),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
