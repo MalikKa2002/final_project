@@ -37,7 +37,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # assets:
-  #   - assets/azrieli_college.png
-  #   - assets/hebrew_university.png
-  #   - assets/profile.png
+  assets:
+    - assets/azrieli_college.png
+    - assets/hebrew_university.png
+    - assets/profile.png
+    - assets/app.png
