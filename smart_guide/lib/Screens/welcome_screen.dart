@@ -44,7 +44,10 @@ class WelcomeScreen extends StatelessWidget {
 
             // Welcome Button
             WelcomeButton(
-              child: Text('Get Started'),
+              child: Text(
+                'Get Started',
+                style: TextStyle(fontSize: 20.0),
+              ),
               onPressed: () {
                 // Navigate or perform an action
                 print('Button Pressed');

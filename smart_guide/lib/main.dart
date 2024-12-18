@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/login_screen.dart';
 import 'package:smart_guide/Screens/welcome_screen.dart';
 
 void main() {
@@ -10,7 +11,7 @@ class ARGuideApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(),
+      home: LoginScreen(),
       theme: ThemeData(fontFamily: 'Roboto'),
     );
   }

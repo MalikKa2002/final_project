@@ -12,8 +12,8 @@ class WelcomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
         minimumSize: Size(400, 50),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
