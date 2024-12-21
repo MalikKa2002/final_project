@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
-import 'package:smart_guide/custom_text.dart';
 import 'package:smart_guide/custom_text.dart';
 import 'package:smart_guide/icons/icons_button.dart';
 import 'package:smart_guide/icons/try.dart';

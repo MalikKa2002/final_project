@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
+import 'package:smart_guide/Screens/login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -53,6 +54,11 @@ class WelcomeScreen extends StatelessWidget {
               ),
               onPressed: () {
                 // Navigate or perform an action
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
                 print('Button Pressed');
               },
             ),

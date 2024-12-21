@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Screens/Signup_screen.dart';
-import 'package:smart_guide/Screens/login_screen.dart';
 import 'package:smart_guide/Screens/welcome_screen.dart';
 
 void main() {
