@@ -29,8 +29,11 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 5), // Adds space between texts
 
             // Body Text
-            BodyText('Start a new'),
-            BodyText('social advantages!'),
+            BodyText(
+              text: 'Start a new',
+              fontSize: 14,
+            ),
+            BodyText(text: 'social advantages!', fontSize: 14),
             const SizedBox(height: 50), // Adds space before the image
 
             // Image
