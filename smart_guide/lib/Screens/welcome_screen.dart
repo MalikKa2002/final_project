@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Buttons/welcome_button.dart';
+import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 
@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 50), // Adds space before the button
 
             // Welcome Button
-            WelcomeButton(
+            MainButton(
               child: Text(
                 'Get Started',
                 style: TextStyle(fontSize: 20.0),
