@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
+import 'package:smart_guide/Buttons/secondary_button.dart';
+import 'package:smart_guide/Screens/signup_screen.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
@@ -35,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     horizontal: MediaQuery.of(context).size.width *
                         0.1, // 10% of screen width
                     vertical: MediaQuery.of(context).size.height *
-                        0.09, // 5% of screen height
+                        0.03, // 5% of screen height
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -87,8 +89,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
+
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: SecondaryButton(
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(fontSize: 15.0),
+                            ),
+                            onPressed: () {
+                              print('forget button Pressed');
+                            }),
+                      ),
                       // THe sign in Button
-                      const SizedBox(height: 55),
+
+                      const SizedBox(height: 30),
                       MainButton(
                         child: Text(
                           'Sign in ',
@@ -99,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           print('sign in');
                         },
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 25),
                       // another way to sign in
                       TextWithDivider(
                         text: 'Or continue with',
@@ -119,13 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           IconsButton(
-                            icon: Icons.apple,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                          IconsButton(
                             icon: Icons.facebook,
                             onPressed: () {
                               // Navigate or perform an action
@@ -134,6 +142,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         ],
                       ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodyText(text: 'Not a member?', fontSize: 15),
+                          SecondaryButton(
+                            child: Text('Register Now'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignupScreen()),
+                              );
+                            },
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

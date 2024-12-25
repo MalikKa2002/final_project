@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
+import 'package:smart_guide/Buttons/secondary_button.dart';
+import 'package:smart_guide/Screens/login_screen.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/custom_text.dart';
 import 'package:smart_guide/icons/icons_button.dart';
-import 'package:smart_guide/icons/try.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -136,21 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                           ),
                           IconsButton(
-                            icon: Icons.apple,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                          IconsButton(
                             icon: Icons.facebook,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                          MyWidget(
-                            icon: Icons.apple,
                             onPressed: () {
                               // Navigate or perform an action
                               print('Button Pressed');
@@ -158,6 +145,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ],
                       ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodyText(
+                              text: 'Already have an account?', fontSize: 14),
+                          SecondaryButton(
+                            child: Text('Login now'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                              );
+                            },
+                          ),
+                        ],
+                      )
                     ],
                   )),
             ),
