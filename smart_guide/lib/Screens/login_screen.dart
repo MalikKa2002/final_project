@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/signup_screen.dart';
+import 'package:smart_guide/Screens/forgot_password_screen.dart';
+import 'package:smart_guide/Screens/home_screen.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
@@ -98,6 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(fontSize: 15.0),
                             ),
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgotPasswordScreen()),
+                              );
+
                               print('forget button Pressed');
                             }),
                       ),
@@ -110,6 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(fontSize: 20.0),
                         ),
                         onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                          );
                           // Navigate or perform an action
                           print('sign in');
                         },
