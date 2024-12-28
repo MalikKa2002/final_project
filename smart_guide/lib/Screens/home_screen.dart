@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -6,7 +7,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String displayedInfo = "Welcome to AR Campus Guide! This app helps you navigate campuses and find your way with ease.";
+  String displayedInfo =
+      "Welcome to AR Campus Guide! This app helps you navigate campuses and find your way with ease.";
 
   void updateInfo(String newInfo) {
     setState(() {
@@ -51,12 +53,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.notifications, color: Colors.black),
+                                icon: Icon(Icons.notifications,
+                                    color: Colors.black),
                                 onPressed: () {},
                               ),
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage('assets/profile.png'),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SettingsScreen()),
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      AssetImage('assets/profile.png'),
+                                ),
                               ),
                             ],
                           ),
