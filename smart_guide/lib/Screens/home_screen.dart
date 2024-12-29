@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/settings_screen.dart';
+import 'dart:ui';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.location_on, color: Colors.green),
+                              Icon(Icons.location_on,
+                                  color:
+                                      const Color.fromARGB(255, 250, 100, 100)),
                               SizedBox(width: 8),
                               Text(
                                 "Jerusalem, IL",
@@ -236,7 +239,7 @@ class UniversityCard extends StatelessWidget {
       margin: EdgeInsets.only(right: 16),
       width: 200,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20), // Consistent radius
+        borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: AssetImage(imagePath),
           fit: BoxFit.cover,
@@ -247,19 +250,25 @@ class UniversityCard extends StatelessWidget {
           Positioned(
             bottom: 18,
             left: 8,
-            child: Text(
-              "$title\n$distance · $time",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    offset: Offset(0, 1),
-                    blurRadius: 2,
+            right: 8,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: BackdropFilter(
+                filter:
+                    ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), // Blur effect
+                child: Container(
+                  color: Colors.black45, // Semi-transparent black
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    "$title\n$distance · $time",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
