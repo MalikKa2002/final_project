@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// the text field that will be used in the login and signup screens
+
 class CustomText extends StatelessWidget {
   const CustomText({
     super.key,

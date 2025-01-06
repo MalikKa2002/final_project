@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/welcome_screen.dart';
-import 'package:smart_guide/nav_bar.dart';
+// import 'package:smart_guide/nav_bar.dart';
 
 void main() {
   runApp(ARGuideApp());

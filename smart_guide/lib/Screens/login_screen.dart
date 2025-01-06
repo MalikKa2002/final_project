@@ -4,10 +4,11 @@ import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/signup_screen.dart';
 import 'package:smart_guide/Screens/forgot_password_screen.dart';
 import 'package:smart_guide/Screens/home_screen.dart';
+// import 'package:smart_guide/Services/auth_service.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
-import 'package:smart_guide/custom_text.dart';
+import 'package:smart_guide/components/custom_text.dart';
 import 'package:smart_guide/icons/icons_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -147,13 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               print('Button Pressed');
                             },
                           ),
-                          IconsButton(
-                            icon: Icons.facebook,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          )
+                          IconsButton(icon: Icons.facebook, onPressed: () {}
+                              // => AuthService().signInWithGoogle(),
+                              )
                         ],
                       ),
 

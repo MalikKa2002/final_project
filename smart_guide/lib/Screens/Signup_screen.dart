@@ -5,7 +5,7 @@ import 'package:smart_guide/Screens/login_screen.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
-import 'package:smart_guide/custom_text.dart';
+import 'package:smart_guide/components/custom_text.dart';
 import 'package:smart_guide/icons/icons_button.dart';
 
 class SignupScreen extends StatefulWidget {
