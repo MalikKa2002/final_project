@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "369262338884",
+    "project_id": "smart-guide-2425",
+    "storage_bucket": "smart-guide-2425.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369262338884:android:3ad03e4768010ad3d86d11",
+        "android_client_info": {
+          "package_name": "com.example.smart_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "369262338884-6hkf6t0dd0040pf3tags33s6d6j4r3lr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAW7kLZ8AUEbQdny_6-jcsYHx3a3SgCQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "369262338884-6hkf6t0dd0040pf3tags33s6d6j4r3lr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
