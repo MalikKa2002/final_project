@@ -47,11 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       //Heading Text
-                      HeadingText('Welcome Back!'),
+                      HeadingText('Welcome to Smart Guide'),
 
                       // Body Text
-                      BodyText(
-                          text: 'welcome back we missed you', fontSize: 15),
+                      // BodyText(
+                      //     text: 'welcome back we missed you', fontSize: 15),
                       const SizedBox(height: 40),
                       // username text field
                       // Aligns the text to the left
@@ -148,9 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               print('Button Pressed');
                             },
                           ),
-                          IconsButton(icon: Icons.facebook, onPressed: () {}
-                              // => AuthService().signInWithGoogle(),
-                              )
                         ],
                       ),
 

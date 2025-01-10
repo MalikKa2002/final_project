@@ -8,13 +8,13 @@ class TextWithDivider extends StatelessWidget {
   final EdgeInsetsGeometry textPadding;
 
   const TextWithDivider({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize = 15.0,
     this.dividerColor = Colors.grey,
     this.dividerThickness = 1.0,
     this.textPadding = const EdgeInsets.symmetric(horizontal: 8.0),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
