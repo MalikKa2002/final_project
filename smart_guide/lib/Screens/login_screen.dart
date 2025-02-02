@@ -45,6 +45,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                           Image.asset(
+              'assets/app.png',
+              height: 200, // Adjust the size as needed
+              width: 200,
+              fit: BoxFit.cover,
+            ),
                       //Heading Text
                       HeadingText('Welcome to Smart Guide'),
 
@@ -130,25 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 25),
                       // another way to sign in
-                      TextWithDivider(
-                        text: 'Or continue with',
-                        fontSize: 15.0,
-                        dividerColor: Colors.grey,
-                        dividerThickness: 1.0,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconsButton(
-                            icon: Icons.g_mobiledata_sharp,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                        ],
-                      ),
+                    
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
