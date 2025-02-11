@@ -1,31 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<void> _resetPassword() async {
-    try {
-      await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
-
-      // Show confirmation message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Password reset email sent! Check your inbox.")),
-      );
-    } catch (e) {
-      // Show error message if email is invalid or not found
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
-      );
-    }
-  }
-
+class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +10,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context); // Navigate back to the previous screen
           },
         ),
       ),
@@ -59,7 +34,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
             SizedBox(height: 30),
             TextField(
-              controller: _emailController,
               decoration: InputDecoration(
                 labelText: "Email Address",
                 prefixIcon: Icon(Icons.email),
@@ -69,23 +43,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _resetPassword,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                "Send Instructions",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ),
+         ElevatedButton(
+        onPressed: () {
+            // Handle password reset functionality
+        },
+    style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green, // Updated: Use backgroundColor instead of primary
+            minimumSize: Size(double.infinity, 50), // Full-width button
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+           ),
+          ),
+          child: Text(
+          "Send Instructions",
+          style: TextStyle(fontSize: 16,color: Colors.white),
+          ),
+        ),
+
           ],
         ),
       ),
     );
   }
 }
+

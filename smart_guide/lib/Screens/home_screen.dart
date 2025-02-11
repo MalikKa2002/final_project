@@ -168,17 +168,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           time: '32 mins',
                         ),
                       ),
-                      // GestureDetector(
-                      //   onTap: () => updateInfo(
-                      //     "Hebrew University: Known for excellence in education and research.",
-                      //   ),
-                      //   child: UniversityCard(
-                      //     imagePath: 'assets/hebrew_university.png',
-                      //     title: 'Hebrew University',
-                      //     distance: '2.8km away',
-                      //     time: '32 mins',
-                      //   ),
-                      // ),
+                      GestureDetector(
+                        onTap: () => updateInfo(
+                          "Hebrew University: Known for excellence in education and research.",
+                        ),
+                        child: UniversityCard(
+                          imagePath: 'assets/hebrew_university.png',
+                          title: 'Hebrew University',
+                          distance: '2.8km away',
+                          time: '32 mins',
+                        ),
+                      ),
                       AddCampusCard(), // Add Campus button styled as a card
                       SizedBox(width: 16), // Add space at the end
                     ],

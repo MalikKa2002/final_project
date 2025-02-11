@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:369262338884:android:a3c956c15a166628d86d11",
+        "mobilesdk_app_id": "1:369262338884:android:3ad03e4768010ad3d86d11",
         "android_client_info": {
-          "package_name": "com.HandM.smart_guide"
+          "package_name": "com.example.smart_guide"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "369262338884-v92gimvpncm7pri2sf816thknr3ku4p6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.HandM.smart_guide",
-            "certificate_hash": "9dc1daa8365dd636518aef9b93b76b6b1a412a38"
-          }
-        },
         {
           "client_id": "369262338884-6hkf6t0dd0040pf3tags33s6d6j4r3lr.apps.googleusercontent.com",
           "client_type": 3
