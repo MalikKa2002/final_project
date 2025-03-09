@@ -43,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      HeadingText('Get Started Free'),
+                      HeadingText('Get Started Free', 40),
                       BodyText(
                         text: 'free forever. no limited to discover',
                         fontSize: 16,
@@ -136,13 +136,13 @@ class _SignupScreenState extends State<SignupScreen> {
                               print('Button Pressed');
                             },
                           ),
-                          IconsButton(
-                            icon: Icons.facebook,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
+                          // IconsButton(
+                          //   icon: Icons.facebook,
+                          //   onPressed: () {
+                          //     // Navigate or perform an action
+                          //     print('Button Pressed');
+                          //   },
+                          // ),
                         ],
                       ),
 
@@ -172,6 +172,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
-
-// reverse: true,

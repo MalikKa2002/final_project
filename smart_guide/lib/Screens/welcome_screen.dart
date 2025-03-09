@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
               CrossAxisAlignment.center, // Aligns to the center horizontally
           children: [
             // Heading Text
-            HeadingText('Welcome'),
+            HeadingText('Welcome', 50),
             const SizedBox(height: 5), // Adds space between texts
 
             // Body Text
@@ -55,10 +55,10 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 // Navigate or perform an action
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
                 print('Button Pressed');
               },
             ),

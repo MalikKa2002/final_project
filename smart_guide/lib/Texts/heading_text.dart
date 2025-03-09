@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HeadingText extends StatelessWidget {
-  const HeadingText(this.text, {super.key});
+  const HeadingText(this.text, this.fontSize, {super.key});
 
   final String text;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class HeadingText extends StatelessWidget {
       style: TextStyle(
         color: Colors.green,
         fontWeight: FontWeight.bold,
-        fontSize: 43,
+        fontSize: fontSize,
       ),
       textAlign: TextAlign.center,
     );
