@@ -1,6 +1,7 @@
 // custom_app_bar.dart
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/settings_screen.dart';
+import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/components/location_widget.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -51,15 +52,8 @@ class CustomAppBar extends StatelessWidget {
               style: TextStyle(
                   fontSize: 20, color: const Color.fromARGB(255, 2, 2, 2)),
             ),
+            HeadingText("AR Campus Guide", 26),
 
-            Text(
-              "AR Campus Guide",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
             SizedBox(height: 20),
 
             // Search Bar

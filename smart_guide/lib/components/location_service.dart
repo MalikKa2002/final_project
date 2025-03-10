@@ -1,39 +1,58 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:location/location.dart' as loc;
 
 class LocationService {
-  Future<String> getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  loc.Location location = loc.Location();
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return "Location services disabled";
+  Future<String?> getAddressFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      List<geocoding.Placemark> placemarks =
+          await geocoding.placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        final geocoding.Placemark place = placemarks.first;
+        return "${place.locality}, ${place.country}";
+      }
+      return null;
+    } catch (e) {
+      print('Error getting address: $e');
+      return null;
     }
+  }
 
-    // Check and request permissions
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return "Location permission denied";
+  Future<loc.LocationData?> getLocation() async {
+    bool serviceEnabled;
+    loc.PermissionStatus permissionGranted;
+    loc.LocationData locationData;
+
+    // Check if location service is enabled
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print('Location services are disabled.');
+        return null;
       }
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      return "Location permanently denied";
+    // Check for location permission
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) {
+        print('Location permissions are denied.');
+        return null;
+      }
     }
 
-    // Get coordinates
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    // Convert coordinates to city name
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark place = placemarks[0];
-
-    return "${place.locality}, ${place.country}";
+    // Get location data
+    try {
+      locationData = await location.getLocation();
+      print('Location: ${locationData.latitude}, ${locationData.longitude}');
+      return locationData;
+    } catch (e) {
+      print('Error getting location: $e');
+      return null;
+    }
   }
 }

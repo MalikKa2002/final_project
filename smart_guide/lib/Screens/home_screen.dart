@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
+import 'package:smart_guide/components/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,15 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String displayedInfo =
-      "Welcome to AR Campus Guide! This app helps you navigate campuses and find your way with ease.";
-
-  void updateInfo(String newInfo) {
-    setState(() {
-      displayedInfo = newInfo;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -48,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
+      // bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 }

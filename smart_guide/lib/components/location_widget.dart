@@ -17,10 +17,20 @@ class LocationWidgetState extends State<LocationWidget> {
   }
 
   Future<void> _fetchLocation() async {
-    String loc = await _locationService.getCurrentLocation();
-    setState(() {
-      location = loc;
-    });
+    final locationData = await _locationService.getLocation();
+    if (locationData != null) {
+      String? address = await _locationService.getAddressFromCoordinates(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+      setState(() {
+        location = address ?? "Location not found";
+      });
+    } else {
+      setState(() {
+        location = "Unable to fetch location.";
+      });
+    }
   }
 
   @override
