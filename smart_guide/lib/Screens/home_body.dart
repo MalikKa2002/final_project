@@ -1,5 +1,6 @@
 // home_body.dart
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/college_info_screen.dart.dart';
 import 'package:smart_guide/components/university_card.dart';
 
 class HomeBody extends StatefulWidget {
@@ -48,8 +49,15 @@ class _HomeBodyState extends State<HomeBody> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     GestureDetector(
-                      onTap: () => updateInfo(
-                        "Azrieli College: A leading institution in technology and innovation.",
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CollegeInfoScreen(
+                              // title: 'Azrieli College',
+                              // description:
+                              //     'Azrieli College: A leading institution in technology and innovation.',
+                              ),
+                        ),
                       ),
                       child: UniversityCard(
                         imagePath: 'assets/azrieli_college.png',
@@ -75,32 +83,6 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Information Display Section
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Text(
-              //         "About",
-              //         style: TextStyle(
-              //           fontSize: 24,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.green,
-              //         ),
-              //       ),
-              //       SizedBox(height: 10),
-              //       Text(
-              //         displayedInfo,
-              //         style: TextStyle(
-              //           fontSize: 16,
-              //           color: Colors.black87,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),
