@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key, required this.icon, required this.onPressed});
+class BorderedIconButton extends StatelessWidget {
+  const BorderedIconButton(
+      {super.key, required this.icon, required this.onPressed});
 
   final IconData icon;
   final VoidCallback onPressed;
@@ -13,7 +14,13 @@ class MyWidget extends StatelessWidget {
       child: Container(
         height: 50,
         width: 60,
-        color: Color.fromARGB(255, 152, 226, 155),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color.fromARGB(255, 8, 8, 8), // Border color
+            width: 2, // Border width
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
         alignment: Alignment.center,
         child: Center(
           child: IconButton(
@@ -28,5 +35,3 @@ class MyWidget extends StatelessWidget {
     );
   }
 }
-
-//Color.fromARGB(255, 89, 95, 89),

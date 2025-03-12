@@ -4,11 +4,12 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Padding(
       // backgroundColor: Colors.white,
-      bottomNavigationBar: CurvedNavigationBar(
+      padding: const EdgeInsets.only(bottom: 00),
+      child: CurvedNavigationBar(
           backgroundColor: Colors.transparent,
-          color: Colors.green.shade300,
+          color: Colors.green.shade200,
           items: [
             Icon(Icons.home),
             Icon(Icons.bookmark_border),

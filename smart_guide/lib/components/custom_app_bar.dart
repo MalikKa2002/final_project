@@ -56,7 +56,7 @@ class CustomAppBar extends StatelessWidget {
             HeadingText("AR Campus Guide", 26),
 
             SizedBox(height: 20),
-
+            SearchBar(),
             // // Search Bar
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 16),
