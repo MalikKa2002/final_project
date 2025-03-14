@@ -59,37 +59,3 @@ class UniversityCard extends StatelessWidget {
     );
   }
 }
-
-class AddCampusCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 16),
-      width: 200,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.green, width: 2),
-        borderRadius: BorderRadius.circular(20), // Consistent radius
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.add,
-            color: Colors.green,
-            size: 40,
-          ),
-          SizedBox(height: 8),
-          Text(
-            "Add Campus",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

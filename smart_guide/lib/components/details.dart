@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/components/image_slider.dart';
+import 'package:smart_guide/Texts/body_text.dart';
+import 'package:smart_guide/Texts/heading_title.dart';
 import 'package:smart_guide/icons/bordered_icon_button.dart';
 
 class DetailsPart extends StatelessWidget {
@@ -11,8 +12,7 @@ class DetailsPart extends StatelessWidget {
   final String description;
 
   const DetailsPart({
-    Key? key,
-    this.collegeName = "Azrieli college of engineering jerusalem ",
+    this.collegeName = "Azrieli college of engineering  ",
     this.location = "Jerusalem, Israel",
     this.phoneNumber = "+972 2 1234567",
     this.website = "https://www.campusguideuni.com",
@@ -21,7 +21,7 @@ class DetailsPart extends StatelessWidget {
         "Campus Guide University is a top-notch institution located in Jerusalem. "
             "It offers state-of-the-art facilities, modern classrooms, and a friendly learning environment. "
             "The college aims to provide the best education with a focus on innovation and technology.",
-  }) : super(key: key);
+  });
 
   // void _makePhoneCall(String url) async {
   //   if (await canLaunch(url)) {
@@ -53,15 +53,14 @@ class DetailsPart extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // College Name
-                Text(
-                  collegeName,
-                ),
+                HeadingTitle(collegeName, 24),
                 SizedBox(height: 4),
                 // Location
                 Row(
                   children: [
                     Icon(
                       Icons.location_on_rounded,
+                      color: Colors.grey[600],
                     ),
                     SizedBox(width: 4),
                     Text(
@@ -97,8 +96,9 @@ class DetailsPart extends StatelessWidget {
 
                 SizedBox(height: 16),
                 // About Section
-                Text(
-                  "Details",
+                BodyText(
+                  text: "Details",
+                  fontSize: 15,
                 ),
                 SizedBox(height: 8),
                 Text(

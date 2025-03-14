@@ -30,16 +30,24 @@ class _ImageSliderState extends State<ImageSlider> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
+          // borderRadius: BorderRadius.only(
+          //   bottomLeft: Radius.circular(30),
+          //   bottomRight: Radius.circular(30),
+          // ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha((0.5 * 255).toInt()),
-              blurRadius: 8,
+              blurRadius: 4,
               spreadRadius: 2,
             ),
           ],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
+          // borderRadius: BorderRadius.only(
+          //   bottomLeft: Radius.circular(30),
+          //   bottomRight: Radius.circular(30),
+          // ),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
