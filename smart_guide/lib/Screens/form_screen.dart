@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/components/day_hours.dart';
 import 'package:smart_guide/components/form_input_field.dart';
 
 class FormScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _FormScreenState extends State<FormScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text('Submit Request'),
+        title: Text('Add Building'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -59,7 +60,7 @@ class _FormScreenState extends State<FormScreen> {
                     SizedBox(height: 20),
                     FormInputField(
                       label: "College Name",
-                      hintText: "Enter your college/univarsity Name",
+                      hintText: "Enter your college/univarsity name",
                       controller: TextEditingController(),
                     ),
                     FormInputField(
@@ -68,13 +69,18 @@ class _FormScreenState extends State<FormScreen> {
                       controller: TextEditingController(),
                     ),
                     FormInputField(
+                      label: "location",
+                      hintText: "ex: Jerusalem,Irsael",
+                      controller: TextEditingController(),
+                    ),
+                    FormInputField(
                       label: "phone Number",
                       hintText: "+972 123456789",
                       controller: TextEditingController(),
                     ),
                     FormInputField(
-                      label: "location",
-                      hintText: "ex: Jerusalem,Irsael",
+                      label: "Website",
+                      hintText: "ex: https://www.example.com",
                       controller: TextEditingController(),
                     ),
                     FormInputField(
@@ -116,9 +122,16 @@ class _FormScreenState extends State<FormScreen> {
                         ),
                         backgroundColor: Colors.green,
                       ),
-                      onPressed: _submitForm,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DayHoursSelector(),
+                          ),
+                        );
+                      },
                       child: Text(
-                        "SUBMIT",
+                        "Save Building",
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
