@@ -22,6 +22,12 @@ class Day {
 class _DayHoursSelectorState extends State<DayHoursSelector> {
   List<Day> days = [
     Day(
+      name: 'Sun',
+      isOpen: false,
+      openTime: TimeOfDay(hour: 0, minute: 0),
+      closeTime: TimeOfDay(hour: 0, minute: 0),
+    ),
+    Day(
       name: 'Mon',
       isOpen: true,
       openTime: TimeOfDay(hour: 12, minute: 0),
@@ -57,12 +63,6 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
       openTime: TimeOfDay(hour: 12, minute: 0),
       closeTime: TimeOfDay(hour: 2, minute: 0),
     ),
-    Day(
-      name: 'Sun',
-      isOpen: false,
-      openTime: TimeOfDay(hour: 0, minute: 0),
-      closeTime: TimeOfDay(hour: 0, minute: 0),
-    ),
   ];
 
   Future<void> selectTime(
@@ -84,24 +84,25 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Standard Hours'),
-      ),
-      body: ListView.builder(
+    return SizedBox(
+      height: 400,
+      child: ListView.builder(
         itemCount: days.length,
         itemBuilder: (context, index) {
           Day day = days[index];
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: Text(day.name),
-                ),
-                Row(
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Row(
                   children: [
+                    SizedBox(
+                      width: 50,
+                      child: Text(day.name),
+                    ),
                     Switch(
                       value: day.isOpen,
                       onChanged: (bool value) {
@@ -110,47 +111,48 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
                         });
                       },
                     ),
-                    Text(day.isOpen ? "Open" : "Closed"),
-                  ],
-                ),
-                Row(
-                  children: [
+                    SizedBox(
+                      width: 50,
+                      child: Text(day.isOpen ? "Open" : "Closed"),
+                    ),
                     if (day.isOpen) ...[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        child: GestureDetector(
-                          onTap: () => selectTime(context, day, true),
+                      GestureDetector(
+                        onTap: () => selectTime(context, day, true),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           child: Text(
                             day.openTime.format(context),
                             style: TextStyle(color: Colors.blue),
                           ),
                         ),
                       ),
+                      SizedBox(width: 5),
                       Text(' - '),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        child: GestureDetector(
-                          onTap: () => selectTime(context, day, false),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => selectTime(context, day, false),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           child: Text(
                             day.closeTime.format(context),
                             style: TextStyle(color: Colors.blue),
                           ),
                         ),
                       ),
-                    ]
+                    ],
                   ],
                 ),
-              ],
+              ),
             ),
           );
         },

@@ -83,6 +83,22 @@ class _FormScreenState extends State<FormScreen> {
                       hintText: "ex: https://www.example.com",
                       controller: TextEditingController(),
                     ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Opening Hours",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Container(
+                      decoration: BoxDecoration(
+                        // color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      padding: EdgeInsets.all(15),
+                      child: DayHoursSelector(),
+                    ),
+                    SizedBox(height: 20),
                     FormInputField(
                       label: "Description",
                       hintText: "Enter your Description",
@@ -123,12 +139,12 @@ class _FormScreenState extends State<FormScreen> {
                         backgroundColor: Colors.green,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DayHoursSelector(),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => DayHoursSelector(),
+                        //   ),
+                        // );
                       },
                       child: Text(
                         "Save Building",
