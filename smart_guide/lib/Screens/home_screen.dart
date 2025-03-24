@@ -40,6 +40,18 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('AR Button Pressed!');
+        },
+        shape: CircleBorder(), // Ensure the FAB is circular
+        child: SizedBox(
+          height: 40,
+          width: 40,
+          child: Image.asset("assets/AR.png"),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavBar(),
     );
   }
