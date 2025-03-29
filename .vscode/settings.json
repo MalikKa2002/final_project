@@ -1,8 +1,6 @@
 {
   "cSpell.words": ["azrieli"],
-  // "cmake.sourceDirectory": "C:/Users/GIGABYTE/Desktop/final_project/smart_guide/linux",
+  "cmake.sourceDirectory": "C:/Users/GIGABYTE/Desktop/final_project/smart_guide/linux",
   "java.configuration.updateBuildConfiguration": "interactive",
-  "cmake.ignoreCMakeListsMissing": true,
-  //"cmake.ignoreCMakeListsMissing": true
-  
+  "java.compile.nullAnalysis.mode": "automatic"
 }
