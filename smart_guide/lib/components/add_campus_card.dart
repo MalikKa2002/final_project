@@ -5,17 +5,23 @@ class AddCampusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 16),
-      width: 200,
+      margin: EdgeInsets.only(right: 18),
+      width: 60,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.green, width: 2),
         borderRadius: BorderRadius.circular(20), // Consistent radius
         color: Colors.white,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
+            splashRadius: 30,
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(0),
+            constraints: BoxConstraints(
+              minWidth: 20,
+              minHeight: 20,
+            ),
             icon: Icon(
               Icons.add,
               color: Colors.green,
@@ -31,14 +37,14 @@ class AddCampusCard extends StatelessWidget {
             },
           ),
           SizedBox(height: 8),
-          Text(
-            "Add Campus",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
+          // Text(
+          //   "Add Campus",
+          //   style: TextStyle(
+          //     fontSize: 16,
+          //     fontWeight: FontWeight.bold,
+          //     color: Colors.green,
+          //   ),
+          // ),
         ],
       ),
     );

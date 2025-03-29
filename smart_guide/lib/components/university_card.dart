@@ -19,7 +19,8 @@ class UniversityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 16),
-      width: 200,
+      width: double.infinity,
+      height: 350,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(

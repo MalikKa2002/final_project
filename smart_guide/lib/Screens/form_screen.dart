@@ -91,6 +91,7 @@ class _FormScreenState extends State<FormScreen> {
                       controller: TextEditingController(),
                       maxLines: 5,
                     ),
+                    SizedBox(height: 20),
                     Text(
                       "Opening Hours",
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -112,31 +113,6 @@ class _FormScreenState extends State<FormScreen> {
                         // You can save this file or upload it to a server
                       },
                     ),
-
-                    // Text(
-                    //   "Attachments",
-                    //   style: TextStyle(fontWeight: FontWeight.bold),
-                    // ),
-                    // SizedBox(height: 5),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     // Implement file picker here
-                    //   },
-                    //   child: Container(
-                    //     height: 100,
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.grey.shade200,
-                    //       borderRadius: BorderRadius.circular(20),
-                    //       border: Border.all(color: Colors.grey.shade400),
-                    //     ),
-                    //     child: Center(
-                    //       child: Text(
-                    //         "Add or Drag & Drop your images here",
-                    //         style: TextStyle(color: Colors.grey.shade600),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(

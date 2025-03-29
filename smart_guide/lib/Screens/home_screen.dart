@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: Size.fromHeight(appBarHeight), // Dynamic height
         child: CustomAppBar(),
       ),
+      // body: HomeBody(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(

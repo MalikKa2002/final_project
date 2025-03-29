@@ -25,7 +25,7 @@ class _HomeBodyState extends State<HomeBody> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,51 +40,39 @@ class _HomeBodyState extends State<HomeBody> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  AddCampusCard(),
                 ],
               ),
-              SizedBox(height: 16),
-
-              // Horizontal Cards Section
-              SizedBox(
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CollegeInfoScreen(
-                              // title: 'Azrieli College',
-                              // description:
-                              //     'Azrieli College: A leading institution in technology and innovation.',
-                              ),
-                        ),
-                      ),
-                      child: UniversityCard(
-                        imagePath: 'assets/azrieli_college.png',
-                        title: 'Azrieli College',
-                        distance: '2.8km away',
-                        time: '32 mins',
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => updateInfo(
-                        "Hebrew University: Known for excellence in education and research.",
-                      ),
-                      child: UniversityCard(
-                        imagePath: 'assets/hebrew_university.png',
-                        title: 'Hebrew University',
-                        distance: '2.8km away',
-                        time: '32 mins',
-                      ),
-                    ),
-                    AddCampusCard(), // Add Campus button styled as a card
-                    SizedBox(width: 16), // Add space at the end
-                  ],
-                ),
-              ),
               SizedBox(height: 20),
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CollegeInfoScreen(
+                            // title: 'Azrieli College',
+                            // description:
+                            //     'Azrieli College: A leading institution in technology and innovation.',
+                            ),
+                      ),
+                    ),
+                    child: UniversityCard(
+                      imagePath: 'assets/azrieli_college.png',
+                      title: 'Azrieli College',
+                      distance: '2.8km away',
+                      time: '32 mins',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  UniversityCard(
+                    imagePath: 'assets/hebrew_university.png',
+                    title: 'Hebrew University',
+                    distance: '2.8km away',
+                    time: '32 mins',
+                  ),
+                ],
+              )
             ],
           ),
         ),

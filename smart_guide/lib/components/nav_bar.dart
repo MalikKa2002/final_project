@@ -15,15 +15,15 @@ class CustomBottomNavBarState extends State<CustomBottomNavBar> {
       notchMargin: 10.0,
       height: 60,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           children: [
             Icon(Icons.explore, size: 30),
-            Icon(Icons.bookmark_border, size: 30),
+            // Icon(Icons.bookmark_border, size: 30),
             SizedBox(width: 40), // Space for the FAB
-            Icon(Icons.notifications_outlined, size: 30),
+            // Icon(Icons.notifications_outlined, size: 30),
             Icon(Icons.account_circle_outlined, size: 30),
           ],
         ),
