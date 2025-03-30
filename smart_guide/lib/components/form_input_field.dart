@@ -5,6 +5,7 @@ class FormInputField extends StatelessWidget {
   final String hintText;
   final int maxLines;
   final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
 
   const FormInputField({
     Key? key,
@@ -12,6 +13,7 @@ class FormInputField extends StatelessWidget {
     required this.hintText,
     this.maxLines = 1,
     this.controller,
+    this.validator,
   });
 
   @override
@@ -43,7 +45,7 @@ class FormInputField extends StatelessWidget {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             ),
-            validator: (value) => value!.isEmpty ? 'Please enter $label' : null,
+            validator: validator,
           ),
         ],
       ),

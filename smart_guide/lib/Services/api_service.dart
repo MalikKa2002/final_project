@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String apiUrl = '';
+  static final String apiUrl = '';
 
 // GET ALL THE DATA FROM DATABASE
-  Future<List<String>> fetchAll() async {
+  static Future<Map<String, dynamic>> fetchAll() async {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -16,7 +16,7 @@ class ApiService {
   }
 
 // ADD New DATA TO DATABASE
-  Future<List<String>> addData(List<String> data) async {
+  static Future<Map<String, dynamic>> addData(Map<String, dynamic> data) async {
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -32,7 +32,8 @@ class ApiService {
   }
 
 // UPDATE DATA IN DATABASE
-  Future<List<String>> updateData(String id, List<String> data) async {
+  static Future<Map<String, dynamic>> updateData(
+      String id, List<String> data) async {
     final response = await http.put(
       Uri.parse('$apiUrl/$id'),
       headers: {
@@ -48,7 +49,7 @@ class ApiService {
   }
 
 // DELETE DATA FROM DATABASE
-  Future<void> deleteData(String id) async {
+  static Future<void> deleteData(String id) async {
     final response = await http.delete(
       Uri.parse('$apiUrl/$id'),
     );
