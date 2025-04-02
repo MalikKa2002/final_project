@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Buttons/login_up-but.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/signup_screen.dart';
 import 'package:smart_guide/Screens/forgot_password_screen.dart';
 import 'package:smart_guide/Screens/home_screen.dart';
+import 'package:smart_guide/Services/auth_service.dart';
 // import 'package:smart_guide/Services/auth_service.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
@@ -136,20 +138,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         dividerColor: Colors.grey,
                         dividerThickness: 1.0,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 25),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconsButton(
-                            icon: Icons.g_mobiledata_sharp,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
+                          Expanded(
+                              child: SquareTile(
+                            text: 'Login with Google',
+                            iconData: Icons
+                                .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
+                            onTap: () => AuthService().signInWithGoogle(),
+                          )),
                         ],
                       ),
-
+                      SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

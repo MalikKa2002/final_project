@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Buttons/login_up-but.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/login_screen.dart';
+import 'package:smart_guide/Services/auth_service.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
@@ -125,27 +127,19 @@ class _SignupScreenState extends State<SignupScreen> {
                         dividerThickness: 1.0,
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconsButton(
-                            icon: Icons.g_mobiledata_sharp,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                          // IconsButton(
-                          //   icon: Icons.facebook,
-                          //   onPressed: () {
-                          //     // Navigate or perform an action
-                          //     print('Button Pressed');
-                          //   },
-                          // ),
+                          SquareTile(
+                            text: 'Login with Google',
+                            iconData: Icons
+                                .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
+                            onTap: () => AuthService().signInWithGoogle(),
+                          )
                         ],
                       ),
-
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
