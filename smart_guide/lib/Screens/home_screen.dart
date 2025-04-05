@@ -5,7 +5,7 @@ import 'package:smart_guide/components/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {

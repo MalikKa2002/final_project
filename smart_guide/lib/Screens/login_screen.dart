@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Buttons/login_up-but.dart';
+import 'package:smart_guide/Buttons/login_up_but.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/signup_screen.dart';
@@ -11,7 +11,6 @@ import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
-import 'package:smart_guide/icons/icons_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

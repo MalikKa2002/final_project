@@ -7,7 +7,7 @@ import '../components/add_campus_card.dart';
 
 class HomeBody extends StatefulWidget {
   @override
-  _HomeBodyState createState() => _HomeBodyState();
+  createState() => _HomeBodyState();
 }
 
 class _HomeBodyState extends State<HomeBody> {

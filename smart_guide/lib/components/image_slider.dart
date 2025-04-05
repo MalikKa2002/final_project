@@ -10,7 +10,7 @@ class ImageSlider extends StatefulWidget {
   // TODO   final List<String> images;
 
   @override
-  _ImageSliderState createState() => _ImageSliderState();
+  createState() => _ImageSliderState();
 }
 
 class _ImageSliderState extends State<ImageSlider> {

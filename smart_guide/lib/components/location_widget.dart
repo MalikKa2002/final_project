@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:smart_guide/components/location_service.dart";
+import "package:smart_guide/Services/location_service.dart";
 
 class LocationWidget extends StatefulWidget {
   @override

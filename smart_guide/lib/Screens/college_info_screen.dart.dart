@@ -4,7 +4,7 @@ import 'package:smart_guide/components/image_slider.dart';
 
 class CollegeInfoScreen extends StatefulWidget {
   @override
-  _CollegeInfoScreenState createState() => _CollegeInfoScreenState();
+  createState() => _CollegeInfoScreenState();
 }
 
 class _CollegeInfoScreenState extends State<CollegeInfoScreen> {

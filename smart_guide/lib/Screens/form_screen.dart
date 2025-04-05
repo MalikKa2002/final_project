@@ -3,11 +3,12 @@ import 'package:smart_guide/Services/api_service.dart';
 import 'package:smart_guide/Services/validators.dart';
 import 'package:smart_guide/components/day_hours.dart';
 import 'package:smart_guide/components/form_input_field.dart';
-import 'package:smart_guide/components/upload_image.dart';
+
+import '../components/upload_image.dart';
 
 class FormScreen extends StatefulWidget {
   @override
-  _FormScreenState createState() => _FormScreenState();
+  createState() => _FormScreenState();
 }
 
 class _FormScreenState extends State<FormScreen> {
@@ -128,14 +129,7 @@ class _FormScreenState extends State<FormScreen> {
                     SizedBox(height: 20),
                     DayHoursSelector(),
                     SizedBox(height: 20),
-                    ImagePickerWidget(
-                      onImageSelected: (image) {
-                        setState(() {
-                          _selectedImagePath =
-                              image.path; // Store selected image path
-                        });
-                      },
-                    ),
+                    ImageUploadWidget(),
                     SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
