@@ -106,9 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 200,
                         fit: BoxFit.cover,
                       ),
-                      HeadingText('Welcome to Smart Guide', 40),
-                      const SizedBox(height: 40),
 
+                      HeadingText('Welcome to Smart Guide', 29),
+                      const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: BodyText(text: 'Username', fontSize: 16),
@@ -144,7 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             },
                           ),
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
                         ),
                       ),
 
@@ -167,11 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const SizedBox(height: 30),
                       MainButton(
+                        onPressed: _loginUser,
                         child: Text(
                           'Sign in ',
                           style: TextStyle(fontSize: 20.0),
                         ),
-                        onPressed: _loginUser,
                       ),
                       const SizedBox(height: 25),
                       // another way to sign in

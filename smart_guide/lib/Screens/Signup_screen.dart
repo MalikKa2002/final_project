@@ -98,165 +98,171 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true,
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.1,
-                  vertical: MediaQuery.of(context).size.height * 0.02,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    HeadingText('Get Started Free', 40),
-                    BodyText(
-                      text: 'Free forever. No limits to discover.',
-                      fontSize: 16,
-                    ),
-                    const SizedBox(height: 40),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
+        body: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.1,
+                    vertical: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      HeadingText('Get Started Free', 40),
+                      BodyText(
+                        text: 'Free forever. No limits to discover.',
+                        fontSize: 16,
+                      ),
+                      const SizedBox(height: 40),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(text: 'Email address', fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      controller: _emailController,
-                      labelText: 'yourname@gmail.com',
-                      prefixIcon: Icons.email,
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: BodyText(text: 'Email address', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomText(
+                        controller: _emailController,
+                        labelText: 'yourname@gmail.com',
+                        prefixIcon: Icons.email,
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 10),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(text: 'Your Name (Unique)', fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      controller: _usernameController,
-                      labelText: '@yourname',
-                      prefixIcon: Icons.person,
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child:
+                            BodyText(text: 'Your Name (Unique)', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomText(
+                        controller: _usernameController,
+                        labelText: '@yourname',
+                        prefixIcon: Icons.person,
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 10),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(text: 'Phone Number', fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      controller: _phoneController,
-                      labelText: 'Your phone number',
-                      prefixIcon: Icons.phone,
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: BodyText(text: 'Phone Number', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomText(
+                        controller: _phoneController,
+                        labelText: 'Your phone number',
+                        prefixIcon: Icons.phone,
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 10),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(text: 'Study Location', fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      controller: _studyLocationController,
-                      labelText: 'Your study location',
-                      prefixIcon: Icons.school,
-                      obscureText: false,
-                    ),
-                    const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: BodyText(text: 'Study Location', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomText(
+                        controller: _studyLocationController,
+                        labelText: 'Your study location',
+                        prefixIcon: Icons.school,
+                        obscureText: false,
+                      ),
+                      const SizedBox(height: 10),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(text: 'Password', fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: BodyText(text: 'Password', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
                         ),
-                        border: OutlineInputBorder(),
                       ),
-                    ),
-                    const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                    MainButton(
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                      onPressed: _registerUser,
-                    ),
-                    const SizedBox(height: 20),
-                    // another way to sign in
-                    TextWithDivider(
-                      text: 'Or sign up with',
-                      fontSize: 15.0,
-                      dividerColor: Colors.grey,
-                      dividerThickness: 1.0,
-                    ),
-
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SquareTile(
-                          text: 'Login with Google',
-                          iconData: Icons
-                              .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
-                          onTap: () => AuthService().signInWithGoogle(),
-                        )
-                      ],
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyText(
-                            text: 'Already have an account?', fontSize: 14),
-                        SecondaryButton(
-                          child: const Text('Login now'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            );
-                          },
+                      MainButton(
+                        onPressed: _registerUser,
+                        child: const Text(
+                          'Sign up',
+                          style: TextStyle(fontSize: 20.0),
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                      const SizedBox(height: 20),
+                      // another way to sign in
+                      TextWithDivider(
+                        text: 'Or sign up with',
+                        fontSize: 15.0,
+                        dividerColor: Colors.grey,
+                        dividerThickness: 1.0,
+                      ),
+
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: SquareTile(
+                            text: 'Login with Google',
+                            iconData: Icons
+                                .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
+                            onTap: () => AuthService().signInWithGoogle(),
+                          )),
+                        ],
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodyText(
+                              text: 'Already have an account?', fontSize: 14),
+                          SecondaryButton(
+                            child: const Text('Login now'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }
