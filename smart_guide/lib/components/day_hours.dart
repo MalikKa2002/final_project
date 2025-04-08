@@ -2,81 +2,44 @@ import 'package:flutter/material.dart';
 
 class DayHoursSelector extends StatefulWidget {
   @override
-  createState() => _DayHoursSelectorState();
-}
-
-class Day {
-  String name;
-  bool isOpen;
-  TimeOfDay openTime;
-  TimeOfDay closeTime;
-
-  Day({
-    required this.name,
-    this.isOpen = false,
-    required this.openTime,
-    required this.closeTime,
-  });
+  _DayHoursSelectorState createState() => _DayHoursSelectorState();
 }
 
 class _DayHoursSelectorState extends State<DayHoursSelector> {
-  List<Day> days = [
-    Day(
-      name: 'Sun',
-      isOpen: false,
-      openTime: TimeOfDay(hour: 0, minute: 0),
-      closeTime: TimeOfDay(hour: 0, minute: 0),
-    ),
-    Day(
-      name: 'Mon',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 12, minute: 0),
-      closeTime: TimeOfDay(hour: 23, minute: 0),
-    ),
-    Day(
-      name: 'Tue',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 10, minute: 0),
-      closeTime: TimeOfDay(hour: 23, minute: 0),
-    ),
-    Day(
-      name: 'Wed',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 10, minute: 0),
-      closeTime: TimeOfDay(hour: 23, minute: 0),
-    ),
-    Day(
-      name: 'Thu',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 10, minute: 0),
-      closeTime: TimeOfDay(hour: 23, minute: 0),
-    ),
-    Day(
-      name: 'Fri',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 10, minute: 0),
-      closeTime: TimeOfDay(hour: 2, minute: 0),
-    ),
-    Day(
-      name: 'Sat',
-      isOpen: true,
-      openTime: TimeOfDay(hour: 12, minute: 0),
-      closeTime: TimeOfDay(hour: 2, minute: 0),
-    ),
+  final List<String> days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
   ];
 
-  Future<void> selectTime(
-      BuildContext context, Day day, bool isOpeningTime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: isOpeningTime ? day.openTime : day.closeTime,
-    );
+  Map<String, bool> isOpen = {};
+  Map<String, TimeOfDay?> openingTime = {};
+  Map<String, TimeOfDay?> closingTime = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var day in days) {
+      isOpen[day] = false;
+      openingTime[day] = null;
+      closingTime[day] = null;
+    }
+  }
+
+  Future<void> _pickTime(String day, bool isStart) async {
+    final initialTime = TimeOfDay.now();
+    final picked =
+        await showTimePicker(context: context, initialTime: initialTime);
     if (picked != null) {
       setState(() {
-        if (isOpeningTime) {
-          day.openTime = picked;
+        if (isStart) {
+          openingTime[day] = picked;
         } else {
-          day.closeTime = picked;
+          closingTime[day] = picked;
         }
       });
     }
@@ -84,78 +47,70 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: ListView.builder(
-        itemCount: days.length,
-        itemBuilder: (context, index) {
-          Day day = days[index];
-          return Card(
-            margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: Padding(
-              padding: EdgeInsets.all(12),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Row(
+    return Column(
+      children: days.map((day) {
+        return Container(
+          margin: EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey[300]!),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(day,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Switch(
+                    value: isOpen[day]!,
+                    onChanged: (value) {
+                      setState(() {
+                        isOpen[day] = value;
+                        if (!value) {
+                          openingTime[day] = null;
+                          closingTime[day] = null;
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              if (isOpen[day]!)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 50,
-                      child: Text(day.name),
-                    ),
-                    Switch(
-                      value: day.isOpen,
-                      onChanged: (bool value) {
-                        setState(() {
-                          day.isOpen = value;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 50,
-                      child: Text(day.isOpen ? "Open" : "Closed"),
-                    ),
-                    if (day.isOpen) ...[
-                      GestureDetector(
-                        onTap: () => selectTime(context, day, true),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Text(
-                            day.openTime.format(context),
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Text(' - '),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () => selectTime(context, day, false),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Text(
-                            day.closeTime.format(context),
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ),
-                    ],
+                    _buildTimeButton(day, true),
+                    Text("to", style: TextStyle(fontWeight: FontWeight.w500)),
+                    _buildTimeButton(day, false),
                   ],
                 ),
-              ),
-            ),
-          );
-        },
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTimeButton(String day, bool isStart) {
+    final label = isStart ? "Open" : "Close";
+    final time = isStart ? openingTime[day] : closingTime[day];
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        side: BorderSide(color: Colors.grey[300]!),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      onPressed: () => _pickTime(day, isStart),
+      child: Text(
+        time != null ? time.format(context) : "$label Time",
+        style: TextStyle(fontWeight: FontWeight.w500),
       ),
     );
   }

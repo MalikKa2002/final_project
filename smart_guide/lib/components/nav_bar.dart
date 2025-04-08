@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CustomBottomNavBar extends StatefulWidget {
-  @override
-  CustomBottomNavBarState createState() => CustomBottomNavBarState();
-}
+class CustomBottomNavBar extends StatelessWidget {
+  final Function(int) onTabSelected;
 
-class CustomBottomNavBarState extends State<CustomBottomNavBar> {
+  const CustomBottomNavBar({required this.onTabSelected, Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      // color: Colors.black.withAlpha((0.2 * 255).toInt()),
-      // color: const Color(0xFFA6B49E),
       shape: CircularNotchedRectangle(),
       notchMargin: 10.0,
       height: 60,
@@ -20,14 +18,38 @@ class CustomBottomNavBarState extends State<CustomBottomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Icon(Icons.explore, size: 30),
-            // Icon(Icons.bookmark_border, size: 30),
-            SizedBox(width: 40), // Space for the FAB
-            // Icon(Icons.notifications_outlined, size: 30),
-            Icon(Icons.account_circle_outlined, size: 30),
+            // Left icon: Home (Explore)
+            IconButton(
+              icon: Icon(Icons.explore, size: 30),
+              onPressed: () => onTabSelected(0),
+            ),
+
+            // Spacer for FAB in the middle
+            SizedBox(width: 40),
+
+            // Right icon: Profile
+            IconButton(
+              icon: Icon(Icons.account_circle_outlined, size: 30),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FullProfilePage()),
+                );
+              },
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class FullProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Profile')),
+      body: Center(child: Text('My full custom profile')),
     );
   }
 }

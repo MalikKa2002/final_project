@@ -4,12 +4,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class ImageUploadWidget extends StatefulWidget {
+  final int maxImages;
+  final bool isMultiple;
+
+  const ImageUploadWidget(
+      {super.key, required this.maxImages, this.isMultiple = false});
   @override
   createState() => _ImageUploadWidgetState();
 }
 
 class _ImageUploadWidgetState extends State<ImageUploadWidget> {
-  String dropMessage = "Select images";
+  String dropMessage = "Select  images";
   List<Uint8List> uploadedImages = [];
   List<String> imageNames = [];
   int itemCount = 0;
@@ -17,19 +22,21 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
   Future<void> _pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
-      allowMultiple: true,
+      allowMultiple: widget.isMultiple,
       withData: true,
     );
     if (result != null) {
       setState(() {
         for (var file in result.files) {
+          if (uploadedImages.length >= widget.maxImages) break;
+
           if (file.bytes != null) {
             uploadedImages.add(file.bytes!);
             imageNames.add(file.name);
             itemCount++;
           }
         }
-        dropMessage = "Selected: $itemCount images";
+        dropMessage = "Selected: $itemCount/${widget.maxImages} images";
       });
     }
   }
@@ -39,7 +46,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
     return Center(
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -77,7 +84,9 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                       ),
-                      onPressed: _pickImage,
+                      onPressed: uploadedImages.length >= widget.maxImages
+                          ? null
+                          : _pickImage,
                       child: Text("Upload"),
                     ),
                   ],
@@ -86,46 +95,51 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
             ),
             SizedBox(height: 20),
             if (uploadedImages.isNotEmpty)
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(uploadedImages.length, (index) {
-                  return Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.memory(
-                              uploadedImages[index],
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
+              Align(
+                alignment: Alignment.centerLeft,
+                child:Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  alignment: WrapAlignment.start,
+                  children: List.generate(uploadedImages.length, (index) {
+                    return Stack(
+                      children: [
+                        // The image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.memory(
+                            uploadedImages[index],
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+
+                        // Positioned close icon
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                uploadedImages.removeAt(index);
+                                imageNames.removeAt(index);
+                                itemCount--;
+                                dropMessage = "Selected: $itemCount images";
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundColor: Colors.black54,
+                              child: Icon(Icons.close,
+                                  size: 16, color: Colors.white),
                             ),
                           ),
-                          SizedBox(width: 4),
-                          Text(
-                            imageNames[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.close, size: 18, color: Colors.red),
-                        onPressed: () {
-                          setState(() {
-                            uploadedImages.removeAt(index);
-                            imageNames.removeAt(index);
-                            itemCount--;
-                            dropMessage = "Selected: $itemCount images";
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                }),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
               ),
           ],
         ),

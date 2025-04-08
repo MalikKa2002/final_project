@@ -9,43 +9,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    HomeBody(), // Index 0: Explore
+    NavigationPage(), // Index 1: Navigation
+  ];
+
+  void _onTabSelected(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double appBarHeight = screenHeight * 0.30; // 25% of screen height
+    double appBarHeight = screenHeight * 0.30;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(appBarHeight), // Dynamic height
+        preferredSize: Size.fromHeight(appBarHeight),
         child: CustomAppBar(),
       ),
-      // body: HomeBody(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: HomeBody(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('AR Button Pressed!');
-        },
-        shape: CircleBorder(), // Ensure the FAB is circular
+        onPressed: () => _onTabSelected(1), // Go to NavigationPage
+        shape: CircleBorder(),
         child: SizedBox(
           height: 40,
           width: 40,
@@ -53,7 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(
+        onTabSelected: _onTabSelected,
+      ),
     );
+  }
+}
+
+// Dummy pages
+class NavigationPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text('Navigation Page'));
   }
 }
