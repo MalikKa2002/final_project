@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class CustomBottomNavBar extends StatelessWidget {
   final Function(int) onTabSelected;
 
-  const CustomBottomNavBar({required this.onTabSelected, Key? key})
-      : super(key: key);
+  const CustomBottomNavBar({required this.onTabSelected, super.key});
 
   @override
   Widget build(BuildContext context) {

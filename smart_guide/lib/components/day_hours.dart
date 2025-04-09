@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DayHoursSelector extends StatefulWidget {
   @override
-  _DayHoursSelectorState createState() => _DayHoursSelectorState();
+  createState() => _DayHoursSelectorState();
 }
 
 class _DayHoursSelectorState extends State<DayHoursSelector> {

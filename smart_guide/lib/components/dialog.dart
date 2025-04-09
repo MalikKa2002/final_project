@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class CustomMessageDialog extends StatelessWidget {
   final IconData icon;
   final String title;
