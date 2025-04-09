@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
+import 'package:smart_guide/components/dialog.dart';
 import 'package:smart_guide/components/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,7 +39,19 @@ class _HomeScreenState extends State<HomeScreen> {
         children: _pages,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onTabSelected(1), // Go to NavigationPage
+        onPressed: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => CustomMessageDialog(
+              icon: Icons.location_city_outlined,
+              title: "To Start!",
+              subtitle: "Are you ready to start ?",
+              description: "Please choose a building to start navigation!",
+              onOkPressed: () => Navigator.of(context).pop(),
+            ),
+          );
+        }, // Go to NavigationPage
         shape: CircleBorder(),
         child: SizedBox(
           height: 40,
@@ -51,13 +64,5 @@ class _HomeScreenState extends State<HomeScreen> {
         onTabSelected: _onTabSelected,
       ),
     );
-  }
-}
-
-// Dummy pages
-class NavigationPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Navigation Page'));
   }
 }
