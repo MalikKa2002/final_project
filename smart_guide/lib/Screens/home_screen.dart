@@ -14,7 +14,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     HomeBody(), // Index 0: Explore
-    NavigationPage(), // Index 1: Navigation
   ];
 
   void _onTabSelected(int index) {
