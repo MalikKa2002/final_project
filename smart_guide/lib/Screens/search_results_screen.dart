@@ -44,7 +44,8 @@ class SearchScreenState extends State<SearchScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2), // Shadow color
+                  color: Colors.black
+                    ..withAlpha((0.2 * 255).toInt()), // Shadow color
                   spreadRadius: 1, // How much the shadow spreads
                   blurRadius: 5, // How blurry the shadow is
                   offset: Offset(0, 2), // Shadow position (x, y)
