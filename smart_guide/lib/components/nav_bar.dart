@@ -29,26 +29,11 @@ class CustomBottomNavBar extends StatelessWidget {
             // Right icon: Profile
             IconButton(
               icon: Icon(Icons.account_circle_outlined, size: 30),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FullProfilePage()),
-                );
-              },
+              onPressed: () => onTabSelected(1),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class FullProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('My full custom profile')),
     );
   }
 }

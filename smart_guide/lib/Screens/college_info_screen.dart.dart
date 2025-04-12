@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/details.dart';
+
 import 'package:smart_guide/components/image_slider.dart';
 
 class CollegeInfoScreen extends StatefulWidget {
@@ -17,7 +18,9 @@ class _CollegeInfoScreenState extends State<CollegeInfoScreen> {
           child: Column(
             children: [
               ImageSlider(),
-              DetailsPart(),
+              Expanded(
+                child: DetailsPart(),
+              ),
             ],
           ),
         ),
