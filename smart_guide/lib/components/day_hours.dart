@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DayHoursSelector extends StatefulWidget {
+  // Callback to pass back the updated hours.
+  final void Function(Map<String, Map<String, String>>)? onHoursChanged;
+
+  const DayHoursSelector({Key? key, this.onHoursChanged}) : super(key: key);
+
   @override
   createState() => _DayHoursSelectorState();
 }
@@ -32,8 +37,7 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
 
   Future<void> _pickTime(String day, bool isStart) async {
     final initialTime = TimeOfDay.now();
-    final picked =
-        await showTimePicker(context: context, initialTime: initialTime);
+    final picked = await showTimePicker(context: context, initialTime: initialTime);
     if (picked != null) {
       setState(() {
         if (isStart) {
@@ -42,6 +46,26 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
           closingTime[day] = picked;
         }
       });
+      _notifyHoursChanged();
+    }
+  }
+
+  // Notify parent widget of changes by calling the callback with a formatted map.
+  void _notifyHoursChanged() {
+    if (widget.onHoursChanged != null) {
+      // Build a formatted map for each day. If a day is not open, both times are empty strings.
+      Map<String, Map<String, String>> formattedHours = {};
+      for (var day in days) {
+        formattedHours[day] = {
+          "open": (isOpen[day]! && openingTime[day] != null)
+              ? openingTime[day]!.format(context)
+              : "",
+          "close": (isOpen[day]! && closingTime[day] != null)
+              ? closingTime[day]!.format(context)
+              : "",
+        };
+      }
+      widget.onHoursChanged!(formattedHours);
     }
   }
 
@@ -60,22 +84,26 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Day header and switch
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(day,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text(
+                    day,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                   Switch(
                     value: isOpen[day]!,
                     onChanged: (value) {
                       setState(() {
                         isOpen[day] = value;
                         if (!value) {
+                          // Clear times if the day is closed
                           openingTime[day] = null;
                           closingTime[day] = null;
                         }
                       });
+                      _notifyHoursChanged();
                     },
                   ),
                 ],
