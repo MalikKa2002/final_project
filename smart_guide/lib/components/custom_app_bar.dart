@@ -1,7 +1,7 @@
 // custom_app_bar.dart
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/admin_pade.dart';
 import 'package:smart_guide/Screens/search_results_screen.dart';
-import 'package:smart_guide/Screens/settings_screen.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/components/location_widget.dart';
 
@@ -29,17 +29,25 @@ class CustomAppBar extends StatelessWidget {
                       icon: Icon(Icons.notifications, color: Colors.black),
                       onPressed: () {},
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsScreen()),
-                        );
-                      },
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: AssetImage('assets/profile.png'),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const SettingsScreen()),
+                    //     );
+                    //   },
+                    //   child: CircleAvatar(
+                    //     radius: 20,
+                    //     backgroundImage: AssetImage('assets/profile.png'),
+                    //   ),
+                    // ),
+
+                    IconButton(
+                      icon: Icon(Icons.account_circle_outlined, size: 30),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminPage()),
                       ),
                     ),
                   ],
@@ -57,30 +65,6 @@ class CustomAppBar extends StatelessWidget {
 
             SizedBox(height: 20),
             SearchScreen(),
-            // // Search Bar
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.grey[200],
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child: Row(
-            //     children: [
-            //       Icon(Icons.search, color: Colors.grey),
-            //       SizedBox(width: 8),
-            //       Expanded(
-            //         child: TextField(
-            //           decoration: InputDecoration(
-            //             hintText: "Search",
-            //             border: InputBorder.none,
-            //           ),
-            //         ),
-            //       ),
-            //       Icon(Icons.mic, color: Colors.grey),
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(height: 20),
           ],
         ),
       ),

@@ -27,10 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCurrentPage() {
     switch (_pageRoutes[_currentIndex]) {
       case 'profile':
-        return ProfilePage(); // You can add its own AppBar if needed
+        return ProfilePage();
       case 'home':
       default:
         return HomeBody(); // This one already has CustomAppBar
+// This one already has CustomAppBar
     }
   }
 

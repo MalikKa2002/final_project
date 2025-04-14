@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_guide/Screens/settings_screen.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -14,13 +15,20 @@ class ProfilePage extends StatelessWidget {
             children: [
               // Top Bar and Profile
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, top: 16, right: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(Icons.arrow_back),
-                    Icon(Icons.settings),
+                    IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
