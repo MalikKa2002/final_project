@@ -203,7 +203,10 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: Text("New Building ")),
+      appBar: AppBar(
+        backgroundColor: Colors.grey[100],
+        title: Text("New Building "),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(

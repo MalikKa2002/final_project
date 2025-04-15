@@ -1,131 +1,94 @@
 import 'package:flutter/material.dart';
-
-class Request {
-  final String id;
-  final String title;
-  final String description;
-  final String submittedBy;
-  String status; // "Pending", "Accepted", "Rejected"
-
-  Request({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.submittedBy,
-    this.status = "Pending",
-  });
-}
+import 'package:smart_guide/components/request.dart';
 
 class AdminPage extends StatefulWidget {
   @override
-  _AdminPageState createState() => _AdminPageState();
+  createState() => _AdminPageState();
 }
 
-class _AdminPageState extends State<AdminPage> {
-  List<Request> requests = [
-    Request(
-      id: '1',
-      title: 'Add Building A',
-      description: 'Request to add a new building on campus map.',
-      submittedBy: 'Hadeel123',
-    ),
-    Request(
-      id: '2',
-      title: 'Add Library',
-      description: 'New library wing needs to be added.',
-      submittedBy: 'User456',
-    ),
-  ];
+class _AdminPageState extends State<AdminPage>
+    with SingleTickerProviderStateMixin {
+  TabController? _tabController;
 
-  void acceptRequest(String id) {
-    setState(() {
-      requests.firstWhere((req) => req.id == id).status = "Accepted";
-    });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Request Accepted")));
+  @override
+  void initState() {
+    super.initState();
+    _tabController =
+        TabController(length: 3, vsync: this); // Initialize TabController
   }
 
-  void rejectRequest(String id) {
-    setState(() {
-      requests.firstWhere((req) => req.id == id).status = "Rejected";
-    });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Request Rejected")));
+  @override
+  void dispose() {
+    _tabController?.dispose(); // Dispose of the TabController
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Admin Panel - Pending Requests')),
-      body: ListView.builder(
-        itemCount: requests.length,
-        itemBuilder: (context, index) {
-          final req = requests[index];
-          return Card(
-            margin: EdgeInsets.all(10),
-            elevation: 4,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(req.title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text(req.description),
-                  SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(Icons.person, size: 18, color: Colors.grey),
-                      SizedBox(width: 4),
-                      Text("Submitted by: ${req.submittedBy}",
-                          style: TextStyle(fontSize: 14, color: Colors.grey)),
-                      Spacer(),
-                      Chip(
-                        label: Text(req.status),
-                        backgroundColor: req.status == "Accepted"
-                            ? Colors.green.withOpacity(0.2)
-                            : req.status == "Rejected"
-                                ? Colors.red.withOpacity(0.2)
-                                : Colors.orange.withOpacity(0.2),
-                        labelStyle: TextStyle(
-                          color: req.status == "Accepted"
-                              ? Colors.green
-                              : req.status == "Rejected"
-                                  ? Colors.red
-                                  : Colors.orange,
-                        ),
-                      )
-                    ],
-                  ),
-                  if (req.status == "Pending") ...[
-                    SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton.icon(
-                          icon: Icon(Icons.close, color: Colors.red),
-                          label: Text("Reject"),
-                          onPressed: () => rejectRequest(req.id),
-                        ),
-                        SizedBox(width: 8),
-                        ElevatedButton.icon(
-                          icon: Icon(Icons.check),
-                          label: Text("Accept"),
-                          onPressed: () => acceptRequest(req.id),
-                        ),
-                      ],
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.grey[200],
+        title: Text('Manneger Page'),
+        automaticallyImplyLeading: true,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(120), // space for search + tabs
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Search bar
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25),
+                      borderSide: BorderSide.none,
                     ),
-                  ],
+                  ),
+                ),
+              ),
+              // Tab bar
+              TabBar(
+                controller: _tabController,
+                indicatorColor: Colors.green,
+                labelColor: Colors.green,
+                unselectedLabelColor: Colors.grey,
+                dividerColor: Colors.transparent,
+                tabs: [
+                  Tab(text: 'Requests'),
+                  Tab(text: 'Users'),
+                  Tab(text: 'Buildings'),
                 ],
               ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            RequestBody(),
+            _buildUsersTab(),
+            _buildBuildingsTab(),
+          ],
+        ),
       ),
     );
   }
+
+  Widget _buildUsersTab() => Center(child: Text('Users List Here'));
+  Widget _buildBuildingsTab() => Center(child: Text('Buildings List Here'));
 }
