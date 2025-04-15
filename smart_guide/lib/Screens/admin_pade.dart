@@ -55,6 +55,7 @@ class _AdminPageState extends State<AdminPage>
                 ),
               ),
               // Tab bar
+
               TabBar(
                 controller: _tabController,
                 indicatorColor: Colors.green,
@@ -71,19 +72,23 @@ class _AdminPageState extends State<AdminPage>
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            RequestBody(),
-            _buildUsersTab(),
-            _buildBuildingsTab(),
-          ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          ),
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              RequestBody(),
+              _buildUsersTab(),
+              _buildBuildingsTab(),
+            ],
+          ),
         ),
       ),
     );

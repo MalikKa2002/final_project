@@ -206,57 +206,68 @@ class _FormScreenState extends State<FormScreen> {
       appBar: AppBar(
         backgroundColor: Colors.grey[100],
         title: Text("New Building "),
+        automaticallyImplyLeading: true,
+        bottom: PreferredSize(
+            preferredSize: Size.fromHeight(70),
+            child: Column(
+              children: [
+                _buildStepperHeader(),
+              ],
+            )),
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
-            width: 500,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 15,
-                  offset: Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _buildStepperHeader(),
-                  SizedBox(height: 20),
-                  _buildStepContent(),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (_currentStep > 0)
-                        TextButton(
-                          onPressed: _prevStep,
-                          child: Text("Back"),
-                        ),
-                      ElevatedButton(
-                        onPressed: _nextStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 12),
-                        ),
-                        child: Text(
-                          _currentStep < 2 ? "Next" : "Submit",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  )
+          child: Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Container(
+              width: 500,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 15,
+                    offset: Offset(0, 6),
+                  ),
                 ],
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    // _buildStepperHeader(),
+                    // SizedBox(height: 20),
+                    _buildStepContent(),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (_currentStep > 0)
+                          TextButton(
+                            onPressed: _prevStep,
+                            child: Text("Back"),
+                          ),
+                        ElevatedButton(
+                          onPressed: _nextStep,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                          ),
+                          child: Text(
+                            _currentStep < 2 ? "Next" : "Submit",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

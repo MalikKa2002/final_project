@@ -64,10 +64,19 @@ class _RequestBodyState extends State<RequestBody> {
       itemBuilder: (context, index) {
         final req = requests[index];
         return Card(
+          // color: Colors.blueGrey[50],
+          color: Color.fromARGB(255, 235, 240, 233),
           margin: EdgeInsets.all(10),
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              // color: Color.fromARGB(
+              //     255, 161, 178, 157),
+              //// 🌿 green tone or any color you want
+              color: Colors.green[200] ?? Colors.green,
+              width: 1.5,
+            ),
           ),
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -92,14 +101,16 @@ class _RequestBodyState extends State<RequestBody> {
                       backgroundColor: req.status == "Accepted"
                           ? Colors.green.withOpacity(0.2)
                           : req.status == "Rejected"
-                              ? Colors.red.withOpacity(0.2)
-                              : Colors.orange.withOpacity(0.2),
+                              ? const Color.fromARGB(255, 220, 20, 6)
+                                  .withOpacity(0.2)
+                              : const Color.fromARGB(255, 152, 123, 79)
+                                  .withAlpha((0.2 * 255).toInt()),
                       labelStyle: TextStyle(
                         color: req.status == "Accepted"
                             ? Colors.green
                             : req.status == "Rejected"
                                 ? Colors.red
-                                : Colors.orange,
+                                : const Color.fromARGB(255, 141, 104, 50),
                       ),
                     ),
                   ],
