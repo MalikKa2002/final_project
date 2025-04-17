@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_title.dart';
 import 'package:smart_guide/icons/bordered_icon_button.dart';
 
