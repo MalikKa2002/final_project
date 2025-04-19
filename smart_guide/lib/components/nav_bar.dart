@@ -9,8 +9,10 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: CircularNotchedRectangle(),
-      notchMargin: 10.0,
+      notchMargin: 8.0,
       height: 60,
+      // color: const Color.fromARGB(255, 232, 245, 232),
+      color: Colors.grey[100],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(
@@ -19,7 +21,7 @@ class CustomBottomNavBar extends StatelessWidget {
           children: [
             // Left icon: Home (Explore)
             IconButton(
-              icon: Icon(Icons.explore, size: 30),
+              icon: Icon(Icons.explore_outlined, size: 30),
               onPressed: () => onTabSelected(0),
             ),
 

@@ -71,4 +71,47 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateUsernameAndPassword(
+      String? username, String? password) {
+    if (username == null ||
+        username.trim().isEmpty ||
+        password == null ||
+        password.trim().isEmpty) {
+      return "Username and password are required.";
+    }
+
+    // Example pattern: at least 3 characters, letters or numbers (customize as needed)
+    String usernamePattern = r'^[a-zA-Z0-9]{3,}$';
+    String passwordPattern = r'^.{6,}$'; // at least 6 characters
+
+    bool isUsernameValid = RegExp(usernamePattern).hasMatch(username);
+    bool isPasswordValid = RegExp(passwordPattern).hasMatch(password);
+
+    if (!isUsernameValid || !isPasswordValid) {
+      return "One or more fields are not correct.";
+    }
+
+    return null; // Everything is valid
+  }
+
+  String? validateUsername(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Username is required';
+    }
+    if (!RegExp(r'^[a-zA-Z0-9]{3,}$').hasMatch(value)) {
+      return 'Enter a valid username (min 3 letters/numbers)';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Password is required';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  }
 }

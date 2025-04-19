@@ -6,6 +6,9 @@ import 'package:smart_guide/components/university_card.dart';
 import '../components/add_campus_card.dart';
 
 class HomeBody extends StatefulWidget {
+  final VoidCallback? onNavigateToCollege;
+
+  HomeBody({this.onNavigateToCollege});
   @override
   createState() => _HomeBodyState();
 }
@@ -47,16 +50,7 @@ class _HomeBodyState extends State<HomeBody> {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CollegeInfoScreen(
-                            // title: 'Azrieli College',
-                            // description:
-                            //     'Azrieli College: A leading institution in technology and innovation.',
-                            ),
-                      ),
-                    ),
+                    onTap: widget.onNavigateToCollege,
                     child: UniversityCard(
                       imagePath: 'assets/azrieli_college.png',
                       title: 'Azrieli College',

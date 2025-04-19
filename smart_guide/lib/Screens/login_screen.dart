@@ -13,6 +13,7 @@ import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
+import 'package:smart_guide/Services/validators.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,6 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
       String username = _usernameController.text.trim();
       String password = _passwordController.text.trim();
 
+      String? validationMessage =
+          Validators.validateUsernameAndPassword(username, password);
+      if (validationMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(validationMessage)),
+        );
+        return;
+      }
       // Check if username exists and get the corresponding email
       String? email = await _getEmailFromUsername(username);
       if (email == null) {
@@ -59,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
+        SnackBar(content: Text("Login failed. Please try again.")),
       );
     }
   }
@@ -118,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _usernameController,
                         labelText: 'Username',
                         prefixIcon: Icons.person,
+                        validator: Validators().validateUsername,
                       ),
                       const SizedBox(height: 20),
 
@@ -129,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
+                        validator: Validators().validatePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           prefixIcon: Icon(Icons.lock),
