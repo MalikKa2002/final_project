@@ -1,6 +1,5 @@
 // home_body.dart
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Screens/college_info_screen.dart.dart';
 import 'package:smart_guide/components/university_card.dart';
 
 import '../components/add_campus_card.dart';
