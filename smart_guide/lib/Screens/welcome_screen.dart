@@ -59,7 +59,6 @@ class WelcomeScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
-                print('Button Pressed');
               },
             ),
           ],

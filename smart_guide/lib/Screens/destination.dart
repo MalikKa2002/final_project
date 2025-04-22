@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'package:smart_guide/components/draggable_scrollable_sheet.dart';
+
+class Destination extends StatefulWidget {
+  @override
+  createState() => _DestinationState();
+}
+
+class _DestinationState extends State<Destination> {
+  CameraController? _cameraController;
+  late Future<void> _initializeControllerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeCamera();
+  }
+
+  Future<void> initializeCamera() async {
+    try {
+      final cameras = await availableCameras();
+      final backCamera = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+      );
+
+      _cameraController = CameraController(
+        backCamera,
+        ResolutionPreset.high,
+      );
+
+      _initializeControllerFuture = _cameraController!.initialize();
+      await _initializeControllerFuture;
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print("Error initializing camera: $e");
+    }
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _cameraController != null && _cameraController!.value.isInitialized
+          ? Stack(
+              children: [
+                Positioned.fill(
+                  child: CameraPreview(_cameraController!),
+                ),
+
+                MapWithBottomSheet(),
+                // Overlay: AR markers
+                // Search Bar and Buttons at Bottom
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Container(
+                //     padding: EdgeInsets.all(16),
+                //     color: Colors.white.withAlpha((0.9 * 255).toInt()),
+                //     child: Column(
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: [
+                //         TextField(
+                //           decoration: InputDecoration(
+                //             prefixIcon: Icon(Icons.search),
+                //             hintText: 'إلى أين؟',
+                //             border: OutlineInputBorder(
+                //               borderRadius: BorderRadius.circular(12),
+                //             ),
+                //           ),
+                //         ),
+                //         SizedBox(height: 12),
+                //         Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //           children: [
+                //             _quickButton(Icons.home, "المنزل"),
+                //             _quickButton(Icons.work, "العمل"),
+                //             _quickButton(Icons.add, "جديد"),
+                //           ],
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+              ],
+            )
+          : Center(child: Text("hfhfhfhfh")),
+    );
+  }
+}

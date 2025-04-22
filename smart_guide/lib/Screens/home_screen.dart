@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/college_info_screen.dart.dart';
+import 'package:smart_guide/Screens/destination.dart';
 import 'package:smart_guide/Screens/profile.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
@@ -72,15 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
           splashColor: Colors.transparent, // Remove ripple effect
           highlightElevation: 0,
           onPressed: () {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => CustomMessageDialog(
-                icon: Icons.location_city_outlined,
-                title: "To Start!",
-                subtitle: "Are you ready to start ?",
-                description: "Please choose a building to start navigation!",
-                onOkPressed: () => Navigator.of(context).pop(),
+            // showDialog(
+            //   context: context,
+            //   barrierDismissible: false,
+            //   builder: (context) => CustomMessageDialog(
+            //     icon: Icons.location_city_outlined,
+            //     title: "To Start!",
+            //     subtitle: "Are you ready to start ?",
+            //     description: "Please choose a building to start navigation!",
+            //     onOkPressed: () => Navigator.of(context).pop(),
+            //   ),
+            // );
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Destination(),
               ),
             );
           },
