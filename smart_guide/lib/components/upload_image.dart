@@ -6,15 +6,21 @@ import 'package:dotted_border/dotted_border.dart';
 class ImageUploadWidget extends StatefulWidget {
   final int maxImages;
   final bool isMultiple;
+  final void Function(List<Uint8List>)? onImagesSelected;
 
-  const ImageUploadWidget(
-      {super.key, required this.maxImages, this.isMultiple = false});
+  const ImageUploadWidget({
+    super.key,
+    required this.maxImages,
+    this.isMultiple = false,
+    this.onImagesSelected,
+  });
+
   @override
   createState() => _ImageUploadWidgetState();
 }
 
 class _ImageUploadWidgetState extends State<ImageUploadWidget> {
-  String dropMessage = "Select  images";
+  String dropMessage = "Select images";
   List<Uint8List> uploadedImages = [];
   List<String> imageNames = [];
   int itemCount = 0;
@@ -29,7 +35,6 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
       setState(() {
         for (var file in result.files) {
           if (uploadedImages.length >= widget.maxImages) break;
-
           if (file.bytes != null) {
             uploadedImages.add(file.bytes!);
             imageNames.add(file.name);
@@ -38,6 +43,10 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
         }
         dropMessage = "Selected: $itemCount/${widget.maxImages} images";
       });
+      // Notify the parent widget of the updated images.
+      if (widget.onImagesSelected != null) {
+        widget.onImagesSelected!(uploadedImages);
+      }
     }
   }
 
@@ -97,14 +106,14 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
             if (uploadedImages.isNotEmpty)
               Align(
                 alignment: Alignment.centerLeft,
-                child:Wrap(
+                child: Wrap(
                   spacing: 10,
                   runSpacing: 10,
                   alignment: WrapAlignment.start,
                   children: List.generate(uploadedImages.length, (index) {
                     return Stack(
                       children: [
-                        // The image
+                        // Display the image thumbnail.
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.memory(
@@ -114,8 +123,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
                             fit: BoxFit.cover,
                           ),
                         ),
-
-                        // Positioned close icon
+                        // Close icon positioned in the top right corner to remove the image.
                         Positioned(
                           top: 4,
                           right: 4,
@@ -127,6 +135,9 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
                                 itemCount--;
                                 dropMessage = "Selected: $itemCount images";
                               });
+                              if (widget.onImagesSelected != null) {
+                                widget.onImagesSelected!(uploadedImages);
+                              }
                             },
                             child: CircleAvatar(
                               radius: 12,
