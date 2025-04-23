@@ -42,14 +42,6 @@ class CustomAppBar extends StatelessWidget {
                     //     backgroundImage: AssetImage('assets/profile.png'),
                     //   ),
                     // ),
-
-                    IconButton(
-                      icon: Icon(Icons.account_circle_outlined, size: 30),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AdminPage()),
-                      ),
-                    ),
                   ],
                 ),
               ],
