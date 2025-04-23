@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/admin_pade.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -166,7 +167,8 @@ class SettingsScreen extends StatelessWidget {
             // Help and Support Section
             ListTile(
               leading: const Icon(Icons.help_outline, color: Colors.green),
-              title: const Text('Help and Support', style: TextStyle(color: Colors.black)),
+              title: const Text('Help and Support',
+                  style: TextStyle(color: Colors.black)),
               onTap: () {
                 // Open email client for help and support
                 showDialog(
@@ -174,7 +176,8 @@ class SettingsScreen extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text('Contact Support'),
-                      content: const Text('Please contact us at: support@example.com'),
+                      content: const Text(
+                          'Please contact us at: support@example.com'),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
@@ -191,8 +194,23 @@ class SettingsScreen extends StatelessWidget {
             // Give Feedback Section
             ListTile(
               leading: const Icon(Icons.feedback_outlined, color: Colors.green),
-              title: const Text('Give Feedback', style: TextStyle(color: Colors.black)),
+              title: const Text('Give Feedback',
+                  style: TextStyle(color: Colors.black)),
               onTap: () => _showFeedbackDialog(context),
+            ),
+            const Divider(color: Colors.grey),
+
+            ListTile(
+              leading: const Icon(Icons.admin_panel_settings_outlined,
+                  color: Colors.green),
+              title: const Text('app management ',
+                  style: TextStyle(color: Colors.black)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminPage()),
+                );
+              },
             ),
             const Divider(color: Colors.grey),
           ],

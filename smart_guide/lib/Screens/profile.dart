@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_guide/Screens/home_screen.dart';
 import 'package:smart_guide/Screens/settings_screen.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -19,7 +20,15 @@ class ProfilePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.arrow_back),
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ),
+                      ),
+                    ),
                     IconButton(
                       icon: Icon(Icons.settings),
                       onPressed: () => Navigator.push(
@@ -29,6 +38,14 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // IconsButton(
+                    //     icon: Icons.admin_panel_settings_outlined,
+                    //     onPressed: () => Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) => AdminPage(),
+                    //           ),
+                    //         )),
                   ],
                 ),
               ),
@@ -66,39 +83,6 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
 
-              // Stats
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: const [
-              //       _StatItem(label: 'Fans', value: '24K'),
-              //       _StatItem(label: 'Following', value: '582'),
-              //       _StatItem(label: 'Posts', value: '2129'),
-              //       _StatItem(label: 'Stories', value: '91'),
-              //     ],
-              //   ),
-              // ),
-
-              // const SizedBox(height: 16),
-
-              // // Buttons
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       _GradientButton(
-              //           text: 'Follow',
-              //           colors: [Colors.blue, Colors.blueAccent]),
-              //       _GradientButton(
-              //           text: 'Message',
-              //           colors: [Colors.purple, Colors.deepPurple]),
-              //     ],
-              //   ),
-              // ),
-
               const SizedBox(height: 20),
 
               // Tabs
@@ -109,9 +93,6 @@ class ProfilePage extends StatelessWidget {
                 labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 tabs: const [
                   Tab(text: 'Building'),
-                  // Tab(text: 'Video'),
-                  // Tab(text: 'About'),
-                  // Tab(text: 'Favorite'),
                 ],
               ),
 
@@ -120,62 +101,11 @@ class ProfilePage extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     _PhotoGrid(),
-                    // Center(child: Text("Videos")),
-                    // Center(child: Text("About")),
-                    // Center(child: Text("Favorites")),
                   ],
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StatItem extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _StatItem({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(value,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold)),
-        Text(label,
-            style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600])),
-      ],
-    );
-  }
-}
-
-class _GradientButton extends StatelessWidget {
-  final String text;
-  final List<Color> colors;
-
-  const _GradientButton({required this.text, required this.colors});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        height: 40,
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(colors: colors),
-        ),
-        child: Center(
-          child: Text(text,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              )),
         ),
       ),
     );

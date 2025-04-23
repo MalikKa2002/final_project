@@ -4,7 +4,7 @@ class DayHoursSelector extends StatefulWidget {
   // Callback to pass back the updated hours.
   final void Function(Map<String, Map<String, String>>)? onHoursChanged;
 
-  const DayHoursSelector({Key? key, this.onHoursChanged}) : super(key: key);
+  const DayHoursSelector({super.key, this.onHoursChanged});
 
   @override
   createState() => _DayHoursSelectorState();
@@ -37,7 +37,8 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
 
   Future<void> _pickTime(String day, bool isStart) async {
     final initialTime = TimeOfDay.now();
-    final picked = await showTimePicker(context: context, initialTime: initialTime);
+    final picked =
+        await showTimePicker(context: context, initialTime: initialTime);
     if (picked != null) {
       setState(() {
         if (isStart) {
