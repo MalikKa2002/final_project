@@ -109,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green[400],
         title: const Text('Settings', style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -196,6 +196,14 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.feedback_outlined, color: Colors.green),
               title: const Text('Give Feedback',
                   style: TextStyle(color: Colors.black)),
+              onTap: () => _showFeedbackDialog(context),
+            ),
+            const Divider(color: Colors.grey),
+
+            ListTile(
+              leading: const Icon(Icons.language_outlined, color: Colors.green),
+              title:
+                  const Text('Language', style: TextStyle(color: Colors.black)),
               onTap: () => _showFeedbackDialog(context),
             ),
             const Divider(color: Colors.grey),
