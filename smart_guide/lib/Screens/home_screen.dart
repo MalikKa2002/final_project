@@ -15,33 +15,42 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  bool _showCollegeInfo = false;
 
   final List<String> _pageRoutes = [
-    'home',
-    'navigate',
-    'profile',
-    'collegeInfo',
+    'home', // 0
+    'navigate', // 1
+    'profile', // 2
+    'collegeInfo', // 3
   ];
 
   void _onTabSelected(int index) {
     setState(() {
       _currentIndex = index;
+      _showCollegeInfo = false; // back to normal tabs
     });
   }
 
   Widget _buildCurrentPage() {
-    switch (_pageRoutes[_currentIndex]) {
-      case 'collegeInfo':
-        return CollegeInfoScreen();
-      case 'profile':
+    if (_showCollegeInfo) {
+      return CollegeInfoScreen();
+    }
+
+    switch (_currentIndex) {
+      case 1:
+        return MapWithBottomSheet();
+      case 2:
         return ProfilePage();
-      case 'home':
+      case 0:
       default:
-        return HomeBody(onNavigateToCollege: () {
-          _onTabSelected(3); // switch to collegeInfo
-        });
-    } // This one already has CustomAppBar
-// This one already has CustomAppBar
+        return HomeBody(
+          onNavigateToCollege: () {
+            setState(() {
+              _showCollegeInfo = true;
+            });
+          }, // Go to collegeInfo
+        );
+    }
   }
 
   @override
@@ -51,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       // Only show app bar for home; profile has its own app bar if needed
-      appBar: _currentIndex == 0
+      appBar: _currentIndex == 0 && _showCollegeInfo == false
           ? PreferredSize(
               preferredSize: Size.fromHeight(appBarHeight),
               child: CustomAppBar(),
@@ -63,24 +72,28 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         // elevation: 0,
         onPressed: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => CustomMessageDialog(
-              icon: Icons.location_city_outlined,
-              title: "To Start!",
-              subtitle: "Are you ready to start ?",
-              description: "Please choose a building to start navigation!",
-              onOkPressed: () => Navigator.of(context).pop(),
-            ),
-          );
-
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => MapWithBottomSheet(),
-          //   ),
-          // );
+          if (_showCollegeInfo) {
+            // If a building is selected, go to MapWithBottomSheet
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapWithBottomSheet(),
+              ),
+            );
+          } else {
+            // If no building selected, show dialog
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => CustomMessageDialog(
+                icon: Icons.location_city_outlined,
+                title: "To Start!",
+                subtitle: "Are you ready to start?",
+                description: "Please choose a building to start navigation!",
+                onOkPressed: () => Navigator.of(context).pop(),
+              ),
+            );
+          }
         },
         shape: const CircleBorder(),
         child: Icon(Icons.navigation_rounded, color: Colors.grey[200]),

@@ -13,15 +13,6 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  String displayedInfo =
-      "Welcome to AR Campus Guide! This app helps you navigate campuses and find your way with ease.";
-
-  void updateInfo(String newInfo) {
-    setState(() {
-      displayedInfo = newInfo;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

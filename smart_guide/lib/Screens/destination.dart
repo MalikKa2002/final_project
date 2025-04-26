@@ -55,43 +55,10 @@ class _DestinationState extends State<Destination> {
                 Positioned.fill(
                   child: CameraPreview(_cameraController!),
                 ),
-
-                MapWithBottomSheet(),
-                // Overlay: AR markers
-                // Search Bar and Buttons at Bottom
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Container(
-                //     padding: EdgeInsets.all(16),
-                //     color: Colors.white.withAlpha((0.9 * 255).toInt()),
-                //     child: Column(
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         TextField(
-                //           decoration: InputDecoration(
-                //             prefixIcon: Icon(Icons.search),
-                //             hintText: 'إلى أين؟',
-                //             border: OutlineInputBorder(
-                //               borderRadius: BorderRadius.circular(12),
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(height: 12),
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //           children: [
-                //             _quickButton(Icons.home, "المنزل"),
-                //             _quickButton(Icons.work, "العمل"),
-                //             _quickButton(Icons.add, "جديد"),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                // MapWithBottomSheet(),
               ],
             )
-          : Center(child: Text("hfhfhfhfh")),
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
