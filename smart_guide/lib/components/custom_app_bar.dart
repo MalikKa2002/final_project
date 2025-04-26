@@ -1,6 +1,7 @@
 // custom_app_bar.dart
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Screens/admin_pade.dart';
+import 'package:smart_guide/Screens/notification_page.dart';
+
 import 'package:smart_guide/Screens/search_results_screen.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/components/location_widget.dart';
@@ -27,7 +28,13 @@ class CustomAppBar extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: Icon(Icons.notifications, color: Colors.black),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NotificationPage()),
+                        );
+                      },
                     ),
                     // GestureDetector(
                     //   onTap: () {
