@@ -53,9 +53,20 @@
     "coverImage":"صورة الغلاف",
     "galleryImage":"صورة المعرض",
     "buildingAlbum":"البوم المبنى",
+    "newBuilding":"مبنى جديد",
 
-    "newBuilding":"مبنى جديد"
-
+    "search":"البحث",
+    "notification":"الإشعارات",
+    "campus":"الحرم الجامعي",
+    "settings":"الإعدادات",
+    "HelpAndSupport":"المساعدة والدعم",
+    "giveFeedback":"إعطاء ملاحظات",
+    "language":"اللغة",
+    "appaManager":"مدير التطبيق",
+    "details":" التفاصيل",
+    "daysAndHours":"الأيام والساعات",
+    "open":"مفتوح",
+    "closed":"مغلق"
 
   }
   

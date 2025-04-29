@@ -56,7 +56,21 @@
     "coverImage":"תמונת כיסוי",
     "galleryImage":"תמונת גלריה",
     "buildingAlbum":"אלבום בניין",
+    "newBuilding":"בניין חדש",
 
-    "newBuilding":"בניין חדש"
+    "search":"חיפוש",
+    "notification":"הודעות",
+    "campus":"קמפוס",
+    "settings":"הגדרות",
+    "HelpAndSupport":"עזרה ותמיכה",
+    "giveFeedback":"תן משוב",
+    "language":"שפה",
+    "appaManager":"מנהל אפליקציה",
+    "details":"פרטים",
+    "daysAndHours":"ימים ושעות",
+    "open":"פתוח",
+    "closed":"סגור"
+
+    
   }
   

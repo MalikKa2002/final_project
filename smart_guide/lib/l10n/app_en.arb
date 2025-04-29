@@ -48,8 +48,20 @@
     "coverImage":"Cover Image",
     "galleryImage":"Gallery Image",
     "buildingAlbum":"Building Album",
+    "newBuilding":"New Building",
 
-    "newBuilding":"New Building"
+    "search":"Search",
+    "notification":"Notification",
+    "campus":"Campus",
+    "settings":"Settings",
+    "HelpAndSupport":"Help & Support",
+    "giveFeedback":"Give Feedback",
+    "language":"Language",
+    "appaManager":"App Manager",
+    "details":"Details",
+    "daysAndHours":"Days & Hours",
+    "open":"Open",
+    "closed":"Closed"
 
   }
   
