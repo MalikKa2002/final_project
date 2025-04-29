@@ -1,5 +1,61 @@
 {
     "appTitle": "دليل الحرم الجامعي",
-    "welcome": "أهلاً بك!"
+    "welcome": "أهلاً بك!",
+    "getStartedFree": "ابدأ مجانًا",
+    "freeForever": "مجاني إلى الأبد، بلا حدود للاستكشاف",
+  
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signUp": "إنشاء حساب",
+    "login": "تسجيل الدخول",
+  
+    "welcomeTo": "مرحبًا بك في",
+    "arCampusGuide": " دليل الحرم الجامعي المدمج مع الواقع المعزز",
+  
+    "universityAndCollege": "الجامعات والكليات",
+    "startANew":"من جديد ابدا",
+    "socialAdvantage":"مغامرة اجتماعية",
+    "getStarted":"ابدأ",
+
+    "welcomeBack":"مرحبًا بعودتك",
+    "userName":"اسم المستخدم",
+    
+    "signIn": "تسجيل الدخول",
+    "forgotPassword": "نسيت كلمة المرور?",
+    "orContinueWith": "او تابع مع",
+    "orSignUpWith":" او سجل مع",
+    "LoginNow":"تسجيل الدخول الآن",
+    "LoginWithGoogle": "تسجيل الدخول باستخدام جوجل",
+    "studyLocation":"موقع الدراسة",
+
+    "phoneNumber":"رقم الهاتف",
+    "notAMember":"لست عضوا?",
+    "registerNow":"سجل الآن",
+    
+    
+    "explore":"استكشاف",
+    "navigation":"الملاحة",
+    "profile":"الملف الشخصي",
+
+    "collegeName":"اسم الكلية",
+    "Location":"الموقع",
+    "website":"الموقع الإلكتروني",
+    "description":"الوصف",
+    "nexyt":"التالي",
+    "back":"العودة",
+
+    "buildingInfo":"معلومات  عن المبنى",
+    "openClosedHoures":"ساعات وايام العمل",
+    "openingHoures":"ساعات العمل",
+    "uploadImage":"رفع الصور",
+    "submit":"إرسال",
+
+    "coverImage":"صورة الغلاف",
+    "galleryImage":"صورة المعرض",
+    "buildingAlbum":"البوم المبنى",
+
+    "newBuilding":"مبنى جديد"
+
+
   }
   

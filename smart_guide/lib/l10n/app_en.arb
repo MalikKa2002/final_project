@@ -1,8 +1,55 @@
 {
-    
-      "appTitle": "AR Campus Guide",
-      "welcome": "Welcome!"
-        
-      
+    "appTitle": "AR Campus Guide",
+    "welcome": "Welcome",
+    "startANew":"start a new",
+    "socialAdvantage":"Social advantage",
+    "getStarted":"Get started",
+
+    "welcomeBack":"Welcome back",
+    "getStartedFree": "Get started free",
+    "freeForever": "Free forever, no limits to discover",
+  
+    "userName":"Username",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "Or continue with",
+    "orSignUpWith":" Or sign up with",
+    "LoginNow":"Login now",
+    "LoginWithGoogle": "Login with Google",
+    "studyLocation":"Study location",
+
+    "phoneNumber":"Phone number",
+    "notAMember":"Not a member?",
+    "registerNow":"Register now",
+    "welcomeTo": "Welcome to",
+    "arCampusGuide": "AR Campus Guide",
+  
+    "universityAndCollege": "University & College",
+    "explore":"Explore",
+    "navigation":"Navigation",
+    "profile":"Profile",
+
+    "collegeName":"College",
+    "Location":"Location",
+    "website":"Website",
+    "description":"Description",
+    "nexyt":"Next",
+    "back":"Back",
+
+    "buildingInfo":"Building Info",
+    "openClosedHoures":"Open/Closed Hours",
+    "openingHoures":"Opening Hours",
+    "uploadImage":"Upload Image",
+    "submit":"Submit",
+
+    "coverImage":"Cover Image",
+    "galleryImage":"Gallery Image",
+    "buildingAlbum":"Building Album",
+
+    "newBuilding":"New Building"
+
   }
   

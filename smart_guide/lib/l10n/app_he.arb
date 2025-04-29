@@ -1,6 +1,62 @@
 {
     "appTitle": "מדריך הקמפוס",
-    "welcome": "ברוך הבא!"
+    "welcome": "ברוך הבא!",
+    "getStartedFree": " להתחיל בחינם",
+    "freeForever": "חינם לנצח, ללא הגבלות לחקור",
+  
+    "emailAddress": "כתובת הדואר האלקטרוני",
+    "password": "סיסמה",
+    "signUp": "הרשמה",
+    "login": "התחברות",
+  
+    "welcomeTo": "ברוך הבא ל",
+    "arCampusGuide": "מדריך הקמפוס המשלב מציאות רבודה",
+  
+    "universityAndCollege": " אוניברסיטאות ומכללות",
+  
+
+    "startANew":"מחדש תתחיל",
+    "socialAdvantage":" הרפתקה חברתית",
+    "getStarted":"להתחיל",
+
+    "welcomeBack":"ברוך שובך",
+    "userName":"שם משתמש",
     
+    "signIn": "התחברות",
+    "forgotPassword": "שכחת סיסמה?",
+    "orContinueWith": "או להמשיך עם",
+    "orSignUpWith":" או להירשם עם",
+    "LoginNow": "התחבר עכשיו",
+    "LoginWithGoogle": "התחבר עם גוגל",
+    "studyLocation":"מיקום הלימודים",
+
+    "phoneNumber":"מספר טלפון",
+    "notAMember": " לא חבר?",
+    "registerNow":" תירשם עכשיו",
+    
+    
+    "explore":"חקר",
+    "navigation":"ניווט",
+    "profile":" פרופיל",
+
+    "collegeName":"שם המכללה",
+    "Location":"מיקום",
+    "website":" אתר אינטרנט",
+    "description":"תיאור",
+    "nexyt":"הבא",
+    "back":"חזרה",
+
+    "buildingInfo":"מידע על הבניין",
+    "openClosedHoures":"  שעות פתיחה/סגירה",
+    "openingHoures":" שעות פתיחה",
+    "uploadImage":"העלאת תמונות",
+    "submit":"שלח",
+
+
+    "coverImage":"תמונת כיסוי",
+    "galleryImage":"תמונת גלריה",
+    "buildingAlbum":"אלבום בניין",
+
+    "newBuilding":"בניין חדש"
   }
   
