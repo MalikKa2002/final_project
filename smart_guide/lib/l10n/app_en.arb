@@ -17,8 +17,8 @@
     "forgotPassword": "Forgot password?",
     "orContinueWith": "Or continue with",
     "orSignUpWith":" Or sign up with",
-    "LoginNow":"Login now",
-    "LoginWithGoogle": "Login with Google",
+    "loginNow": "Login now",
+    "loginWithGoogle": "Login with Google",
     "studyLocation":"Study location",
 
     "phoneNumber":"Phone number",
@@ -33,7 +33,7 @@
     "profile":"Profile",
 
     "collegeName":"College",
-    "Location":"Location",
+    "location":"Location",
     "website":"Website",
     "description":"Description",
     "nexyt":"Next",

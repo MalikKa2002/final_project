@@ -24,8 +24,8 @@
     "forgotPassword": "نسيت كلمة المرور?",
     "orContinueWith": "او تابع مع",
     "orSignUpWith":" او سجل مع",
-    "LoginNow":"تسجيل الدخول الآن",
-    "LoginWithGoogle": "تسجيل الدخول باستخدام جوجل",
+    "loginNow":"تسجيل الدخول الآن",
+    "loginWithGoogle": "تسجيل الدخول باستخدام جوجل",
     "studyLocation":"موقع الدراسة",
 
     "phoneNumber":"رقم الهاتف",
@@ -38,7 +38,7 @@
     "profile":"الملف الشخصي",
 
     "collegeName":"اسم الكلية",
-    "Location":"الموقع",
+    "location":"الموقع",
     "website":"الموقع الإلكتروني",
     "description":"الوصف",
     "nexyt":"التالي",

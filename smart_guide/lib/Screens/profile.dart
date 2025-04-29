@@ -37,6 +37,17 @@ class _ProfilePageState extends State<ProfilePage> {
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  );
+                },
+              ),
               backgroundColor: Colors.grey[100],
               actions: [
                 IconButton(

@@ -26,8 +26,8 @@
     "forgotPassword": "שכחת סיסמה?",
     "orContinueWith": "או להמשיך עם",
     "orSignUpWith":" או להירשם עם",
-    "LoginNow": "התחבר עכשיו",
-    "LoginWithGoogle": "התחבר עם גוגל",
+    "loginNow": "התחבר עכשיו",
+    "loginWithGoogle": "התחבר עם גוגל",
     "studyLocation":"מיקום הלימודים",
 
     "phoneNumber":"מספר טלפון",
@@ -40,7 +40,7 @@
     "profile":" פרופיל",
 
     "collegeName":"שם המכללה",
-    "Location":"מיקום",
+    "location":"מיקום",
     "website":" אתר אינטרנט",
     "description":"תיאור",
     "nexyt":"הבא",
