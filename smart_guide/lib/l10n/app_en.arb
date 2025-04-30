@@ -2,7 +2,7 @@
     "appTitle": "AR Campus Guide",
     "welcome": "Welcome",
     "startANew":"start a new",
-    "socialAdvantage":"Social advantage",
+    "socialAdvantage":"Social advantage!",
     "getStarted":"Get started",
 
     "welcomeBack":"Welcome back",
@@ -54,7 +54,7 @@
     "notification":"Notification",
     "campus":"Campus",
     "settings":"Settings",
-    "HelpAndSupport":"Help & Support",
+    "helpAndSupport":"Help & Support",
     "giveFeedback":"Give Feedback",
     "language":"Language",
     "appaManager":"App Manager",

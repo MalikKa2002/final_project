@@ -14,6 +14,7 @@ import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
 import 'package:smart_guide/Services/validators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -89,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -116,16 +118,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.cover,
                       ),
 
-                      HeadingText('Welcome to Smart Guide', 29),
+                      HeadingText(local.welcomeBack, 29),
                       const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Username', fontSize: 16),
+                        child: BodyText(text: local.userName, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
                         controller: _usernameController,
-                        labelText: 'Username',
+                        labelText: local.userName,
                         prefixIcon: Icons.person,
                         validator: Validators().validateUsername,
                       ),
@@ -133,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Password', fontSize: 16),
+                        child: BodyText(text: local.password, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
@@ -141,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: _obscurePassword,
                         validator: Validators().validatePassword,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: local.password,
                           prefixIcon: Icon(Icons.lock),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -165,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: SecondaryButton(
                           child: Text(
-                            'Forgot Password?',
+                            local.forgotPassword,
                             style: TextStyle(fontSize: 15.0),
                           ),
                           onPressed: () {
@@ -182,14 +184,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       MainButton(
                         onPressed: _loginUser,
                         child: Text(
-                          'Sign in ',
+                          local.signIn,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                       const SizedBox(height: 25),
                       // another way to sign in
                       TextWithDivider(
-                        text: 'Or continue with',
+                        text: local.orContinueWith,
                         fontSize: 15.0,
                         dividerColor: Colors.grey,
                         dividerThickness: 1.0,
@@ -200,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Expanded(
                               child: SquareTile(
-                            text: 'Login with Google',
+                            text: local.loginWithGoogle,
                             iconData: Icons
                                 .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
                             onTap: () => AuthService().signInWithGoogle(),
@@ -211,9 +213,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          BodyText(text: 'Not a member?', fontSize: 15),
+                          BodyText(text: local.notAMember, fontSize: 15),
                           SecondaryButton(
-                            child: Text('Register Now'),
+                            child: Text(local.registerNow),
                             onPressed: () {
                               Navigator.push(
                                 context,

@@ -21,7 +21,7 @@
     "userName":"اسم المستخدم",
     
     "signIn": "تسجيل الدخول",
-    "forgotPassword": "نسيت كلمة المرور?",
+    "forgotPassword": "نسيت كلمة المرور؟",
     "orContinueWith": "او تابع مع",
     "orSignUpWith":" او سجل مع",
     "loginNow":"تسجيل الدخول الآن",
@@ -29,7 +29,7 @@
     "studyLocation":"موقع الدراسة",
 
     "phoneNumber":"رقم الهاتف",
-    "notAMember":"لست عضوا?",
+    "notAMember":"لست عضوا؟",
     "registerNow":"سجل الآن",
     
     
@@ -59,7 +59,7 @@
     "notification":"الإشعارات",
     "campus":"الحرم الجامعي",
     "settings":"الإعدادات",
-    "HelpAndSupport":"المساعدة والدعم",
+    "helpAndSupport":"المساعدة والدعم",
     "giveFeedback":"إعطاء ملاحظات",
     "language":"اللغة",
     "appaManager":"مدير التطبيق",

@@ -67,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : null,
       body: _buildCurrentPage(),
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         // backgroundColor: Colors.transparent,
         backgroundColor: Colors.black,
