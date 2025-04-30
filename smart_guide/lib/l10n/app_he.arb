@@ -24,6 +24,7 @@
     
     "signIn": "התחברות",
     "forgotPassword": "שכחת סיסמה?",
+    "alreadyHaveAnAccount":"כבר יש לך חשבון?",
     "orContinueWith": "או להמשיך עם",
     "orSignUpWith":" או להירשם עם",
     "loginNow": "התחבר עכשיו",

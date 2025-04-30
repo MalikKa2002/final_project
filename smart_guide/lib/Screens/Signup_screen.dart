@@ -10,6 +10,7 @@ import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -98,6 +99,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -118,16 +120,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      HeadingText('Get Started Free', 40),
+                      HeadingText(local.getStartedFree, 40),
                       BodyText(
-                        text: 'Free forever. No limits to discover.',
+                        text: local.freeForever,
                         fontSize: 16,
                       ),
                       const SizedBox(height: 40),
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Email address', fontSize: 16),
+                        child: BodyText(text: local.emailAddress, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
@@ -154,7 +156,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Phone Number', fontSize: 16),
+                        child: BodyText(text: local.phoneNumber, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
@@ -167,7 +169,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Study Location', fontSize: 16),
+                        child:
+                            BodyText(text: local.studyLocation, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
@@ -180,14 +183,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Password', fontSize: 16),
+                        child: BodyText(text: local.password, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: local.password,
                           prefixIcon: Icon(Icons.lock),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -210,15 +213,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       MainButton(
                         onPressed: _registerUser,
-                        child: const Text(
-                          'Sign up',
+                        child: Text(
+                          local.signUp,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                       const SizedBox(height: 20),
                       // another way to sign in
                       TextWithDivider(
-                        text: 'Or sign up with',
+                        text: local.orSignUpWith,
                         fontSize: 15.0,
                         dividerColor: Colors.grey,
                         dividerThickness: 1.0,
@@ -230,7 +233,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         children: [
                           Expanded(
                               child: SquareTile(
-                            text: 'Login with Google',
+                            text: local.loginWithGoogle,
                             iconData: Icons
                                 .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
                             onTap: () => AuthService().signInWithGoogle(),
@@ -244,7 +247,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           BodyText(
                               text: 'Already have an account?', fontSize: 14),
                           SecondaryButton(
-                            child: const Text('Login now'),
+                            child: Text(local.loginNow),
                             onPressed: () {
                               Navigator.push(
                                 context,

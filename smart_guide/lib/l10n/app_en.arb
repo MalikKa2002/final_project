@@ -7,7 +7,7 @@
 
     "welcomeBack":"Welcome back",
     "getStartedFree": "Get started free",
-    "freeForever": "Free forever, no limits to discover",
+    "freeForever": "Free forever. no limits to discover",
   
     "userName":"Username",
     "emailAddress": "Email address",
@@ -23,6 +23,7 @@
 
     "phoneNumber":"Phone number",
     "notAMember":"Not a member?",
+    "alreadyHaveAnAccount":"Already have an account?",
     "registerNow":"Register now",
     "welcomeTo": "Welcome to",
     "arCampusGuide": "AR Campus Guide",

@@ -5,6 +5,7 @@ import 'package:smart_guide/Screens/settings_screen.dart';
 import 'package:smart_guide/components/university_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -30,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return DefaultTabController(
       length: 1,
       child: Scaffold(
@@ -70,8 +72,8 @@ class _ProfilePageState extends State<ProfilePage> {
               bottom: TabBar(
                 isScrollable: true,
                 dividerColor: Colors.transparent,
-                tabs: const [
-                  Tab(text: 'Campuses'),
+                tabs: [
+                  Tab(text: local.campus),
                 ],
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/admin_pade.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -106,11 +107,12 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green[400],
-        title: const Text('Settings', style: TextStyle(color: Colors.white)),
+        title: Text(local.settings, style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
@@ -167,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
             // Help and Support Section
             ListTile(
               leading: const Icon(Icons.help_outline, color: Colors.green),
-              title: const Text('Help and Support',
+              title: Text(local.helpAndSupport,
                   style: TextStyle(color: Colors.black)),
               onTap: () {
                 // Open email client for help and support
@@ -194,7 +196,7 @@ class SettingsScreen extends StatelessWidget {
             // Give Feedback Section
             ListTile(
               leading: const Icon(Icons.feedback_outlined, color: Colors.green),
-              title: const Text('Give Feedback',
+              title: Text(local.giveFeedback,
                   style: TextStyle(color: Colors.black)),
               onTap: () => _showFeedbackDialog(context),
             ),
@@ -203,7 +205,7 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.language_outlined, color: Colors.green),
               title:
-                  const Text('Language', style: TextStyle(color: Colors.black)),
+                  Text(local.language, style: TextStyle(color: Colors.black)),
               onTap: () => _showFeedbackDialog(context),
             ),
             const Divider(color: Colors.grey),
@@ -211,7 +213,7 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.admin_panel_settings_outlined,
                   color: Colors.green),
-              title: const Text('app management ',
+              title: Text(local.appaManager,
                   style: TextStyle(color: Colors.black)),
               onTap: () {
                 Navigator.push(
