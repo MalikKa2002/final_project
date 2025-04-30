@@ -67,7 +67,24 @@
     "details":" التفاصيل",
     "daysAndHours":"الأيام والساعات",
     "open":"مفتوح",
-    "closed":"مغلق"
+    "closed":"مغلق",
 
+    "cancel":"إلغاء",
+    "save":"حفظ",
+    "changeAvatar":"تغيير الصورة",
+    "email":"البريد الإلكتروني",
+    "name":"الاسم",
+    "editProfile":"تعديل الملف الشخصي",
+    "resultfound":"النتائج التي تم العثور عليها",
+    "noResult":"لا توجد نتائج",
+    "max":"الحد الأقصى",
+    "min":"فريد غير مكرر",
+
+    "enterYourDescription":"أدخل الوصف الخاص بالمبنى",
+    "exJerusalem": "على سبيل المثال: القدس، إسرائيل",
+    "enterYourEmail":"أدخل بريدك الإلكتروني",
+    "CampusAlreadyExists!":"الحرم الجامعي موجود بالفعل!",
+    "CampusAddedSuccessfully":"تمت إضافة الحرم الجامعي بنجاح",
+    "FailedToAddCampus":"فشل في إضافة الحرم الجامعي"
   }
   

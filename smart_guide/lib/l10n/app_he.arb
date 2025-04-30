@@ -70,8 +70,25 @@
     "details":"פרטים",
     "daysAndHours":"ימים ושעות",
     "open":"פתוח",
-    "closed":"סגור"
+    "closed":"סגור",
+    
+    "cancel":"ביטול",
+    "save":"שמור",
+    "changeAvatar":"שנה תמונה",
+    "email":"אימייל",
+    "name":"שם",
+    "editProfile":"ערוך פרופיל",
+    "resultfound":"נמצאה תוצאה",
+    "noResult":"לא נמצאה תוצאה",
+    "max":" מקסימום",
+    "uniqe":"ייחודי",
 
+    "enterYourDescription":"הזן את התיאור שלך",
+    "exJerusalem": " ישראל ,דוגמה ירושלים" ,
+    "enterYourEmail":"הזן את הדואר האלקטרוני שלך",
+    "CampusAlreadyExists!":"הקמפוס כבר קיים!",
+    "CampusAddedSuccessfully":"הקמפוס נוסף בהצלחה",
+    "FailedToAddCampus":"נכשל בהוספת קמפוס"
     
   }
   

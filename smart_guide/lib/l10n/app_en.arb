@@ -37,7 +37,7 @@
     "location":"Location",
     "website":"Website",
     "description":"Description",
-    "nexyt":"Next",
+    "next":"Next",
     "back":"Back",
 
     "buildingInfo":"Building Info",
@@ -62,7 +62,27 @@
     "details":"Details",
     "daysAndHours":"Days & Hours",
     "open":"Open",
-    "closed":"Closed"
+    "closed":"Closed",
+
+    "cancel":"Cancel",
+    "save":"Save",
+    "changeAvatar":"Change Avatar",
+    "email":"Email",
+    "name":"Name",
+    "editProfile":"Edit Profile",
+    "resultfound":"Result found",
+    "noResult":"No result found",
+    "max":"max",
+    "uniqe":"uniqe",
+
+    "enterYourDescription":"Enter your Description",
+    "exJerusalem": "Ex: Jerusalem, Israel",
+    "enterYourEmail":"Enter your Email",
+    "CampusAlreadyExists!":"Campus already exists!",
+    "CampusAddedSuccessfully":"Campus added successfully",
+    "FailedToAddCampus":"Failed to add campus"
+
+    
 
   }
   
