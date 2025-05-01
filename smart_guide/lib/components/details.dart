@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Texts/heading_title.dart';
-import 'package:smart_guide/components/image_slider.dart';
 import 'package:smart_guide/icons/bordered_icon_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
