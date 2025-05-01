@@ -78,11 +78,38 @@
     "enterYourDescription":"Enter your Description",
     "exJerusalem": "Ex: Jerusalem, Israel",
     "enterYourEmail":"Enter your Email",
-    "CampusAlreadyExists!":"Campus already exists!",
-    "CampusAddedSuccessfully":"Campus added successfully",
-    "FailedToAddCampus":"Failed to add campus"
+    "campusAlreadyExists":"Campus already exists!",
+    "campusAddedSuccessfully":"Campus added successfully",
+    "failedToAddCampus":"Failed to add campus",
 
+    "contactSupport":"Contact support",
+    "pleaseContactUs":"Please contact us at",
+    "supportEmail":"support@example.com",
+    "close":"Close",
+    "rateUs":"Rate us",
+    "yourFeedback":"Your feedback ",
+    "managerPage":"Manager Page",
+    "request":"Request",
+    "users":"Users",
+    "buildings":"Buildings",
+    "pending":"Pending",
+    "accepted":"Accepted",
+    "rejected":"Rejected",
+    "tostart":"To start",
+    "areYouReady":"Are you ready to start?",
+    "pleaseChoose":"Please choose your a building to start navigation",
+    "ok":"OK",
+    "whereToGo":"Where to go?",
+    "openTime":"Open time",
+    "closeTime":"Close time",
+    "selectImage":"Select images",
+    "upload":"Upload",
+    "to":"To",
+    "yourStudyLocation":"Your study location",
+    "yourPhone":"Your phone number",
+    "yourName":"Your name",
+    "fogotMassage":"Enter your email address below, and we’ll send you instructions to reset your password.",
+    "sendInstructions":"Send instructions"
     
-
   }
   

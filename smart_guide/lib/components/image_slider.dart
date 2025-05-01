@@ -26,14 +26,12 @@ class _ImageSliderState extends State<ImageSlider> {
 
     return Center(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          // borderRadius: BorderRadius.only(
-          //   bottomLeft: Radius.circular(30),
-          //   bottomRight: Radius.circular(30),
-          // ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha((0.5 * 255).toInt()),
@@ -43,11 +41,10 @@ class _ImageSliderState extends State<ImageSlider> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          // borderRadius: BorderRadius.only(
-          //   bottomLeft: Radius.circular(30),
-          //   bottomRight: Radius.circular(30),
-          // ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -73,7 +70,7 @@ class _ImageSliderState extends State<ImageSlider> {
                 ),
               ),
               Positioned(
-                top: 20,
+                top: 40,
                 left: 20,
                 child: BlurryCircleButton(
                   icon: Icons.arrow_back,
@@ -85,26 +82,7 @@ class _ImageSliderState extends State<ImageSlider> {
                   },
                 ),
               ),
-              Positioned(
-                top: 20,
-                right: 70,
-                child: BlurryCircleButton(
-                  icon: Icons.bookmark,
-                  onPressed: () {
-                    print('Bookmark button pressed');
-                  },
-                ),
-              ),
-              Positioned(
-                top: 20,
-                right: 10,
-                child: BlurryCircleButton(
-                  icon: Icons.share,
-                  onPressed: () {
-                    print('Share button pressed');
-                  },
-                ),
-              ),
+
               // Dots indicator at the bottom
               Positioned(
                 bottom: 20,

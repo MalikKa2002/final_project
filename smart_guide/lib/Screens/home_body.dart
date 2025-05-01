@@ -1,7 +1,7 @@
 // home_body.dart
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/university_card.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../components/add_campus_card.dart';
 
 class HomeBody extends StatefulWidget {
@@ -15,6 +15,7 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -27,7 +28,7 @@ class _HomeBodyState extends State<HomeBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Universities & Colleges",
+                    local.universityAndCollege,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

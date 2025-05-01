@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -21,18 +22,19 @@ class SearchScreenState extends State<SearchScreen> {
     'Admin Office',
   ];
 
-  void _showResult(String query) {
+  void _showResult(String query, AppLocalizations local) {
     setState(() {
       if (allItems.any((item) => item.toLowerCase() == query.toLowerCase())) {
         searchResult = "Result found: $query";
       } else {
-        searchResult = "No result match";
+        searchResult = local.noResult;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -59,9 +61,9 @@ class SearchScreenState extends State<SearchScreen> {
                 Expanded(
                   child: TextField(
                     controller: searchController,
-                    onChanged: _showResult,
+                    onChanged: (query) => _showResult(query, local),
                     decoration: InputDecoration(
-                      hintText: "Search",
+                      hintText: local.search,
                       border: InputBorder.none,
                     ),
                   ),

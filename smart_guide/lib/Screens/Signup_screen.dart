@@ -245,7 +245,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           BodyText(
-                              text: 'Already have an account?', fontSize: 14),
+                              text: local.alreadyHaveAnAccount, fontSize: 14),
                           SecondaryButton(
                             child: Text(local.loginNow),
                             onPressed: () {

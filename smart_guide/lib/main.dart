@@ -56,6 +56,15 @@ class _ARGuideAppState extends State<ARGuideApp> {
         }
         return supportedLocales.first;
       },
+      builder: (context, child) {
+        // Check if current language is RTL
+        final isRtl =
+            _locale.languageCode == 'ar' || _locale.languageCode == 'he';
+        return Directionality(
+          textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+          child: child!,
+        );
+      },
     );
   }
 }

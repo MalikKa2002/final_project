@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/college_info_screen.dart.dart';
-import 'package:smart_guide/Screens/destination.dart';
 import 'package:smart_guide/Screens/profile.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
@@ -68,36 +67,40 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       body: _buildCurrentPage(),
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
-        // backgroundColor: Colors.transparent,
-        backgroundColor: Colors.black,
-        // elevation: 0,
-        onPressed: () {
-          if (_showCollegeInfo) {
-            // If a building is selected, go to MapWithBottomSheet
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MapWithBottomSheet(),
-              ),
-            );
-          } else {
-            // If no building selected, show dialog
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => CustomMessageDialog(
-                icon: Icons.location_city_outlined,
-                title: "To Start!",
-                subtitle: "Are you ready to start?",
-                description: "Please choose a building to start navigation!",
-                onOkPressed: () => Navigator.of(context).pop(),
-              ),
-            );
-          }
-        },
-        shape: const CircleBorder(),
-        child: Icon(Icons.navigation_rounded, color: Colors.grey[200]),
+      floatingActionButton: SizedBox(
+        width: 60, // Custom width
+        height: 60, // Custom height
+        child: FloatingActionButton(
+          // backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black,
+          // elevation: 0,
+          onPressed: () {
+            if (_showCollegeInfo) {
+              // If a building is selected, go to MapWithBottomSheet
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapWithBottomSheet(),
+                ),
+              );
+            } else {
+              // If no building selected, show dialog
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => CustomMessageDialog(
+                  icon: Icons.location_city_outlined,
+                  title: "To Start!",
+                  subtitle: "Are you ready to start?",
+                  description: "Please choose a building to start navigation!",
+                  onOkPressed: () => Navigator.of(context).pop(),
+                ),
+              );
+            }
+          },
+          shape: const CircleBorder(),
+          child: Icon(Icons.navigation_rounded, color: Colors.grey[200]),
+        ),
       ),
 
       floatingActionButtonLocation:

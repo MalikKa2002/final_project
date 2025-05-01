@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final Function(int) onTabSelected;
@@ -9,6 +10,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,
@@ -17,21 +19,20 @@ class CustomBottomNavBar extends StatelessWidget {
       currentIndex: currentIndex, // Provide currentIndex for highlighting
       onTap: (index) {
         onTabSelected(index);
-        print("the index is $index"); // Call the provided callback function
       },
       // <- Handle tab taps
-      items: const [
+      items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.explore_outlined),
-          label: 'Explore',
+          label: local.explore,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.navigation_rounded),
-          label: 'Navigate',
+          label: local.navigation,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
+          label: local.profile,
         ),
       ],
     );

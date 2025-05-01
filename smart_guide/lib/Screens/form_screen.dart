@@ -6,6 +6,7 @@ import 'package:smart_guide/Services/validators.dart';
 import 'package:smart_guide/components/day_hours.dart';
 import 'package:smart_guide/components/form_input_field.dart';
 import '../components/upload_image.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormScreen extends StatefulWidget {
   @override
@@ -154,6 +155,7 @@ class _FormScreenState extends State<FormScreen> {
 
   /// Builds the multi-step content.
   Widget _buildStepContent() {
+    final local = AppLocalizations.of(context)!;
     switch (_currentStep) {
       case 0:
         // Campus basic information.
@@ -161,38 +163,38 @@ class _FormScreenState extends State<FormScreen> {
           children: [
             SizedBox(height: 20),
             FormInputField(
-              label: "College Name",
+              label: local.collegeName,
               hintText: "Enter your college/university name",
               controller: _collegeNameController,
               validator: Validators.validateCollegeName,
             ),
             FormInputField(
-              label: "Email",
+              label: local.email,
               hintText: "Enter your Email",
               controller: _emailController,
               validator: Validators.validateEmail,
             ),
             FormInputField(
-              label: "Location",
+              label: local.location,
               hintText: "ex: Jerusalem, Israel",
               controller: _locationController,
               validator: Validators.validateLocation,
             ),
             FormInputField(
-              label: "Phone Number",
+              label: local.phoneNumber,
               hintText: "+972 123456789",
               controller: _phoneController,
               validator: Validators.validatePhoneNumber,
             ),
             FormInputField(
-              label: "Website",
+              label: local.website,
               hintText: "ex: https://www.example.com",
               controller: _websiteController,
               validator: Validators.validateWebsite,
             ),
             SizedBox(height: 20),
             FormInputField(
-              label: "Description",
+              label: local.description,
               hintText: "Enter your Description",
               controller: _descriptionController,
               maxLines: 7,
@@ -205,7 +207,7 @@ class _FormScreenState extends State<FormScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Opening Hours",
+            Text(local.openingHoures,
                 style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             DayHoursSelector(
@@ -276,10 +278,11 @@ class _FormScreenState extends State<FormScreen> {
 
   /// Builds a simple stepper header.
   Widget _buildStepperHeader() {
+    final local = AppLocalizations.of(context)!;
     List<String> steps = [
-      "Building Info",
-      "Open/Closed Hours",
-      "Upload Images"
+      local.buildingInfo,
+      local.openClosedHoures,
+      local.uploadImage,
     ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,11 +319,12 @@ class _FormScreenState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.grey[100],
-        title: Text("New Building "),
+        title: Text(local.newBuilding),
         automaticallyImplyLeading: true,
         bottom: PreferredSize(
             preferredSize: Size.fromHeight(70),
@@ -362,7 +366,7 @@ class _FormScreenState extends State<FormScreen> {
                         if (_currentStep > 0)
                           TextButton(
                             onPressed: _prevStep,
-                            child: Text("Back"),
+                            child: Text(local.back),
                           ),
                         ElevatedButton(
                           onPressed: _nextStep,
@@ -375,7 +379,7 @@ class _FormScreenState extends State<FormScreen> {
                                 horizontal: 24, vertical: 12),
                           ),
                           child: Text(
-                            _currentStep < 2 ? "Next" : "Submit",
+                            _currentStep < 2 ? local.next : local.submit,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

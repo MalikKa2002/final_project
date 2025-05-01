@@ -10,7 +10,7 @@
     "login": "تسجيل الدخول",
   
     "welcomeTo": "مرحبًا بك في",
-    "arCampusGuide": " دليل الحرم الجامعي المدمج مع الواقع المعزز",
+    "arCampusGuide": " دليل الحرم الجامعي مع الواقع المعزز",
   
     "universityAndCollege": "الجامعات والكليات",
     "startANew":"من جديد ابدا",
@@ -42,7 +42,7 @@
     "location":"الموقع",
     "website":"الموقع الإلكتروني",
     "description":"الوصف",
-    "nexyt":"التالي",
+    "next":"التالي",
     "back":"العودة",
 
     "buildingInfo":"معلومات  عن المبنى",
@@ -78,13 +78,43 @@
     "resultfound":"النتائج التي تم العثور عليها",
     "noResult":"لا توجد نتائج",
     "max":"الحد الأقصى",
-    "min":"فريد غير مكرر",
+    "uniqe":"فريد غير مكرر",
 
     "enterYourDescription":"أدخل الوصف الخاص بالمبنى",
     "exJerusalem": "على سبيل المثال: القدس، إسرائيل",
     "enterYourEmail":"أدخل بريدك الإلكتروني",
-    "CampusAlreadyExists!":"الحرم الجامعي موجود بالفعل!",
-    "CampusAddedSuccessfully":"تمت إضافة الحرم الجامعي بنجاح",
-    "FailedToAddCampus":"فشل في إضافة الحرم الجامعي"
+    "campusAlreadyExists!":"الحرم الجامعي موجود بالفعل!",
+    "campusAddedSuccessfully":"تمت إضافة الحرم الجامعي بنجاح",
+    "failedToAddCampus":"فشل في إضافة الحرم الجامعي",
+
+    "contactSupport":"اتصل بالدعم",
+    "pleaseContactUs":"يرجى الاتصال بنا على",
+    "supportEmail":"support@example.com",
+    "close":"إغلاق",
+    "rateUs":"قيمنا",
+    "yourFeedback":"ملاحظاتك",
+    "managerPage":"صفحة المدير",
+    "request":"طلب",
+    "users":"المستخدمون",
+    "buildings":"المباني",
+    "pending":"قيد الانتظار",
+    "accepted":"مقبول",
+    "rejected":"مرفوض",
+    "tostart":"للبدء",
+    "areYouReady":"هل أنت مستعد للبدء؟",
+    "pleaseChoose":"يرجى اختيار مبنى للبدء في التنقل",
+    "ok":"حسنا",
+    "whereToGo":"إلى أين تذهب؟",
+    "openTime":"وقت الفتح",
+    "closeTime":"وقت الإغلاق",
+    "selectImage":"اختر الصور",
+    "upload":"تحميل",
+    "to":"إلى",
+    "yourStudyLocation":"موقع دراستك",
+    "yourPhone":"رقم هاتفك",
+    "yourName":"اسمك",
+    "fogotMassage":"أدخل عنوان بريدك الإلكتروني أدناه، وسنرسل إليك تعليمات لإعادة تعيين كلمة المرور الخاصة بك.",
+    "sendInstructions":"إرسال التعليمات"
+
   }
   

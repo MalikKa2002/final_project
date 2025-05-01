@@ -12,18 +12,13 @@ class _CollegeInfoScreenState extends State<CollegeInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: [
-              ImageSlider(),
-              Expanded(
-                child: DetailsPart(),
-              ),
-            ],
-          ),
-        ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          ImageSlider(),
+          SizedBox(height: 20),
+          Expanded(child: DetailsPart()),
+        ],
       ),
     );
   }

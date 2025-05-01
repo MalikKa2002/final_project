@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Texts/heading_title.dart';
+import 'package:smart_guide/components/image_slider.dart';
 import 'package:smart_guide/icons/bordered_icon_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsPart extends StatelessWidget {
   final String collegeName;
@@ -37,11 +39,13 @@ class DetailsPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return DefaultTabController(
       length: 2, // Two tabs
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               // Tabs Content
@@ -81,15 +85,15 @@ class DetailsPart extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 20),
 
                     TabBar(
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Theme.of(context).primaryColor,
-                      tabs: const [
-                        Tab(text: "Details"),
-                        Tab(text: "Days & Hours"),
+                      tabs: [
+                        Tab(text: local.details),
+                        Tab(text: local.daysAndHours),
                       ],
                     ),
                     SizedBox(height: 16),

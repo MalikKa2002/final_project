@@ -9,22 +9,23 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final local = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: const Text('Edit Profile'),
+          title: Text(local.editProfile),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: local.name,
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 10),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+                  labelText: local.email,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 10),
@@ -36,7 +37,7 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () {
                       // Handle avatar change
                     },
-                    child: const Text('Change Avatar'),
+                    child: Text(local.changeAvatar),
                   ),
                 ],
               ),
@@ -45,14 +46,14 @@ class SettingsScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(local.cancel),
             ),
             TextButton(
               onPressed: () {
                 // Save the changes here
                 Navigator.of(context).pop();
               },
-              child: const Text('Save'),
+              child: Text(local.save),
             ),
           ],
         );
@@ -64,6 +65,7 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final local = AppLocalizations.of(context)!;
         return AlertDialog(
           title: const Text('Give Feedback'),
           content: Column(
@@ -90,14 +92,14 @@ class SettingsScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(local.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 // Handle feedback submission here
               },
-              child: const Text('Submit'),
+              child: Text(local.submit),
             ),
           ],
         );

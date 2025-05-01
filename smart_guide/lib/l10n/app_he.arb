@@ -10,7 +10,7 @@
     "login": "התחברות",
   
     "welcomeTo": "ברוך הבא ל",
-    "arCampusGuide": "מדריך הקמפוס המשלב מציאות רבודה",
+    "arCampusGuide": "מדריך הקמפוס עם מציאות רבודה",
   
     "universityAndCollege": " אוניברסיטאות ומכללות",
   
@@ -44,7 +44,7 @@
     "location":"מיקום",
     "website":" אתר אינטרנט",
     "description":"תיאור",
-    "nexyt":"הבא",
+    "next":"הבא",
     "back":"חזרה",
 
     "buildingInfo":"מידע על הבניין",
@@ -86,9 +86,39 @@
     "enterYourDescription":"הזן את התיאור שלך",
     "exJerusalem": " ישראל ,דוגמה ירושלים" ,
     "enterYourEmail":"הזן את הדואר האלקטרוני שלך",
-    "CampusAlreadyExists!":"הקמפוס כבר קיים!",
-    "CampusAddedSuccessfully":"הקמפוס נוסף בהצלחה",
-    "FailedToAddCampus":"נכשל בהוספת קמפוס"
+    "campusAlreadyExists":"הקמפוס כבר קיים!",
+    "campusAddedSuccessfully":"הקמפוס נוסף בהצלחה",
+    "failedToAddCampus":"נכשל בהוספת קמפוס",
+
+    "contactSupport":"צור קשר עם התמיכה",
+    "pleaseContactUs":"אנא צור קשר איתנו ב",
+    "supportEmail":"support@example.com",
+    "close":"סגור",
+    "rateUs":"דרג אותנו",
+    "yourFeedback":"המשוב שלך",
+    "managerPage":"דף מנהל",
+    "request":"בקשה",
+    "users":"משתמשים",
+    "buildings":"בניינים",
+    "pending":"ממתין",
+    "accepted":"מאושר",
+    "rejected":"נדחה",
+    "tostart":"כדי להתחיל",
+    "areYouReady":"אתה מוכן להתחיל?",
+    "pleaseChoose":"אנא בחר את הבניין שלך כדי להתחיל ניווט",
+    "ok":"אוקי",
+    "whereToGo":"לאן ללכת?",
+    "openTime":"שעת פתיחה",
+    "closeTime":"שעת סגירה",
+    "selectImage":"בחר תמונות",
+    "upload":"העלה",
+    "to":"אל",
+    "yourStudyLocation":"מיקום הלימודים שלך",
+    "yourPhone":"מספר הטלפון שלך",
+    "yourName":"שמך",
+    "fogotMassage":"הזן את כתובת המייל שלך למטה, ואנו נשלח לך הוראות לאיפוס הסיסמה שלך.",
+    "sendInstructions":"שלח הוראות"
+
     
   }
   
