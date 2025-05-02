@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: TabBarView(
               children: [
-                _buildGrid(),
+                _BuildGrid(),
               ],
             ),
           ),
@@ -143,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class _buildGrid extends StatelessWidget {
+class _BuildGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
