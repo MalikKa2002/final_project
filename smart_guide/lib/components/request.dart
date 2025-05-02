@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Request {
   final String id;
@@ -39,26 +40,27 @@ class _RequestBodyState extends State<RequestBody> {
     ),
   ];
 
-  void acceptRequest(String id) {
+  void acceptRequest(String id, AppLocalizations local) {
     setState(() {
-      requests.firstWhere((req) => req.id == id).status = "Accepted";
+      requests.firstWhere((req) => req.id == id).status = local.accepted;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Request Accepted")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text(local.requestAccepted)),
+    // );
   }
 
-  void rejectRequest(String id) {
+  void rejectRequest(String id, AppLocalizations local) {
     setState(() {
-      requests.firstWhere((req) => req.id == id).status = "Rejected";
+      requests.firstWhere((req) => req.id == id).status = local.rejected;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Request Rejected")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text(local.requestRejected)),
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return ListView.builder(
       itemCount: requests.length,
       itemBuilder: (context, index) {
@@ -91,24 +93,24 @@ class _RequestBodyState extends State<RequestBody> {
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.person, size: 18, color: Colors.grey),
+                    Icon(Icons.person, size: 18, color: Colors.grey[200]),
                     SizedBox(width: 4),
                     Text("By: ${req.submittedBy}",
-                        style: TextStyle(color: Colors.grey)),
+                        style: TextStyle(color: Colors.grey[200])),
                     Spacer(),
                     Chip(
                       label: Text(req.status),
-                      backgroundColor: req.status == "Accepted"
-                          ? Colors.green.withOpacity(0.2)
-                          : req.status == "Rejected"
+                      backgroundColor: req.status == local.accepted
+                          ? Colors.green.withAlpha((0.2).toInt())
+                          : req.status == local.rejected
                               ? const Color.fromARGB(255, 220, 20, 6)
-                                  .withOpacity(0.2)
+                                  .withAlpha((0.2).toInt())
                               : const Color.fromARGB(255, 152, 123, 79)
                                   .withAlpha((0.2 * 255).toInt()),
                       labelStyle: TextStyle(
-                        color: req.status == "Accepted"
+                        color: req.status == local.accepted
                             ? Colors.green
-                            : req.status == "Rejected"
+                            : req.status == local.rejected
                                 ? Colors.red
                                 : const Color.fromARGB(255, 141, 104, 50),
                       ),
@@ -122,14 +124,14 @@ class _RequestBodyState extends State<RequestBody> {
                     children: [
                       OutlinedButton.icon(
                         icon: Icon(Icons.close, color: Colors.red),
-                        label: Text("Reject"),
-                        onPressed: () => rejectRequest(req.id),
+                        label: Text(local.rejected),
+                        onPressed: () => rejectRequest(req.id, local),
                       ),
                       SizedBox(width: 8),
                       ElevatedButton.icon(
                         icon: Icon(Icons.check),
-                        label: Text("Accept"),
-                        onPressed: () => acceptRequest(req.id),
+                        label: Text(local.accepted),
+                        onPressed: () => acceptRequest(req.id, local),
                       ),
                     ],
                   ),

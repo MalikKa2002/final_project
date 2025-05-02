@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ImageUploadWidget extends StatefulWidget {
   final int maxImages;
@@ -52,6 +53,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Center(
       child: Container(
         width: double.infinity,
@@ -96,7 +98,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
                       onPressed: uploadedImages.length >= widget.maxImages
                           ? null
                           : _pickImage,
-                      child: Text("Upload"),
+                      child: Text(local.upload),
                     ),
                   ],
                 ),

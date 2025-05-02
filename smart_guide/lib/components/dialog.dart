@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomMessageDialog extends StatelessWidget {
   final IconData icon;
@@ -18,6 +19,7 @@ class CustomMessageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: const Color(0xFFE8F8F5),
@@ -54,7 +56,7 @@ class CustomMessageDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
                 onPressed: onOkPressed,
-                child: const Text("OK", style: TextStyle(color: Colors.white)),
+                child: Text(local.ok, style: TextStyle(color: Colors.white)),
               ),
             ),
           ],

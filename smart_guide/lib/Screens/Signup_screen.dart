@@ -142,8 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child:
-                            BodyText(text: 'Your Name (Unique)', fontSize: 16),
+                        child: BodyText(text: local.yourName, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
@@ -161,7 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
                       CustomText(
                         controller: _phoneController,
-                        labelText: 'Your phone number',
+                        labelText: local.yourPhone,
                         prefixIcon: Icons.phone,
                         obscureText: false,
                       ),
@@ -175,7 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
                       CustomText(
                         controller: _studyLocationController,
-                        labelText: 'Your study location',
+                        labelText: local.yourStudyLocation,
                         prefixIcon: Icons.school,
                         obscureText: false,
                       ),

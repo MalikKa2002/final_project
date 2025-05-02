@@ -115,9 +115,14 @@
     "to":"אל",
     "yourStudyLocation":"מיקום הלימודים שלך",
     "yourPhone":"מספר הטלפון שלך",
-    "yourName":"שמך",
+    "yourName":"(ייחודי) שמך",
     "fogotMassage":"הזן את כתובת המייל שלך למטה, ואנו נשלח לך הוראות לאיפוס הסיסמה שלך.",
-    "sendInstructions":"שלח הוראות"
+    "sendInstructions":"שלח הוראות",
+    "enterYourCollegeUniversityName":"הזן את שם המכללה/אוניברסיטה שלך",
+
+    "fetchingLocation":"מיקום נשלף",
+    "locationNotFound":"מיקום לא נמצא",
+    "unableToFetchLocation":"לא ניתן לשלוף מיקום"
 
     
   }

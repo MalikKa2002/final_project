@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/quick_button.dart';
 import 'package:smart_guide/Screens/destination.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapWithBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       body: Stack(children: [
         Destination(),
         DraggableScrollableSheet(
-          initialChildSize: 0.20,
-          minChildSize: 0.2,
+          initialChildSize: 0.3,
+          minChildSize: 0.1,
           maxChildSize: 0.9,
           builder: (context, scrollController) {
             return Container(
@@ -44,7 +46,7 @@ class MapWithBottomSheet extends StatelessWidget {
                         children: [
                           TextField(
                             decoration: InputDecoration(
-                              hintText: 'Where to go?',
+                              hintText: local.whereToGo,
                               prefixIcon: Icon(Icons.search),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),

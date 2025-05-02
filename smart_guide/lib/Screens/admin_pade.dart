@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/request.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -25,11 +26,12 @@ class _AdminPageState extends State<AdminPage>
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.grey[200],
-        title: Text('Manneger Page'),
+        title: Text(local.managerPage),
         automaticallyImplyLeading: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(120), // space for search + tabs
@@ -42,7 +44,7 @@ class _AdminPageState extends State<AdminPage>
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Search',
+                    hintText: local.search,
                     prefixIcon: Icon(Icons.search),
                     filled: true,
                     fillColor: Colors.white,
@@ -63,9 +65,9 @@ class _AdminPageState extends State<AdminPage>
                 unselectedLabelColor: Colors.grey,
                 dividerColor: Colors.transparent,
                 tabs: [
-                  Tab(text: 'Requests'),
-                  Tab(text: 'Users'),
-                  Tab(text: 'Buildings'),
+                  Tab(text: local.request),
+                  Tab(text: local.users),
+                  Tab(text: local.buildings),
                 ],
               ),
             ],

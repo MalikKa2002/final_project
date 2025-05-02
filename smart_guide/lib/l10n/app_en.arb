@@ -107,9 +107,17 @@
     "to":"To",
     "yourStudyLocation":"Your study location",
     "yourPhone":"Your phone number",
-    "yourName":"Your name",
+    "yourName":"Your name (Unique)",
     "fogotMassage":"Enter your email address below, and we’ll send you instructions to reset your password.",
-    "sendInstructions":"Send instructions"
-    
+    "sendInstructions":"Send instructions",
+    "enterYourCollegeUniversityName":"Enter your college/university name",
+    "requestAccepted":"Request Accepted",
+    "requestRejected":"Request Rejected",
+
+    "fetchingLocation":"Fetching location...",
+    "locationNotFound":"Location not found",
+    "unableToFetchLocation":"Unable to fetch location."
+
+  
   }
   

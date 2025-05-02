@@ -112,9 +112,14 @@
     "to":"إلى",
     "yourStudyLocation":"موقع دراستك",
     "yourPhone":"رقم هاتفك",
-    "yourName":"اسمك",
+    "yourName":"(فريد غير مكرر) اسمك",
     "fogotMassage":"أدخل عنوان بريدك الإلكتروني أدناه، وسنرسل إليك تعليمات لإعادة تعيين كلمة المرور الخاصة بك.",
-    "sendInstructions":"إرسال التعليمات"
+    "sendInstructions":"إرسال التعليمات",
+    "enterYourCollegeUniversityName":"أدخل اسم كليتك/جامعتك",
+
+    "fetchingLocation":"جاري الوصول للموقع",
+    "locationNotFound":"الموقع غير موجود",
+    "unableToFetchLocation":"غير قادر على الوصول للموقع."
 
   }
   

@@ -31,7 +31,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              "Enter your email address below, and we’ll send you instructions to reset your password.",
+              local.fogotMassage,
               style: TextStyle(fontSize: 16, color: Colors.grey[700]),
             ),
             SizedBox(height: 30),
@@ -58,7 +58,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Send Instructions",
+                local.sendInstructions,
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),

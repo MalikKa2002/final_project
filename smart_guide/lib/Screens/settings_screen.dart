@@ -67,11 +67,11 @@ class SettingsScreen extends StatelessWidget {
       builder: (BuildContext context) {
         final local = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: const Text('Give Feedback'),
+          title: Text(local.giveFeedback),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Rate us:'),
+              Text(local.rateUs),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(5, (index) {
@@ -81,9 +81,9 @@ class SettingsScreen extends StatelessWidget {
                   );
                 }),
               ),
-              const TextField(
+              TextField(
                 decoration: InputDecoration(
-                  labelText: 'Your feedback',
+                  labelText: local.yourFeedback,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -179,13 +179,13 @@ class SettingsScreen extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Contact Support'),
-                      content: const Text(
-                          'Please contact us at: support@example.com'),
+                      title: Text(local.contactSupport),
+                      content:
+                          Text('${local.pleaseContactUs}\nsupport@example.com'),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Close'),
+                          child: Text(local.close),
                         ),
                       ],
                     );

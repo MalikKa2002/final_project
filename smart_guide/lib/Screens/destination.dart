@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:smart_guide/components/draggable_scrollable_sheet.dart';
 
 class Destination extends StatefulWidget {
   @override

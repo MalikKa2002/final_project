@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationPage extends StatelessWidget {
   final List<Map<String, String>> notifications = [
@@ -18,10 +19,11 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: Text(local.notification),
         backgroundColor: Colors.white,
       ),
       body: ListView.builder(

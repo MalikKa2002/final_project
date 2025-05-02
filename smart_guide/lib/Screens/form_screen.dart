@@ -164,19 +164,19 @@ class _FormScreenState extends State<FormScreen> {
             SizedBox(height: 20),
             FormInputField(
               label: local.collegeName,
-              hintText: "Enter your college/university name",
+              hintText: local.enterYourCollegeUniversityName,
               controller: _collegeNameController,
               validator: Validators.validateCollegeName,
             ),
             FormInputField(
               label: local.email,
-              hintText: "Enter your Email",
+              hintText: local.enterYourEmail,
               controller: _emailController,
               validator: Validators.validateEmail,
             ),
             FormInputField(
               label: local.location,
-              hintText: "ex: Jerusalem, Israel",
+              hintText: local.exJerusalem,
               controller: _locationController,
               validator: Validators.validateLocation,
             ),
@@ -195,7 +195,7 @@ class _FormScreenState extends State<FormScreen> {
             SizedBox(height: 20),
             FormInputField(
               label: local.description,
-              hintText: "Enter your Description",
+              hintText: local.enterYourDescription,
               controller: _descriptionController,
               maxLines: 7,
               validator: Validators.validateDescription,
@@ -227,7 +227,7 @@ class _FormScreenState extends State<FormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Cover Image Upload.
-              Text("Cover Image (max 1)",
+              Text('${local.coverImage} (${local.max} 1) ',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(
@@ -241,7 +241,7 @@ class _FormScreenState extends State<FormScreen> {
               ),
               SizedBox(height: 30),
               // Gallery Images Upload.
-              Text("Gallery Images (max 3)",
+              Text('${local.galleryImage} (${local.max} 3)',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(
@@ -255,7 +255,7 @@ class _FormScreenState extends State<FormScreen> {
               ),
               SizedBox(height: 30),
               // Building Album Images Upload.
-              Text("Building Album (max 50)",
+              Text('${local.buildingAlbum} (${local.max} 50)',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(

@@ -116,7 +116,8 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildTimeButton(day, true),
-                    Text("to", style: TextStyle(fontWeight: FontWeight.w500)),
+                    Text(local.to,
+                        style: TextStyle(fontWeight: FontWeight.w500)),
                     _buildTimeButton(day, false),
                   ],
                 ),
@@ -128,7 +129,8 @@ class _DayHoursSelectorState extends State<DayHoursSelector> {
   }
 
   Widget _buildTimeButton(String day, bool isStart) {
-    final label = isStart ? "Open" : "Close";
+    final local = AppLocalizations.of(context)!;
+    final label = isStart ? local.open : local.close;
     final time = isStart ? openingTime[day] : closingTime[day];
     return ElevatedButton(
       style: ElevatedButton.styleFrom(

@@ -6,6 +6,7 @@ import 'package:smart_guide/Screens/home_body.dart';
 import 'package:smart_guide/components/dialog.dart';
 import 'package:smart_guide/components/draggable_scrollable_sheet.dart';
 import 'package:smart_guide/components/nav_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     double screenHeight = MediaQuery.of(context).size.height;
     double appBarHeight = screenHeight * 0.30;
     return Scaffold(
@@ -90,9 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 barrierDismissible: false,
                 builder: (context) => CustomMessageDialog(
                   icon: Icons.location_city_outlined,
-                  title: "To Start!",
-                  subtitle: "Are you ready to start?",
-                  description: "Please choose a building to start navigation!",
+                  title: local.tostart,
+                  subtitle: local.areYouReady,
+                  description: local.pleaseChoose,
                   onOkPressed: () => Navigator.of(context).pop(),
                 ),
               );
