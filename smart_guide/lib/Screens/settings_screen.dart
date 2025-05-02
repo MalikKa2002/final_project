@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Language/language_switcher.dart';
 import 'package:smart_guide/Screens/admin_pade.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -208,7 +209,15 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.language_outlined, color: Colors.green),
               title:
                   Text(local.language, style: TextStyle(color: Colors.black)),
-              onTap: () => _showFeedbackDialog(context),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(local.language),
+                    content: LanguageSwitcher(),
+                  ),
+                );
+              },
             ),
             const Divider(color: Colors.grey),
 
