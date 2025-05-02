@@ -121,7 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       HeadingText(local.welcomeBack, 29),
                       const SizedBox(height: 20),
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child: BodyText(text: local.userName, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
@@ -133,8 +136,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
 
+                      // Align(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: BodyText(text: local.password, fontSize: 16),
+                      // ),
+
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child: BodyText(text: local.password, fontSize: 16),
                       ),
                       const SizedBox(height: 10),

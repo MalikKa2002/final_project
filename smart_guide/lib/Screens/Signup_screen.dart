@@ -128,7 +128,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 40),
 
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child: BodyText(text: local.emailAddress, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
@@ -141,8 +144,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
 
                       Align(
-                        alignment: Alignment.centerLeft,
-                        child: BodyText(text: local.yourName, fontSize: 16),
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                        child: BodyText(
+                            text: '${local.yourName} (${local.uniqe})',
+                            fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
@@ -154,7 +162,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
 
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child: BodyText(text: local.phoneNumber, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
@@ -167,7 +178,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
 
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child:
                             BodyText(text: local.studyLocation, fontSize: 16),
                       ),
@@ -181,7 +195,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 10),
 
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                         child: BodyText(text: local.password, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
