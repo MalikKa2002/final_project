@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Screens/college_info_screen.dart.dart';
+import 'package:smart_guide/Screens/college_info_screen.dart';
 import 'package:smart_guide/Screens/profile.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
