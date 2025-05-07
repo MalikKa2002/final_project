@@ -5,7 +5,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:smart_guide/Services/validators.dart';
 import 'package:smart_guide/components/day_hours.dart';
 import 'package:smart_guide/components/form_input_field.dart';
-import '../components/upload_image.dart';
+import 'package:smart_guide/components/upload_image.dart';
+// adjust this import to your actual HomeScreen location:
+import 'package:smart_guide/screens/home_screen.dart';
 
 class FormScreen extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class FormScreen extends StatefulWidget {
 class _FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
+  bool _isLoading = false;
 
   // Controllers for input fields.
   final TextEditingController _collegeNameController = TextEditingController();
@@ -56,83 +59,93 @@ class _FormScreenState extends State<FormScreen> {
 
   /// Submits the form: checks for duplicate campus,
   /// saves the data in Firestore and then uploads images.
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
 
-      String collegeNameTrimmed = _collegeNameController.text.trim();
+    setState(() => _isLoading = true);
 
-      // Check if a campus with the same college name already exists.
-      QuerySnapshot existingCampusSnapshot = await FirebaseFirestore.instance
+    String collegeNameTrimmed = _collegeNameController.text.trim();
+
+    // Check if a campus with the same college name already exists.
+    QuerySnapshot existingCampusSnapshot = await FirebaseFirestore.instance
+        .collection('campuses')
+        .where('college_name', isEqualTo: collegeNameTrimmed)
+        .get();
+    if (existingCampusSnapshot.docs.isNotEmpty) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Campus already exists!')),
+      );
+      return;
+    }
+
+    // Prepare initial campus data.
+    Map<String, dynamic> formData = {
+      "college_name": collegeNameTrimmed,
+      "email": _emailController.text,
+      "location": _locationController.text,
+      "phone": _phoneController.text,
+      "website": _websiteController.text,
+      "description": _descriptionController.text,
+      "operating_hours": _operatingHours,
+      "cover_image": "",
+      "gallery_images": [],
+      "album_images": [],
+    };
+
+    try {
+      // Create a new campus document.
+      DocumentReference docRef = await FirebaseFirestore.instance
           .collection('campuses')
-          .where('college_name', isEqualTo: collegeNameTrimmed)
-          .get();
-      if (existingCampusSnapshot.docs.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Campus already exists!')),
-        );
-        return;
+          .add(formData);
+      String campusId = docRef.id;
+
+      // Upload images and collect their URLs.
+      String coverImageUrl = "";
+      if (_coverImage != null) {
+        coverImageUrl = await _uploadImage(_coverImage!, campusId, "cover");
       }
 
-      // Prepare initial campus data.
-      Map<String, dynamic> formData = {
-        "college_name": collegeNameTrimmed,
-        "email": _emailController.text,
-        "location": _locationController.text,
-        "phone": _phoneController.text,
-        "website": _websiteController.text,
-        "description": _descriptionController.text,
-        "operating_hours": _operatingHours,
-        "cover_image": "",
-        "gallery_images": [],
-        "album_images": [],
-      };
-
-      try {
-        // Create a new campus document.
-        DocumentReference docRef = await FirebaseFirestore.instance
-            .collection('campuses')
-            .add(formData);
-        String campusId = docRef.id;
-
-        // Upload images and collect their URLs.
-        String coverImageUrl = "";
-        if (_coverImage != null) {
-          coverImageUrl = await _uploadImage(_coverImage!, campusId, "cover");
-        }
-
-        List<String> galleryImageUrls = [];
-        for (int i = 0; i < _galleryImages.length; i++) {
-          String url =
-              await _uploadImage(_galleryImages[i], campusId, "gallery_$i");
-          galleryImageUrls.add(url);
-        }
-
-        List<String> albumImageUrls = [];
-        for (int i = 0; i < _albumImages.length; i++) {
-          String url =
-              await _uploadImage(_albumImages[i], campusId, "album_$i");
-          albumImageUrls.add(url);
-        }
-
-        // Update the campus document with image URLs.
-        await docRef.update({
-          "cover_image": coverImageUrl,
-          "gallery_images": galleryImageUrls,
-          "album_images": albumImageUrls,
-        });
-
-        // Navigate to the home screen after successful submission.
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Campus added successfully')),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add campus: $e')),
-        );
+      List<String> galleryImageUrls = [];
+      for (int i = 0; i < _galleryImages.length; i++) {
+        String url =
+            await _uploadImage(_galleryImages[i], campusId, "gallery_$i");
+        galleryImageUrls.add(url);
       }
+
+      List<String> albumImageUrls = [];
+      for (int i = 0; i < _albumImages.length; i++) {
+        String url =
+            await _uploadImage(_albumImages[i], campusId, "album_$i");
+        albumImageUrls.add(url);
+      }
+
+      // Update the campus document with image URLs.
+      await docRef.update({
+        "cover_image": coverImageUrl,
+        "gallery_images": galleryImageUrls,
+        "album_images": albumImageUrls,
+      });
+
+      // Turn off loading before navigation.
+      setState(() => _isLoading = false);
+
+      // Navigate to HomeScreen and clear all previous routes.
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (Route<dynamic> route) => false,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Campus added successfully')),
+      );
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to add campus: $e')),
+      );
     }
   }
 
@@ -145,18 +158,14 @@ class _FormScreenState extends State<FormScreen> {
         .child(campusId)
         .child("$imageName.jpg");
 
-    // Use putData to upload the image bytes.
     UploadTask uploadTask = storageRef.putData(imageData);
     TaskSnapshot taskSnapshot = await uploadTask;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-    return downloadUrl;
+    return await taskSnapshot.ref.getDownloadURL();
   }
 
-  /// Builds the multi-step content.
   Widget _buildStepContent() {
     switch (_currentStep) {
       case 0:
-        // Campus basic information.
         return Column(
           children: [
             SizedBox(height: 20),
@@ -201,11 +210,11 @@ class _FormScreenState extends State<FormScreen> {
           ],
         );
       case 1:
-        // Operating hours using your DayHoursSelector widget.
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Opening Hours", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Opening Hours",
+                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             DayHoursSelector(
               onHoursChanged: (updatedHours) {
@@ -217,15 +226,14 @@ class _FormScreenState extends State<FormScreen> {
           ],
         );
       case 2:
-        // Image uploads for cover, gallery, and album.
         return SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cover Image Upload.
               Text("Cover Image (max 1)",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 1,
@@ -237,9 +245,9 @@ class _FormScreenState extends State<FormScreen> {
                 },
               ),
               SizedBox(height: 30),
-              // Gallery Images Upload.
               Text("Gallery Images (max 3)",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 3,
@@ -251,9 +259,9 @@ class _FormScreenState extends State<FormScreen> {
                 },
               ),
               SizedBox(height: 30),
-              // Building Album Images Upload.
               Text("Building Album (max 50)",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 50,
@@ -273,7 +281,6 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
-  /// Builds a simple stepper header.
   Widget _buildStepperHeader() {
     List<String> steps = [
       "Building Info",
@@ -318,60 +325,72 @@ class _FormScreenState extends State<FormScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(title: Text("New Building")),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            width: 500,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 15,
-                  offset: Offset(0, 6),
+      body: Stack(
+        children: [
+          Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: 500,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 15,
+                      offset: Offset(0, 6),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _buildStepperHeader(),
-                  SizedBox(height: 20),
-                  _buildStepContent(),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
-                      if (_currentStep > 0)
-                        TextButton(
-                          onPressed: _prevStep,
-                          child: Text("Back"),
-                        ),
-                      ElevatedButton(
-                        onPressed: _nextStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                      _buildStepperHeader(),
+                      SizedBox(height: 20),
+                      _buildStepContent(),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (_currentStep > 0)
+                            TextButton(
+                              onPressed: _isLoading ? null : _prevStep,
+                              child: Text("Back"),
+                            ),
+                          ElevatedButton(
+                            onPressed:
+                                _isLoading ? null : () => _nextStep(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 12),
+                            ),
+                            child: Text(
+                              _currentStep < 2 ? "Next" : "Submit",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 12),
-                        ),
-                        child: Text(
-                          _currentStep < 2 ? "Next" : "Submit",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+
+          // Loading overlay
+          if (_isLoading)
+            Container(
+              color: Colors.black45,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+        ],
       ),
     );
   }
