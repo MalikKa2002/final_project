@@ -2,11 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:smart_guide/Language/language_switcher.dart';
 import 'package:smart_guide/Screens/admin_pade.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
-  void _showEditProfileDialog(BuildContext context) {
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  bool _loading = true;
+  String _name = '';
+  String _email = '';
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    final doc = await _firestore.collection('users').doc(user.uid).get();
+    if (!doc.exists) return;
+
+    final data = doc.data()!;
+    setState(() {
+      _name = data['username'] as String? ?? '';
+      _email = data['email'] as String? ?? user.email ?? '';
+      _nameController.text = _name;
+      _emailController.text = _email;
+      _loading = false;
+    });
+  }
+
+  Future<void> _updateProfile() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    await _firestore.collection('users').doc(user.uid).update({
+      'username': _nameController.text.trim(),
+      'email': _emailController.text.trim(),
+    });
+
+    setState(() {
+      _name = _nameController.text.trim();
+      _email = _emailController.text.trim();
+    });
+
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated')),
+    );
+  }
+
+  void _showEditProfileDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -62,7 +122,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showFeedbackDialog(BuildContext context) {
+  void _showFeedbackDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -78,7 +138,9 @@ class SettingsScreen extends StatelessWidget {
                 children: List.generate(5, (index) {
                   return IconButton(
                     icon: const Icon(Icons.star_border),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Handle star rating logic here
+                    },
                   );
                 }),
               ),
@@ -122,37 +184,37 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Edit Profile Section
+            // Profile card (static avatar)
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 40,
                     backgroundImage: AssetImage('assets/profile.png'),
                   ),
-                  const SizedBox(width: 16.0),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          'Bryan Wolf',
-                          style: TextStyle(
-                            fontSize: 18.0,
+                          _name,
+                          style: const TextStyle(
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(height: 4.0),
+                        const SizedBox(height: 4),
                         Text(
-                          'bryanwolf@gmail.com',
-                          style: TextStyle(
-                            fontSize: 14.0,
+                          _email,
+                          style: const TextStyle(
+                            fontSize: 14,
                             color: Colors.grey,
                           ),
                         ),
@@ -161,7 +223,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit, color: Colors.black),
-                    onPressed: () => _showEditProfileDialog(context),
+                    onPressed: _showEditProfileDialog,
                   ),
                 ],
               ),
@@ -169,13 +231,12 @@ class SettingsScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Help and Support Section
+            // Help & Support
             ListTile(
               leading: const Icon(Icons.help_outline, color: Colors.green),
               title: Text(local.helpAndSupport,
                   style: TextStyle(color: Colors.black)),
               onTap: () {
-                // Open email client for help and support
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -196,12 +257,12 @@ class SettingsScreen extends StatelessWidget {
             ),
             const Divider(color: Colors.grey),
 
-            // Give Feedback Section
+            // Feedback
             ListTile(
               leading: const Icon(Icons.feedback_outlined, color: Colors.green),
               title: Text(local.giveFeedback,
                   style: TextStyle(color: Colors.black)),
-              onTap: () => _showFeedbackDialog(context),
+              onTap: () => _showFeedbackDialog,
             ),
             const Divider(color: Colors.grey),
 

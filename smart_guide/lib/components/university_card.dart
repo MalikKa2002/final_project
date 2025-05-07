@@ -3,17 +3,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class UniversityCard extends StatelessWidget {
-  final String imagePath;
+  final String imagePath;  // expecting a full HTTPS URL
   final String title;
   final String distance;
   final String time;
 
   const UniversityCard({
+    Key? key,
     required this.imagePath,
     required this.title,
     required this.distance,
     required this.time,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class UniversityCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: NetworkImage(imagePath),  // ← switched to NetworkImage
           fit: BoxFit.cover,
         ),
       ),
@@ -37,10 +38,9 @@ class UniversityCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: BackdropFilter(
-                filter:
-                    ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), // Blur effect
+                filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                 child: Container(
-                  color: Colors.black45, // Semi-transparent black
+                  color: Colors.black45,
                   padding: EdgeInsets.all(8),
                   child: Text(
                     "$title\n$distance · $time",
