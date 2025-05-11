@@ -1,7 +1,7 @@
 // custom_app_bar.dart
 import 'package:flutter/material.dart';
+import 'package:smart_guide/Screens/chat_screen.dart';
 import 'package:smart_guide/Screens/notification_page.dart';
-
 import 'package:smart_guide/Screens/search_results_screen.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
 import 'package:smart_guide/components/location_widget.dart';
@@ -36,6 +36,16 @@ class CustomAppBar extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NotificationPage()),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.chat, color: Colors.black),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatScreen()),
                           );
                         },
                       ),
