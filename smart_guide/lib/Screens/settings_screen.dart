@@ -4,6 +4,7 @@ import 'package:smart_guide/Screens/admin_pade.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_guide/components/accessibility_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,6 +20,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _loading = true;
   String _name = '';
   String _email = '';
+
+  bool isWheelchairAccessible = false;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -262,7 +265,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               leading: const Icon(Icons.feedback_outlined, color: Colors.green),
               title: Text(local.giveFeedback,
                   style: TextStyle(color: Colors.black)),
-              onTap: () => _showFeedbackDialog,
+              onTap: () => _showFeedbackDialog(),
             ),
             const Divider(color: Colors.grey),
 
@@ -284,9 +287,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             ListTile(
               leading: const Icon(Icons.accessibility, color: Colors.green),
-              title: Text(local.enableAssistanceFeatures,
-                  style: TextStyle(color: Colors.black)),
-              onTap: () {},
+              title: const Text(
+                "Accessibility Options",
+                style: TextStyle(color: Colors.black),
+              ),
+              trailing: Text(
+                isWheelchairAccessible ? "ON" : "OFF",
+                style: TextStyle(
+                  color: isWheelchairAccessible ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AccessibilitySettingsScreen(
+                      initialValue: isWheelchairAccessible,
+                      onChanged: (value) {
+                        setState(() {
+                          isWheelchairAccessible = value;
+                        });
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
             const Divider(color: Colors.grey),
 

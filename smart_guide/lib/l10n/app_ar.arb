@@ -120,7 +120,11 @@
     "fetchingLocation":"جاري الوصول للموقع",
     "locationNotFound":"الموقع غير موجود",
     "unableToFetchLocation":"غير قادر على الوصول للموقع.",
-    "enableAssistanceFeatures":"تفعيل ميزات المساعدة"
+    "accessibilityOptions":"خيارات الوصول",
+    "wheelchairAccessibleRoutes":"طرق مناسبة للكراسي المتحركة",
+    "wheelchairAccessibleRoutesDescription":"عرض الطرق المناسبة لمستخدمي الكراسي المتحركة فقط",
+    "on": "تشغيل",
+    "off": "إيقاف"
 
   }
   

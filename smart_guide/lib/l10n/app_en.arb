@@ -117,7 +117,11 @@
     "fetchingLocation":"Fetching location...",
     "locationNotFound":"Location not found",
     "unableToFetchLocation":"Unable to fetch location.",
-    "enableAssistanceFeatures":"Enable assistance features"
+    "accessibilityOptions":"Accessibility Options",
+    "wheelchairAccessibleRoutes":"Wheelchair Accessible Routes",
+    "wheelchairAccessibleRoutesDescription": "Only show routes suitable for wheelchair users",
+    "on": "On",
+    "off": "Off"
 
   
   }

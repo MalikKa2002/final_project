@@ -123,8 +123,10 @@
     "fetchingLocation":"מיקום נשלף",
     "locationNotFound":"מיקום לא נמצא",
     "unableToFetchLocation":"לא ניתן לשלוף מיקום",
-    "enableAssistanceFeatures":"הפעלת תכונות סיוע"
+    "accessibilityOptions":"אפשרויות נגישות",
+    "wheelchairAccessibleRoutes":"דרכים נגישות לכיסאות גלגלים",
+    "wheelchairAccessibleRoutesDescription":"הצג רק מסלולים המתאימים למשתמשי כיסאות גלגלים",
+    "on": "דלוק",
+    "off": "כיבוי"
 
-    
   }
-  
