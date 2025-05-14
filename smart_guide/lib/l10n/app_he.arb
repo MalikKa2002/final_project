@@ -122,7 +122,8 @@
 
     "fetchingLocation":"מיקום נשלף",
     "locationNotFound":"מיקום לא נמצא",
-    "unableToFetchLocation":"לא ניתן לשלוף מיקום"
+    "unableToFetchLocation":"לא ניתן לשלוף מיקום",
+    "enableAssistanceFeatures":"הפעלת תכונות סיוע"
 
     
   }

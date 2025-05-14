@@ -283,6 +283,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Divider(color: Colors.grey),
 
             ListTile(
+              leading: const Icon(Icons.accessibility, color: Colors.green),
+              title: Text(local.enableAssistanceFeatures,
+                  style: TextStyle(color: Colors.black)),
+              onTap: () {},
+            ),
+            const Divider(color: Colors.grey),
+
+            ListTile(
               leading: const Icon(Icons.admin_panel_settings_outlined,
                   color: Colors.green),
               title: Text(local.appaManager,

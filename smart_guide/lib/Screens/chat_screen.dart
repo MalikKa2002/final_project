@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/components/chat_composer.dart';
+import 'package:smart_guide/components/chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -30,29 +31,6 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       });
     });
-  }
-
-  Widget _buildMessage(String text, bool isUser) {
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        padding: const EdgeInsets.all(14),
-        constraints: const BoxConstraints(maxWidth: 280),
-        decoration: BoxDecoration(
-          color: isUser ? Colors.purple[50] : const Color(0xFFEAEAEA),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20),
-            topRight: const Radius.circular(20),
-            bottomLeft:
-                isUser ? const Radius.circular(20) : const Radius.circular(4),
-            bottomRight:
-                isUser ? const Radius.circular(4) : const Radius.circular(20),
-          ),
-        ),
-        child: Text(text, style: const TextStyle(fontSize: 16)),
-      ),
-    );
   }
 
   @override
@@ -94,7 +72,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: const EdgeInsets.all(8),
                 itemBuilder: (context, index) {
                   final message = _messages[_messages.length - 1 - index];
-                  return _buildMessage(message['text'], message['isUser']);
+                  return ChatBubble(
+                    text: message['text'],
+                    isUser: message['isUser'],
+                  );
                 },
               ),
             ),

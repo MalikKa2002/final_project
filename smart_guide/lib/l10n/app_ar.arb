@@ -119,7 +119,8 @@
 
     "fetchingLocation":"جاري الوصول للموقع",
     "locationNotFound":"الموقع غير موجود",
-    "unableToFetchLocation":"غير قادر على الوصول للموقع."
+    "unableToFetchLocation":"غير قادر على الوصول للموقع.",
+    "enableAssistanceFeatures":"تفعيل ميزات المساعدة"
 
   }
   

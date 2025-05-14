@@ -5,10 +5,10 @@ class ChatComposer extends StatelessWidget {
   final VoidCallback onSend;
 
   const ChatComposer({
-    Key? key,
+    super.key,
     required this.controller,
     required this.onSend,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
