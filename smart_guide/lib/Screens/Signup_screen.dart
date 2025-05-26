@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smart_guide/Buttons/login_up_but.dart';
+// import 'package:smart_guide/Buttons/login_up_but.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/login_screen.dart';
-import 'package:smart_guide/Services/auth_service.dart';
+// import 'package:smart_guide/Services/auth_service.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
-import 'package:smart_guide/Texts/text_with_divider.dart';
+// import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -236,26 +236,26 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 20),
                       // another way to sign in
-                      TextWithDivider(
-                        text: local.orSignUpWith,
-                        fontSize: 15.0,
-                        dividerColor: Colors.grey,
-                        dividerThickness: 1.0,
-                      ),
+                      // TextWithDivider(
+                      //   text: local.orSignUpWith,
+                      //   fontSize: 15.0,
+                      //   dividerColor: Colors.grey,
+                      //   dividerThickness: 1.0,
+                      // ),
 
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                              child: SquareTile(
-                            text: local.loginWithGoogle,
-                            iconData: Icons
-                                .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
-                            onTap: () => AuthService().signInWithGoogle(),
-                          )),
-                        ],
-                      ),
+                      // const SizedBox(height: 20),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Expanded(
+                      //         child: SquareTile(
+                      //       text: local.loginWithGoogle,
+                      //       iconData: Icons
+                      //           .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
+                      //       onTap: () => AuthService().signInWithGoogle(),
+                      //     )),
+                      //   ],
+                      // ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

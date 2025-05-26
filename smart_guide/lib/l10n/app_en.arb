@@ -121,7 +121,16 @@
     "wheelchairAccessibleRoutes":"Wheelchair Accessible Routes",
     "wheelchairAccessibleRoutesDescription": "Only show routes suitable for wheelchair users",
     "on": "On",
-    "off": "Off"
+    "off": "Off",
+
+    "appManager": "App Manager",
+    
+    "enterEmail": "Please enter your email address.",
+    "instructionsSent": "Password reset instructions have been sent to your email.",
+    "resetError": "An error occurred. Please try again.",
+    "forgotMessage": "Enter your email and we'll send you instructions to reset your password."
+
+
 
   
   }
