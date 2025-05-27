@@ -31,8 +31,8 @@ class CustomBottomNavBar extends StatelessWidget {
           label: local.navigation,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: local.profile,
+          icon: Icon(Icons.settings_outlined),
+          label: local.settings,
         ),
       ],
     );

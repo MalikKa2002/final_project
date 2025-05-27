@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_guide/Screens/college_info_screen.dart';
-import 'package:smart_guide/Screens/profile.dart';
+import 'package:smart_guide/Screens/settings_screen.dart';
 import 'package:smart_guide/components/custom_app_bar.dart';
 import 'package:smart_guide/Screens/home_body.dart';
 import 'package:smart_guide/components/dialog.dart';
@@ -17,12 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   bool _showCollegeInfo = false;
 
-  final List<String> _pageRoutes = [
-    'home', // 0
-    'navigate', // 1
-    'profile', // 2
-    'collegeInfo', // 3
-  ];
+  // final List<String> _pageRoutes = [
+  //   'home', // 0
+  //   'navigate', // 1
+  //   'profile', // 2
+  //   'collegeInfo', // 3
+  // ];
 
   void _onTabSelected(int index) {
     setState(() {
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return MapWithBottomSheet();
       case 2:
-        return ProfilePage();
+        return SettingsScreen();
       case 0:
       default:
         return HomeBody(

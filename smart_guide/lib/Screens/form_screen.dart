@@ -27,6 +27,7 @@ class _FormScreenState extends State<FormScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
 
   // Operating hours map for each day.
   Map<String, Map<String, String>> _operatingHours = {
@@ -43,6 +44,7 @@ class _FormScreenState extends State<FormScreen> {
   Uint8List? _coverImage;
   List<Uint8List> _galleryImages = [];
   List<Uint8List> _albumImages = [];
+  List<String> _places = [];
 
   void _nextStep() {
     if (_currentStep < 2) {
@@ -55,6 +57,16 @@ class _FormScreenState extends State<FormScreen> {
   void _prevStep() {
     if (_currentStep > 0) {
       setState(() => _currentStep--);
+    }
+  }
+
+  void _addPlace() {
+    final place = _placeController.text.trim();
+    if (place.isNotEmpty && !_places.contains(place)) {
+      setState(() {
+        _places.add(place);
+        _placeController.clear();
+      });
     }
   }
 
@@ -89,6 +101,7 @@ class _FormScreenState extends State<FormScreen> {
       "phone": _phoneController.text,
       "website": _websiteController.text,
       "description": _descriptionController.text,
+      "places": _places,
       "operating_hours": _operatingHours,
       "cover_image": "",
       "gallery_images": [],
@@ -207,6 +220,45 @@ class _FormScreenState extends State<FormScreen> {
               maxLines: 7,
               validator: Validators.validateDescription,
             ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: FormInputField(
+                    label: 'Add Places ',
+                    hintText: 'ex: cafeteria , bathroom..',
+                    controller: _placeController,
+                    validator: null,
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: CircleBorder(
+                      side: BorderSide(color: Colors.green.shade700, width: 2),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  ),
+                  onPressed: _addPlace,
+                  child: Icon(Icons.add, color: Colors.white),
+                ),
+              ],
+            ),
+            Wrap(
+              spacing: 8,
+              children: _places
+                  .map((place) => Chip(
+                        label: Text(place),
+                        onDeleted: () {
+                          setState(() {
+                            _places.remove(place);
+                          });
+                        },
+                      ))
+                  .toList(),
+            ),
+            SizedBox(height: 20),
           ],
         );
       case 1:
