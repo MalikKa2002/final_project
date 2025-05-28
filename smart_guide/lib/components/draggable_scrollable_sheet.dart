@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:smart_guide/Buttons/quick_button.dart';
 import 'package:smart_guide/Screens/destination.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart_guide/components/place_selectionList.dart';
 
 class MapWithBottomSheet extends StatelessWidget {
+  final List<Map<String, dynamic>> places = [
+    {'label': 'Cafeteria', 'icon': Icons.food_bank},
+    {'label': 'Bathroom', 'icon': Icons.bathroom},
+    {'label': 'New', 'icon': Icons.add},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final local = AppLocalizations.of(context)!;
@@ -54,15 +61,12 @@ class MapWithBottomSheet extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              QuickButton(
-                                  icon: Icons.food_bank, label: "Cafitaria"),
-                              QuickButton(
-                                  icon: Icons.bathroom, label: "Bathroom"),
-                              QuickButton(icon: Icons.add, label: "New"),
-                            ],
+                          PlaceSelectionList(
+                            places: places,
+                            onSelected: (selectedLabel) {
+                              print("User selected: $selectedLabel");
+                              // You can navigate, filter, or update UI based on the selection
+                            },
                           ),
                           // Add more items here
                         ],

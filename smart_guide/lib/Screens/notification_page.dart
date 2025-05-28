@@ -6,16 +6,40 @@ class NotificationPage extends StatelessWidget {
     {
       'title': 'New Message',
       'body': 'You have a new message from John.',
+      'type': 'message',
+    },
+    {
+      'title': 'Request Approved',
+      'body': 'Your request to add Building A was accepted.',
+      'type': 'approved',
+    },
+    {
+      'title': 'Request Rejected',
+      'body':
+          'Your request to update Room 205 was rejected. Reason: Incomplete details.',
+      'type': 'rejected',
     },
     {
       'title': 'Event Reminder',
       'body': 'Don’t forget about the meeting tomorrow!',
-    },
-    {
-      'title': 'Update Available',
-      'body': 'A new version of the app is ready to install.',
+      'type': 'reminder',
     },
   ];
+
+  IconData _getIconForType(String type) {
+    switch (type) {
+      case 'approved':
+        return Icons.check_circle;
+      case 'rejected':
+        return Icons.cancel;
+      case 'message':
+        return Icons.message;
+      case 'reminder':
+        return Icons.event;
+      default:
+        return Icons.notifications;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +54,15 @@ class NotificationPage extends StatelessWidget {
         itemCount: notifications.length,
         itemBuilder: (context, index) {
           final notification = notifications[index];
+          final type = notification['type'] ?? 'default';
           return Card(
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
-              leading: Icon(Icons.notifications),
+              leading: Icon(_getIconForType(type)),
               title: Text(notification['title']!),
               subtitle: Text(notification['body']!),
               onTap: () {
-                // Handle notification click
+                // Optional: handle tap
               },
             ),
           );
