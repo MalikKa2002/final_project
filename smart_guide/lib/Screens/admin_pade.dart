@@ -1,5 +1,7 @@
+// lib/Screens/admin_page.dart
+
 import 'package:flutter/material.dart';
-import 'package:smart_guide/components/request.dart'; // Your existing RequestBody
+// import 'package:smart_guide/components/request.dart'; // NOT USED HERE any more
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -98,7 +100,7 @@ class _AdminPageState extends State<AdminPage>
             controller: _tabController,
             children: [
               // ───────────── (1) REQUEST TAB ─────────────
-              RequestBody(), // ← DO NOT TOUCH
+              RequestBody(),
 
               // ───────────── (2) USERS TAB ─────────────
               UsersTab(),
@@ -109,6 +111,256 @@ class _AdminPageState extends State<AdminPage>
           ),
         ),
       ),
+    );
+  }
+}
+
+/// ----------------------------------------
+/// (1) REQUEST TAB (Firebase-backed)
+/// Streams from `waiting_to_approve` and lets admin Accept/Reject
+/// ----------------------------------------
+class RequestBody extends StatefulWidget {
+  const RequestBody({super.key});
+
+  @override
+  createState() => _RequestBodyState();
+}
+
+class _RequestBodyState extends State<RequestBody> {
+  final CollectionReference _waitingCollection =
+      FirebaseFirestore.instance.collection('waiting_to_approve');
+  final CollectionReference _usersCollection =
+      FirebaseFirestore.instance.collection('users');
+  final CollectionReference _campusesCollection =
+      FirebaseFirestore.instance.collection('campuses');
+  final CollectionReference _notificationsCollection =
+      FirebaseFirestore.instance.collection('notifications');
+
+  /// Approve flow:
+  /// 1. Create a notification doc with { user_id, approved: true, timestamp }
+  /// 2. Delete the waiting_to_approve request immediately
+  void _approveRequest(
+      BuildContext context, String requestId, String userId) async {
+    final local = AppLocalizations.of(context)!;
+
+    try {
+      // 1. Add to notifications
+      await _notificationsCollection.add({
+        'user_id': userId,
+        'approved': true,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // 2. Remove the waiting request
+      await _waitingCollection.doc(requestId).delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(local.requestAccepted)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(local.errorAction)),
+      );
+    }
+  }
+
+  /// Reject flow:
+  /// 1. Create a notification doc with { user_id, approved: false, timestamp }
+  /// 2. Delete the campus from `campuses/{campusId}`
+  /// 3. Delete the waiting_to_approve request immediately
+  void _rejectRequest(BuildContext context, String requestId, String userId,
+      String campusId) async {
+    final local = AppLocalizations.of(context)!;
+
+    try {
+      // 1. Add to notifications
+      await _notificationsCollection.add({
+        'user_id': userId,
+        'approved': false,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // 2. Delete the whole campus
+      await _campusesCollection.doc(campusId).delete();
+
+      // 3. Remove the waiting request
+      await _waitingCollection.doc(requestId).delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(local.requestRejected)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(local.errorAction)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _waitingCollection.snapshots(),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text(local.noRequestsFound));
+        }
+
+        final docs = snapshot.data!.docs;
+        return ListView.builder(
+          itemCount: docs.length,
+          itemBuilder: (ctx, index) {
+            final doc = docs[index];
+            final data = doc.data()! as Map<String, dynamic>;
+
+            final requestId = doc.id;
+            final userId = data['user_id'] as String? ?? '';
+            final campusId = data['campus_id'] as String? ?? '';
+
+            // If user_id or campus_id is empty, show a fallback
+            if (userId.isEmpty || campusId.isEmpty) {
+              return ListTile(
+                title: Text(local.errorFetchingData),
+                subtitle: const Text('Missing user_id or campus_id'),
+              );
+            }
+
+            return FutureBuilder<List<DocumentSnapshot>>(
+              future: Future.wait([
+                _usersCollection.doc(userId).get(),
+                _campusesCollection.doc(campusId).get(),
+              ]),
+              builder: (ctx2, snap2) {
+                if (snap2.connectionState == ConnectionState.waiting) {
+                  return const ListTile(
+                    title: Text('Loading…'),
+                    leading: CircularProgressIndicator(strokeWidth: 2),
+                  );
+                }
+                if (!snap2.hasData || snap2.data == null || snap2.data!.length < 2) {
+                  return ListTile(
+                    title: Text(local.unknown),
+                    subtitle: Text(local.errorFetchingData),
+                  );
+                }
+
+                final userDoc = snap2.data![0];
+                final campusDoc = snap2.data![1];
+
+                final username = userDoc.exists
+                    ? (userDoc.get('username') as String? ?? userId)
+                    : userId;
+                final campusName = campusDoc.exists
+                    ? (campusDoc.get('college_name') as String? ?? campusId)
+                    : campusId;
+
+                // ── NEW: pull the list of album_images from campusDoc
+                final albumImagesList = campusDoc.exists
+                    ? (campusDoc.get('album_images') as List<dynamic>?)
+                            ?.cast<String>() ??
+                        []
+                    : <String>[];
+
+                return Card(
+                  color: const Color.fromARGB(255, 235, 240, 233),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: Colors.green[200] ?? Colors.green,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // ─── Campus name ───
+                        Text(
+                          campusName,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 4),
+
+                        // ─── Who requested it ───
+                        Row(
+                          children: [
+                            const Icon(Icons.person, size: 18, color: Colors.grey),
+                            const SizedBox(width: 4),
+                            Text(
+                              local.byLabel(username), // e.g. "By: {username}"
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // ─── NEW: show album images, if any ───
+                        if (albumImagesList.isNotEmpty) ...[
+                          SizedBox(
+                            height: 80,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: albumImagesList.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 8),
+                              itemBuilder: (ctx3, idx3) {
+                                final imgUrl = albumImagesList[idx3];
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    imgUrl,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ] else ...[
+                          // If no album images, you can optionally show nothing or a placeholder.
+                          // For now, we just add a small gap.
+                          const SizedBox(height: 8),
+                        ],
+
+                        // ─── Action buttons ───
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            OutlinedButton.icon(
+                              icon: const Icon(Icons.close, color: Colors.red),
+                              label: Text(local.rejected),
+                              onPressed: () =>
+                                  _rejectRequest(context, requestId, userId, campusId),
+                            ),
+                            const SizedBox(width: 8),
+                            ElevatedButton.icon(
+                              icon: const Icon(Icons.check),
+                              label: Text(local.accepted),
+                              onPressed: () =>
+                                  _approveRequest(context, requestId, userId),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -304,8 +556,7 @@ class CampusesTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      local.tapCoverToDelete, 
-                      // Add this key in your ARB: "tapCoverToDelete": "Tap cover to delete campus"
+                      local.tapCoverToDelete,
                       style: TextStyle(color: Colors.red[700], fontSize: 12),
                     ),
                     const SizedBox(height: 12),
@@ -313,8 +564,7 @@ class CampusesTab extends StatelessWidget {
                     // ─── Album Images (if any) ───
                     if (albumImagesList.isNotEmpty) ...[
                       Text(
-                        local.albumImages, 
-                        // Add this key: "albumImages": "Album Images"
+                        local.albumImages,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -341,8 +591,7 @@ class CampusesTab extends StatelessWidget {
                       ),
                     ] else ...[
                       Text(
-                        local.noImagesFound, 
-                        // Already defined as "No images found for this campus."
+                        local.noImagesFound,
                         style: const TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],
@@ -396,7 +645,7 @@ class CampusesTab extends StatelessWidget {
         await item.delete();
       }
 
-      // 3. If any sub-folders (unlikely), delete their contents too
+      // 3. If any sub‐folders (unlikely), delete their contents too
       for (final prefix in listResult.prefixes) {
         final subList = await prefix.listAll();
         for (final subItem in subList.items) {

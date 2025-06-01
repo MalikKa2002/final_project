@@ -29,9 +29,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _email = '';
   String _phone = '';
   String _imageUrl = '';
-  bool _isAdmin = false; // ← new field to track role
-
-  bool isWheelchairAccessible = false;
+  bool _isAdmin = false;
+  bool _isWheelchairAccessible = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -48,14 +47,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     try {
       final doc = await _firestore.collection('users').doc(user.uid).get();
+
       if (!doc.exists) {
-        // No custom user doc: fall back to auth fields
+        // If no document, fall back to Auth fields and defaults
         setState(() {
           _name = user.displayName ?? '';
           _email = user.email ?? '';
           _phone = '';
           _imageUrl = '';
-          _isAdmin = false; // default to non-admin if there is no doc
+          _isAdmin = false;
+          _isWheelchairAccessible = false;
           _emailController.text = _email;
           _phoneController.text = _phone;
           _loading = false;
@@ -65,10 +66,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       final data = doc.data()!;
 
-      // Example 1: if you store role as a string field “role”: “admin” or “user”
+      // Role field (string “role”: “admin” or “user”)
       final roleValue = data['role'] as String? ?? 'user';
-      // Or, if you store a boolean “isAdmin”: true/false,
-      // you could do: final isAdminValue = (data['isAdmin'] as bool?) ?? false;
 
       setState(() {
         _name = data['username'] as String? ?? (user.displayName ?? '');
@@ -76,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _phone = data['phone'] as String? ?? '';
         _imageUrl = data['imageUrl'] as String? ?? '';
         _isAdmin = (roleValue.toLowerCase() == 'admin');
-        // If you used a boolean instead, do: _isAdmin = isAdminValue;
+        _isWheelchairAccessible = (data['accessibility'] as bool?) ?? false;
 
         _emailController.text = _email;
         _phoneController.text = _phone;
@@ -164,11 +163,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// Whenever the user tries to pop (back), we send them to HomeScreen instead.
+  /// Whenever the user tries to pop (back), send them to HomeScreen instead.
   Future<bool> _onWillPop() async {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => HomeScreen()), // ← removed const
+      MaterialPageRoute(builder: (_) => HomeScreen()),
     );
     return false;
   }
@@ -321,47 +320,100 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: Text(local.giveFeedback,
                           style: const TextStyle(color: Colors.black)),
                       onTap: () {
+                        // Open a dialog that lets the user pick stars + enter text,
+                        // then save into Firestore.
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(local.giveFeedback),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(local.rateUs),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(5, (index) {
-                                      return IconButton(
-                                        icon: const Icon(Icons.star_border),
-                                        onPressed: () {
-                                          // Handle star rating logic
-                                        },
-                                      );
-                                    }),
+                          builder: (context) {
+                            int selectedStars = 0;
+                            final feedbackController = TextEditingController();
+
+                            return StatefulBuilder(
+                              builder: (context, setDialogState) {
+                                return AlertDialog(
+                                  title: Text(local.giveFeedback),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // Star rating row
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: List.generate(5, (index) {
+                                          return IconButton(
+                                            icon: Icon(
+                                              index < selectedStars
+                                                  ? Icons.star
+                                                  : Icons.star_border,
+                                              color: Colors.amber,
+                                            ),
+                                            onPressed: () {
+                                              setDialogState(() {
+                                                selectedStars = index + 1;
+                                              });
+                                            },
+                                          );
+                                        }),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      // Feedback text field
+                                      TextField(
+                                        controller: feedbackController,
+                                        decoration: InputDecoration(
+                                          labelText: local.yourFeedback,
+                                          border: const OutlineInputBorder(),
+                                        ),
+                                        maxLines: 3,
+                                      ),
+                                    ],
                                   ),
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      labelText: local.yourFeedback,
-                                      border: const OutlineInputBorder(),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(local.cancel),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: Text(local.cancel),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    // Handle feedback submission
-                                  },
-                                  child: Text(local.submit),
-                                ),
-                              ],
+                                    TextButton(
+                                      onPressed: () async {
+                                        final user = _auth.currentUser;
+                                        if (user == null) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text(local.failedSaveFeedback)),
+                                          );
+                                          return;
+                                        }
+
+                                        final feedbackText = feedbackController.text.trim();
+
+                                        try {
+                                          await _firestore
+                                              .collection('feedback')
+                                              .add({
+                                            'uid': user.uid,
+                                            'username': _name,
+                                            'stars': selectedStars,
+                                            'message': feedbackText,
+                                            'timestamp': FieldValue.serverTimestamp(),
+                                          });
+
+                                          Navigator.of(context).pop();
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text(local.feedbackSaved)),
+                                          );
+                                        } catch (e) {
+                                          Navigator.of(context).pop();
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    '${local.failedSaveFeedback}: $e')),
+                                          );
+                                        }
+                                      },
+                                      child: Text(local.submit),
+                                    ),
+                                  ],
+                                );
+                              },
                             );
                           },
                         );
@@ -389,29 +441,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // ───────────── Accessibility ─────────────
                     ListTile(
                       leading: const Icon(Icons.accessibility, color: Colors.green),
-                      title: const Text(
-                        "Accessibility Options",
-                        style: TextStyle(color: Colors.black),
+                      title: Text(
+                        local.accessibilityOptions,
+                        style: const TextStyle(color: Colors.black),
                       ),
                       trailing: Text(
-                        isWheelchairAccessible ? "ON" : "OFF",
+                        _isWheelchairAccessible ? "ON" : "OFF",
                         style: TextStyle(
-                          color: isWheelchairAccessible ? Colors.green : Colors.red,
+                          color: _isWheelchairAccessible ? Colors.green : Colors.red,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AccessibilitySettingsScreen(
-                              initialValue: isWheelchairAccessible,
-                              onChanged: (value) {
-                                setState(() {
-                                  isWheelchairAccessible = value;
-                                });
-                              },
-                            ),
+                        showDialog(
+                          context: context,
+                          builder: (context) => AccessibilitySettingsScreen(
+                            initialValue: _isWheelchairAccessible,
+                            onChanged: (value) async {
+                              setState(() {
+                                _isWheelchairAccessible = value;
+                              });
+                              final user = _auth.currentUser;
+                              if (user != null) {
+                                await _firestore
+                                    .collection('users')
+                                    .doc(user.uid)
+                                    .update({'accessibility': value});
+                              }
+                            },
                           ),
                         );
                       },
