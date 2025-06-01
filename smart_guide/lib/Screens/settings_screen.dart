@@ -9,7 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_guide/Language/language_switcher.dart';
 import 'package:smart_guide/Screens/admin_pade.dart';
-import 'package:smart_guide/Screens/home_screen.dart';         // ← Import HomeScreen
+import 'package:smart_guide/Screens/home_screen.dart';
 import 'package:smart_guide/components/accessibility_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -29,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _email = '';
   String _phone = '';
   String _imageUrl = '';
+  bool _isAdmin = false; // ← new field to track role
 
   bool isWheelchairAccessible = false;
 
@@ -48,11 +49,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       final doc = await _firestore.collection('users').doc(user.uid).get();
       if (!doc.exists) {
+        // No custom user doc: fall back to auth fields
         setState(() {
           _name = user.displayName ?? '';
           _email = user.email ?? '';
           _phone = '';
           _imageUrl = '';
+          _isAdmin = false; // default to non-admin if there is no doc
           _emailController.text = _email;
           _phoneController.text = _phone;
           _loading = false;
@@ -61,11 +64,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
 
       final data = doc.data()!;
+
+      // Example 1: if you store role as a string field “role”: “admin” or “user”
+      final roleValue = data['role'] as String? ?? 'user';
+      // Or, if you store a boolean “isAdmin”: true/false,
+      // you could do: final isAdminValue = (data['isAdmin'] as bool?) ?? false;
+
       setState(() {
         _name = data['username'] as String? ?? (user.displayName ?? '');
         _email = data['email'] as String? ?? (user.email ?? '');
         _phone = data['phone'] as String? ?? '';
         _imageUrl = data['imageUrl'] as String? ?? '';
+        _isAdmin = (roleValue.toLowerCase() == 'admin');
+        // If you used a boolean instead, do: _isAdmin = isAdminValue;
+
         _emailController.text = _email;
         _phoneController.text = _phone;
         _loading = false;
@@ -166,7 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final local = AppLocalizations.of(context)!;
 
     return WillPopScope(
-      onWillPop: _onWillPop, // ← Intercept system back button
+      onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -176,10 +188,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              // ← Override AppBar’s back arrow
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => HomeScreen()), // ← removed const
+                MaterialPageRoute(builder: (_) => HomeScreen()),
               );
             },
           ),
@@ -407,22 +418,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const Divider(color: Colors.grey),
 
-                    // ───────────── Admin ─────────────
-                    ListTile(
-                      leading: const Icon(Icons.admin_panel_settings_outlined,
-                          color: Colors.green),
-                      title: Text(local.appaManager,
-                          style: const TextStyle(color: Colors.black)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AdminPage(),
-                          ),
-                        );
-                      },
-                    ),
-                    const Divider(color: Colors.grey),
+                    // ───────────── Admin Tile ─────────────
+                    if (_isAdmin) ...[
+                      ListTile(
+                        leading: const Icon(
+                          Icons.admin_panel_settings_outlined,
+                          color: Colors.green,
+                        ),
+                        title: Text(
+                          local.appaManager,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => AdminPage()),
+                          );
+                        },
+                      ),
+                      const Divider(color: Colors.grey),
+                    ],
+
+                    // You can add more tiles here for all users…
                   ],
                 ),
               ),
