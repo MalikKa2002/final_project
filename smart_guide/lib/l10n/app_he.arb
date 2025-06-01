@@ -210,5 +210,23 @@
   "errorDeletingCampus": "שגיאה במחיקת הקמפוס.",
   "tapCoverToDelete": "הקש על תמונת השער כדי למחוק את הקמפוס",
   "albumImages": "תמונות אלבום",
-  "noImagesFound": "לא נמצאו תמונות לקמפוס זה."
+  "noImagesFound": "לא נמצאו תמונות לקמפוס זה.",
+
+  "enterRejectionReason": "הזן את הסיבה לדחייה",
+  "rejectionReasonHint": "מדוע אתה דוחה בקשה זו?",
+  "reasonCannotBeEmpty": "הסיבה לא יכולה להיות ריקה",
+  "submit": "שלח",
+
+
+  "notification": "התראות",
+  "notSignedIn": "עליך להתחבר כדי להציג התראות.",
+  "noNotifications": "אין התראות בשלב זה.",
+  "requestAcceptedTitle": "הבקשה אושרה",
+  "requestAcceptedBody": "הבקשה שלך אושרה.",
+  "requestRejectedTitle": "הבקשה נדחתה",
+  "requestRejectedBody": "הבקשה שלך נדחתה. סיבה: {reason}",
+  "requestRejectedBodyNoReason": "הבקשה שלך נדחתה.",
+  "notificationDeleted": "ההתראה נמחקה.",
+  "errorDeletingNotification": "לא ניתן למחוק את ההתראה. נא לנסות שוב."
+
   }

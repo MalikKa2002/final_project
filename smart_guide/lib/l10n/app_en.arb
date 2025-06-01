@@ -213,7 +213,23 @@
   "errorDeletingCampus": "Error deleting campus.",
   "tapCoverToDelete": "Tap cover image to delete campus",
   "albumImages": "Album Images",
-  "noImagesFound": "No images found for this campus."
+  "noImagesFound": "No images found for this campus.",
+
+  "enterRejectionReason": "Enter rejection reason",
+  "rejectionReasonHint": "Why are you rejecting this request?",
+  "reasonCannotBeEmpty": "Reason cannot be empty",
+  "submit": "Submit",
+
+  "notification": "Notifications",
+  "notSignedIn": "You must be signed in to view notifications.",
+  "noNotifications": "No notifications yet.",
+  "requestAcceptedTitle": "Request Approved",
+  "requestAcceptedBody": "Your request has been approved.",
+  "requestRejectedTitle": "Request Rejected",
+  "requestRejectedBody": "Your request was rejected. Reason: {reason}",
+  "requestRejectedBodyNoReason": "Your request was rejected.",
+  "notificationDeleted": "Notification deleted.",
+  "errorDeletingNotification": "Could not delete notification. Please try again."
 
 
 

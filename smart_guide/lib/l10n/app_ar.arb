@@ -207,8 +207,23 @@
   "errorDeletingCampus": "خطأ في حذف الحرم.",
   "tapCoverToDelete": "اضغط على صورة الغلاف لحذف الحرم",
   "albumImages": "صور الألبوم",
-  "noImagesFound": "لم يتم العثور على صور لهذا الحرم."
+  "noImagesFound": "لم يتم العثور على صور لهذا الحرم.",
 
+  "enterRejectionReason": "أدخل سبب الرفض",
+  "rejectionReasonHint": "لماذا تقوم برفض هذا الطلب؟",
+  "reasonCannotBeEmpty": "لا يمكن أن تكون السبب فارغًا",
+  "submit": "إرسال",
+
+  "notification": "الإشعارات",
+  "notSignedIn": "يجب تسجيل الدخول لعرض الإشعارات.",
+  "noNotifications": "لا توجد إشعارات حتى الآن.",
+  "requestAcceptedTitle": "تم قبول الطلب",
+  "requestAcceptedBody": "تم قبول طلبك.",
+  "requestRejectedTitle": "تم رفض الطلب",
+  "requestRejectedBody": "تم رفض طلبك. السبب: {reason}",
+  "requestRejectedBodyNoReason": "تم رفض طلبك.",
+  "notificationDeleted": "تم حذف الإشعار.",
+  "errorDeletingNotification": "تعذر حذف الإشعار. حاول مرة أخرى."
 
 
   }

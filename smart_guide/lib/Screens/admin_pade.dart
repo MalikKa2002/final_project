@@ -117,7 +117,7 @@ class _AdminPageState extends State<AdminPage>
 
 /// ----------------------------------------
 /// (1) REQUEST TAB (Firebase-backed)
-/// Streams from `waiting_to_approve` and lets admin Accept/Reject
+/// Streams from waiting_to_approve and lets admin Accept/Reject
 /// ----------------------------------------
 class RequestBody extends StatefulWidget {
   const RequestBody({super.key});
@@ -133,22 +133,23 @@ class _RequestBodyState extends State<RequestBody> {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference _campusesCollection =
       FirebaseFirestore.instance.collection('campuses');
-  final CollectionReference _notificationsCollection =
-      FirebaseFirestore.instance.collection('notifications');
+  // We no longer need a top‐level 'notifications' collection here.
 
   /// Approve flow:
-  /// 1. Create a notification doc with { user_id, approved: true, timestamp }
+  /// 1. Create a notification doc under users/{userId}/notifications with { approved: true, timestamp }
   /// 2. Delete the waiting_to_approve request immediately
   void _approveRequest(
       BuildContext context, String requestId, String userId) async {
     final local = AppLocalizations.of(context)!;
 
     try {
-      // 1. Add to notifications
-      await _notificationsCollection.add({
-        'user_id': userId,
+      // 1. Add a notification under this user's subcollection:
+      final userNotifications =
+          _usersCollection.doc(userId).collection('notifications');
+      await userNotifications.add({
         'approved': true,
         'timestamp': FieldValue.serverTimestamp(),
+        // No 'reason' needed for acceptance
       });
 
       // 2. Remove the waiting request
@@ -164,23 +165,78 @@ class _RequestBodyState extends State<RequestBody> {
     }
   }
 
+  /// ── UPDATED: Show a dialog to prompt for rejection reason, then call the actual reject handler:
+  void _promptRejectionReason(
+      BuildContext context, String requestId, String userId, String campusId) {
+    final local = AppLocalizations.of(context)!;
+    final TextEditingController _reasonController = TextEditingController();
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Force the admin to tap Submit or Cancel
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text(local.enterRejectionReason), // e.g. “Enter rejection reason”
+          content: TextField(
+            controller: _reasonController,
+            maxLines: 3,
+            decoration: InputDecoration(
+              hintText: local.rejectionReasonHint, // e.g. “Why are you rejecting?”
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop(); // Dismiss without doing anything
+              },
+              child: Text(local.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final reasonText = _reasonController.text.trim();
+                if (reasonText.isEmpty) {
+                  // If empty, show a quick warning
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(local.reasonCannotBeEmpty)),
+                  );
+                  return;
+                }
+                Navigator.of(ctx).pop(); // Close the dialog
+                _rejectRequestWithReason(
+                  context,
+                  requestId,
+                  userId,
+                  campusId,
+                  reasonText,
+                );
+              },
+              child: Text(local.submit),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// Reject flow:
-  /// 1. Create a notification doc with { user_id, approved: false, timestamp }
-  /// 2. Delete the campus from `campuses/{campusId}`
+  /// 1. Create a notification doc under users/{userId}/notifications with { approved: false, reason, timestamp }
+  /// 2. Delete the campus from campuses/{campusId}
   /// 3. Delete the waiting_to_approve request immediately
-  void _rejectRequest(BuildContext context, String requestId, String userId,
-      String campusId) async {
+  Future<void> _rejectRequestWithReason(BuildContext context,
+      String requestId, String userId, String campusId, String reason) async {
     final local = AppLocalizations.of(context)!;
 
     try {
-      // 1. Add to notifications
-      await _notificationsCollection.add({
-        'user_id': userId,
+      // 1. Add a notification under this user's subcollection, including the rejection reason
+      final userNotifications =
+          _usersCollection.doc(userId).collection('notifications');
+      await userNotifications.add({
         'approved': false,
+        'reason': reason,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // 2. Delete the whole campus
+      // 2. Delete the whole campus document
       await _campusesCollection.doc(campusId).delete();
 
       // 3. Remove the waiting request
@@ -195,6 +251,7 @@ class _RequestBodyState extends State<RequestBody> {
       );
     }
   }
+  /// ── END UPDATED ──
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +298,9 @@ class _RequestBodyState extends State<RequestBody> {
                     leading: CircularProgressIndicator(strokeWidth: 2),
                   );
                 }
-                if (!snap2.hasData || snap2.data == null || snap2.data!.length < 2) {
+                if (!snap2.hasData ||
+                    snap2.data == null ||
+                    snap2.data!.length < 2) {
                   return ListTile(
                     title: Text(local.unknown),
                     subtitle: Text(local.errorFetchingData),
@@ -303,7 +362,7 @@ class _RequestBodyState extends State<RequestBody> {
 
                         const SizedBox(height: 12),
 
-                        // ─── NEW: show album images, if any ───
+                        // ─── Show album images, if any ───
                         if (albumImagesList.isNotEmpty) ...[
                           SizedBox(
                             height: 80,
@@ -337,11 +396,16 @@ class _RequestBodyState extends State<RequestBody> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            // ── UPDATED ONPRESS: show dialog to get reason ──
                             OutlinedButton.icon(
                               icon: const Icon(Icons.close, color: Colors.red),
                               label: Text(local.rejected),
-                              onPressed: () =>
-                                  _rejectRequest(context, requestId, userId, campusId),
+                              onPressed: () => _promptRejectionReason(
+                                context,
+                                requestId,
+                                userId,
+                                campusId,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton.icon(
@@ -367,7 +431,7 @@ class _RequestBodyState extends State<RequestBody> {
 
 /// ----------------------------------------
 /// (2) USERS TAB
-/// Streams `users` collection and allows deleting each user.
+/// Streams users collection and allows deleting each user.
 /// ----------------------------------------
 class UsersTab extends StatelessWidget {
   UsersTab({Key? key}) : super(key: key);
@@ -404,7 +468,16 @@ class UsersTab extends StatelessWidget {
         final ref = FirebaseStorage.instance.refFromURL(imageUrl);
         await ref.delete();
       }
-      // 2. Delete Firestore document
+
+      // 2. Delete all notifications subcollection for that user (optional but recommended)
+      final notifsRef =
+          _usersCollection.doc(userId).collection('notifications');
+      final notifSnapshot = await notifsRef.get();
+      for (final doc in notifSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // 3. Delete Firestore document
       await _usersCollection.doc(userId).delete();
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -473,7 +546,7 @@ class UsersTab extends StatelessWidget {
 
 /// ----------------------------------------
 /// (3) CAMPUSES TAB
-/// Streams `campuses` collection, shows name, cover image, and album images.
+/// Streams campuses collection, shows name, cover image, and album images.
 /// Tapping the cover image allows deletion of the entire campus (Storage + Firestore).
 /// ----------------------------------------
 class CampusesTab extends StatelessWidget {
@@ -606,8 +679,8 @@ class CampusesTab extends StatelessWidget {
   }
 
   /// Prompts the admin to confirm campus deletion.
-  /// If confirmed, deletes all Storage files under `campus_images/{campusId}`,
-  /// then deletes the Firestore document at `campuses/{campusId}`.
+  /// If confirmed, deletes all Storage files under campus_images/{campusId},
+  /// then deletes the Firestore document at campuses/{campusId}.
   Future<void> _confirmAndDeleteCampus(
     BuildContext context, {
     required String campusId,
@@ -635,7 +708,7 @@ class CampusesTab extends StatelessWidget {
     if (shouldDelete != true) return;
 
     try {
-      // 1. List all files under Storage path `campus_images/{campusId}`
+      // 1. List all files under Storage path campus_images/{campusId}
       final storageFolder =
           FirebaseStorage.instance.ref('campus_images/$campusId');
       final listResult = await storageFolder.listAll();
