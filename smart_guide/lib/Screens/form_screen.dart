@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:smart_guide/Services/validators.dart';
 import 'package:smart_guide/components/day_hours.dart';
 import 'package:smart_guide/components/form_input_field.dart';
 import '../components/upload_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// adjust this import to your actual HomeScreen location:
 import 'package:smart_guide/screens/home_screen.dart';
 
 class FormScreen extends StatefulWidget {
@@ -20,16 +20,15 @@ class _FormScreenState extends State<FormScreen> {
   int _currentStep = 0;
   bool _isLoading = false;
 
-  // Controllers for input fields.
+  // Controllers for fixed fields (step 0):
   final TextEditingController _collegeNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _placeController = TextEditingController();
 
-  // Operating hours map for each day.
+  // Operating hours (step 1):
   Map<String, Map<String, String>> _operatingHours = {
     "Sunday": {"open": "", "close": ""},
     "Monday": {"open": "", "close": ""},
@@ -40,16 +39,73 @@ class _FormScreenState extends State<FormScreen> {
     "Saturday": {"open": "", "close": ""},
   };
 
-  // Use Uint8List to store images.
+  // Image data (step 2):
   Uint8List? _coverImage;
   List<Uint8List> _galleryImages = [];
   List<Uint8List> _albumImages = [];
-  List<String> _places = [];
 
+  // Dynamic “places” controllers (step 0):
+  final List<TextEditingController> _placeControllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _addNewPlaceController(); // Start with one place field by default
+  }
+
+  @override
+  void dispose() {
+    _collegeNameController.dispose();
+    _emailController.dispose();
+    _locationController.dispose();
+    _phoneController.dispose();
+    _websiteController.dispose();
+    _descriptionController.dispose();
+    for (var c in _placeControllers) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addNewPlaceController() {
+    final controller = TextEditingController();
+    setState(() {
+      _placeControllers.add(controller);
+    });
+  }
+
+  void _removePlaceController(int index) {
+    if (_placeControllers.length > 1) {
+      setState(() {
+        _placeControllers[index].dispose();
+        _placeControllers.removeAt(index);
+      });
+    }
+  }
+
+  /// _nextStep() now also checks: at step 2, ensure a cover image exists.
   void _nextStep() {
+    if (_currentStep == 0) {
+      // Validate only step 0 fields before moving on.
+      if (!_formKey.currentState!.validate()) return;
+    }
+
     if (_currentStep < 2) {
       setState(() => _currentStep++);
     } else {
+      // At step 2: verify cover image is set before submission.
+      if (_coverImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.coverRequiredError,
+              // You’ll need to add this key to your ARB files:
+              //   "coverRequiredError": "Please select a cover image"
+            ),
+          ),
+        );
+        return;
+      }
       _submitForm();
     }
   }
@@ -60,27 +116,13 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
-  void _addPlace() {
-    final place = _placeController.text.trim();
-    if (place.isNotEmpty && !_places.contains(place)) {
-      setState(() {
-        _places.add(place);
-        _placeController.clear();
-      });
-    }
-  }
-
-  /// Submits the form: checks for duplicate campus,
-  /// saves the data in Firestore and then uploads images.
   Future<void> _submitForm() async {
-    if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-
     setState(() => _isLoading = true);
 
     String collegeNameTrimmed = _collegeNameController.text.trim();
 
-    // Check if a campus with the same college name already exists.
+    // Check for duplicate campus name:
     QuerySnapshot existingCampusSnapshot = await FirebaseFirestore.instance
         .collection('campuses')
         .where('college_name', isEqualTo: collegeNameTrimmed)
@@ -88,20 +130,26 @@ class _FormScreenState extends State<FormScreen> {
     if (existingCampusSnapshot.docs.isNotEmpty) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Campus already exists!')),
+        const SnackBar(content: Text('Campus already exists!')),
       );
       return;
     }
 
-    // Prepare initial campus data.
+    // Collect all non‐empty “places”:
+    List<String> places = _placeControllers
+        .map((c) => c.text.trim())
+        .where((txt) => txt.isNotEmpty)
+        .toList();
+
+    // Prepare initial campus data:
     Map<String, dynamic> formData = {
       "college_name": collegeNameTrimmed,
-      "email": _emailController.text,
-      "location": _locationController.text,
-      "phone": _phoneController.text,
-      "website": _websiteController.text,
-      "description": _descriptionController.text,
-      "places": _places,
+      "email": _emailController.text.trim(),
+      "location": _locationController.text.trim(),
+      "phone": _phoneController.text.trim(),
+      "website": _websiteController.text.trim(),
+      "description": _descriptionController.text.trim(),
+      "places": places,
       "operating_hours": _operatingHours,
       "cover_image": "",
       "gallery_images": [],
@@ -109,12 +157,24 @@ class _FormScreenState extends State<FormScreen> {
     };
 
     try {
-      // Create a new campus document.
+      // 1. Create new Firestore document under “campuses”
       DocumentReference docRef =
           await FirebaseFirestore.instance.collection('campuses').add(formData);
       String campusId = docRef.id;
 
-      // Upload images and collect their URLs.
+      // 2. Immediately add an entry to “waiting_to_approve”
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('waiting_to_approve')
+            .add({
+          'user_id': user.uid,
+          'campus_id': campusId,
+          'approved': false, // initial state: not yet approved
+        });
+      }
+
+      // 3. Upload images if provided:
       String coverImageUrl = "";
       if (_coverImage != null) {
         coverImageUrl = await _uploadImage(_coverImage!, campusId, "cover");
@@ -129,29 +189,29 @@ class _FormScreenState extends State<FormScreen> {
 
       List<String> albumImageUrls = [];
       for (int i = 0; i < _albumImages.length; i++) {
-        String url = await _uploadImage(_albumImages[i], campusId, "album_$i");
+        String url =
+            await _uploadImage(_albumImages[i], campusId, "album_$i");
         albumImageUrls.add(url);
       }
 
-      // Update the campus document with image URLs.
+      // 4. Update Firestore doc with URLs:
       await docRef.update({
         "cover_image": coverImageUrl,
         "gallery_images": galleryImageUrls,
         "album_images": albumImageUrls,
       });
 
-      // Turn off loading before navigation.
       setState(() => _isLoading = false);
 
-      // Navigate to HomeScreen and clear all previous routes.
+      // 5. Navigate back to HomeScreen (clearing stack):
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
-        (Route<dynamic> route) => false,
+        (route) => false,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Campus added successfully')),
+        const SnackBar(content: Text('Campus added successfully')),
       );
     } catch (e) {
       setState(() => _isLoading = false);
@@ -161,7 +221,6 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
-  /// Uploads an image (as Uint8List data) to Firebase Storage.
   Future<String> _uploadImage(
       Uint8List imageData, String campusId, String imageName) async {
     Reference storageRef = FirebaseStorage.instance
@@ -177,11 +236,12 @@ class _FormScreenState extends State<FormScreen> {
 
   Widget _buildStepContent() {
     final local = AppLocalizations.of(context)!;
+
     switch (_currentStep) {
       case 0:
         return Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             FormInputField(
               label: local.collegeName,
               hintText: local.enterYourCollegeUniversityName,
@@ -212,7 +272,7 @@ class _FormScreenState extends State<FormScreen> {
               controller: _websiteController,
               validator: Validators.validateWebsite,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             FormInputField(
               label: local.description,
               hintText: local.enterYourDescription,
@@ -220,54 +280,68 @@ class _FormScreenState extends State<FormScreen> {
               maxLines: 7,
               validator: Validators.validateDescription,
             ),
+            const SizedBox(height: 20),
+            // Dynamic “places” fields:
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: FormInputField(
-                    label: 'Add Places ',
-                    hintText: 'ex: cafeteria , bathroom..',
-                    controller: _placeController,
-                    validator: null,
-                  ),
+                Text(
+                  local.placesLabel, // “Places”
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                ElevatedButton(
+                ElevatedButton.icon(
+                  onPressed: _addNewPlaceController,
+                  icon: const Icon(Icons.add, color: Colors.white),
+                  label: Text(local.addPlace), // “Add Place”
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    shape: CircleBorder(
-                      side: BorderSide(color: Colors.green.shade700, width: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   ),
-                  onPressed: _addPlace,
-                  child: Icon(Icons.add, color: Colors.white),
                 ),
               ],
             ),
-            Wrap(
-              spacing: 8,
-              children: _places
-                  .map((place) => Chip(
-                        label: Text(place),
-                        onDeleted: () {
-                          setState(() {
-                            _places.remove(place);
-                          });
-                        },
-                      ))
-                  .toList(),
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 8),
+            // Render one input + remove button per _placeControllers:
+            ..._placeControllers.asMap().entries.map((entry) {
+              int index = entry.key;
+              TextEditingController placeCtrl = entry.value;
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FormInputField(
+                        label: "${local.place} ${index + 1}", // “Place 1”, “Place 2”, …
+                        hintText: local.enterPlaceName, // “Enter place name”
+                        controller: placeCtrl,
+                        validator: null, // no validator here
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (_placeControllers.length > 1)
+                      IconButton(
+                        icon: const Icon(Icons.remove_circle,
+                            color: Colors.redAccent),
+                        onPressed: () => _removePlaceController(index),
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
+            const SizedBox(height: 20),
           ],
         );
+
       case 1:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(local.openingHoures,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
             DayHoursSelector(
               onHoursChanged: (updatedHours) {
                 setState(() {
@@ -275,18 +349,21 @@ class _FormScreenState extends State<FormScreen> {
                 });
               },
             ),
+            // No required‐field check here (step 1 can be empty)
           ],
         );
+
       case 2:
         return SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cover Image Upload.
-              Text('${local.coverImage} (${local.max} 1) ',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              SizedBox(height: 10),
+              // Cover Image Upload:
+              Text('${local.coverImage} (${local.max} 1)',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16)),
+              const SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 1,
                 isMultiple: false,
@@ -296,11 +373,13 @@ class _FormScreenState extends State<FormScreen> {
                   });
                 },
               ),
-              SizedBox(height: 30),
-              // Gallery Images Upload.
+              const SizedBox(height: 30),
+
+              // Gallery Images Upload:
               Text('${local.galleryImage} (${local.max} 3)',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              SizedBox(height: 10),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16)),
+              const SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 3,
                 isMultiple: true,
@@ -310,11 +389,13 @@ class _FormScreenState extends State<FormScreen> {
                   });
                 },
               ),
-              SizedBox(height: 30),
-              // Building Album Images Upload.
+              const SizedBox(height: 30),
+
+              // Album Images Upload:
               Text('${local.buildingAlbum} (${local.max} 50)',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              SizedBox(height: 10),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16)),
+              const SizedBox(height: 10),
               ImageUploadWidget(
                 maxImages: 50,
                 isMultiple: true,
@@ -324,12 +405,13 @@ class _FormScreenState extends State<FormScreen> {
                   });
                 },
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
         );
+
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
   }
 
@@ -353,10 +435,10 @@ class _FormScreenState extends State<FormScreen> {
                 backgroundColor: active ? Colors.green : Colors.grey.shade300,
                 child: Text(
                   '${index + 1}',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 label,
                 textAlign: TextAlign.center,
@@ -383,7 +465,7 @@ class _FormScreenState extends State<FormScreen> {
         title: Text(local.newBuilding),
         automaticallyImplyLeading: true,
         bottom: PreferredSize(
-            preferredSize: Size.fromHeight(70),
+            preferredSize: const Size.fromHeight(70),
             child: Column(
               children: [
                 _buildStepperHeader(),
@@ -395,17 +477,17 @@ class _FormScreenState extends State<FormScreen> {
           Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Container(
                   width: 500,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 15,
@@ -417,10 +499,8 @@ class _FormScreenState extends State<FormScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        // _buildStepperHeader(),
-                        // SizedBox(height: 20),
                         _buildStepContent(),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -436,12 +516,12 @@ class _FormScreenState extends State<FormScreen> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 12),
                               ),
                               child: Text(
                                 _currentStep < 2 ? local.next : local.submit,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ],
@@ -453,11 +533,12 @@ class _FormScreenState extends State<FormScreen> {
               ),
             ),
           ),
-          // Loading overlay
+
+          // Loading overlay while uploading/creating:
           if (_isLoading)
             Container(
               color: Colors.black45,
-              child: Center(child: CircularProgressIndicator()),
+              child: const Center(child: CircularProgressIndicator()),
             ),
         ],
       ),

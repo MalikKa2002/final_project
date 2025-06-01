@@ -1,9 +1,15 @@
+// lib/Screens/settings_screen.dart
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Language/language_switcher.dart';
-import 'package:smart_guide/Screens/admin_pade.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart_guide/Language/language_switcher.dart';
+import 'package:smart_guide/Screens/admin_pade.dart';
+import 'package:smart_guide/Screens/home_screen.dart';         // ← Import HomeScreen
 import 'package:smart_guide/components/accessibility_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,15 +22,18 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   bool _loading = true;
   String _name = '';
   String _email = '';
+  String _phone = '';
+  String _imageUrl = '';
 
   bool isWheelchairAccessible = false;
 
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -36,301 +45,387 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final user = _auth.currentUser;
     if (user == null) return;
 
-    final doc = await _firestore.collection('users').doc(user.uid).get();
-    if (!doc.exists) return;
+    try {
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      if (!doc.exists) {
+        setState(() {
+          _name = user.displayName ?? '';
+          _email = user.email ?? '';
+          _phone = '';
+          _imageUrl = '';
+          _emailController.text = _email;
+          _phoneController.text = _phone;
+          _loading = false;
+        });
+        return;
+      }
 
-    final data = doc.data()!;
-    setState(() {
-      _name = data['username'] as String? ?? '';
-      _email = data['email'] as String? ?? user.email ?? '';
-      _nameController.text = _name;
-      _emailController.text = _email;
-      _loading = false;
-    });
+      final data = doc.data()!;
+      setState(() {
+        _name = data['username'] as String? ?? (user.displayName ?? '');
+        _email = data['email'] as String? ?? (user.email ?? '');
+        _phone = data['phone'] as String? ?? '';
+        _imageUrl = data['imageUrl'] as String? ?? '';
+        _emailController.text = _email;
+        _phoneController.text = _phone;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() => _loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load profile: $e')),
+      );
+    }
   }
 
   Future<void> _updateProfile() async {
     final user = _auth.currentUser;
     if (user == null) return;
 
-    await _firestore.collection('users').doc(user.uid).update({
-      'username': _nameController.text.trim(),
-      'email': _emailController.text.trim(),
-    });
+    final newEmail = _emailController.text.trim();
+    final newPhone = _phoneController.text.trim();
+
+    try {
+      if (newEmail != _email) {
+        await user.updateEmail(newEmail);
+      }
+
+      await _firestore.collection('users').doc(user.uid).update({
+        'email': newEmail,
+        'phone': newPhone,
+      });
+
+      setState(() {
+        _email = newEmail;
+        _phone = newPhone;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: $e')),
+      );
+    }
+  }
+
+  Future<void> _pickAndUploadAvatar() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+
+    if (picked == null) return;
+
+    final file = File(picked.path);
+    final user = _auth.currentUser;
+    if (user == null) return;
 
     setState(() {
-      _name = _nameController.text.trim();
-      _email = _emailController.text.trim();
+      _loading = true;
     });
 
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated')),
-    );
+    try {
+      final storageRef = _storage.ref().child('users_images/${user.uid}.jpg');
+      final uploadTask = storageRef.putFile(file);
+      await uploadTask.whenComplete(() => null);
+      final downloadUrl = await storageRef.getDownloadURL();
+
+      await _firestore.collection('users').doc(user.uid).update({
+        'imageUrl': downloadUrl,
+      });
+
+      setState(() {
+        _imageUrl = downloadUrl;
+        _loading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Avatar updated')),
+      );
+    } catch (e) {
+      setState(() {
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to upload avatar: $e')),
+      );
+    }
   }
 
-  void _showEditProfileDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final local = AppLocalizations.of(context)!;
-        return AlertDialog(
-          title: Text(local.editProfile),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: InputDecoration(
-                  labelText: local.name,
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: local.email,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Text('Avatar:'),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle avatar change
-                    },
-                    child: Text(local.changeAvatar),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(local.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                // Save the changes here
-                Navigator.of(context).pop();
-              },
-              child: Text(local.save),
-            ),
-          ],
-        );
-      },
+  /// Whenever the user tries to pop (back), we send them to HomeScreen instead.
+  Future<bool> _onWillPop() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => HomeScreen()), // ← removed const
     );
-  }
-
-  void _showFeedbackDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final local = AppLocalizations.of(context)!;
-        return AlertDialog(
-          title: Text(local.giveFeedback),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(local.rateUs),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (index) {
-                  return IconButton(
-                    icon: const Icon(Icons.star_border),
-                    onPressed: () {
-                      // Handle star rating logic here
-                    },
-                  );
-                }),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: local.yourFeedback,
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(local.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Handle feedback submission here
-              },
-              child: Text(local.submit),
-            ),
-          ],
-        );
-      },
-    );
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     final local = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.green[400],
-        title: Text(local.settings, style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Profile card (static avatar)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/profile.png'),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+
+    return WillPopScope(
+      onWillPop: _onWillPop, // ← Intercept system back button
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.green[400],
+          title: Text(local.settings, style: const TextStyle(color: Colors.white)),
+          iconTheme: const IconThemeData(color: Colors.white),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              // ← Override AppBar’s back arrow
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomeScreen()), // ← removed const
+              );
+            },
+          ),
+        ),
+        body: _loading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    // ───────────── Profile Card ─────────────
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: _imageUrl.isNotEmpty
+                                ? NetworkImage(_imageUrl)
+                                : const AssetImage('assets/profile.png')
+                                    as ImageProvider,
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _email,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Username (read-only)
+                                Text(
+                                  _name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                // Email (read-only display here)
+                                Text(
+                                  _email,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          IconButton(
+                            icon: const Icon(Icons.camera_alt, color: Colors.black),
+                            onPressed: _pickAndUploadAvatar,
+                            tooltip: local.changeAvatar,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.black),
-                    onPressed: _showEditProfileDialog,
-                  ),
-                ],
-              ),
-            ),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-            // Help & Support
-            ListTile(
-              leading: const Icon(Icons.help_outline, color: Colors.green),
-              title: Text(local.helpAndSupport,
-                  style: TextStyle(color: Colors.black)),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text(local.contactSupport),
-                      content:
-                          Text('${local.pleaseContactUs}\nsupport@example.com'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(local.close),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
+                    // ───────────── Editable Fields ─────────────
+                    // Email
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: local.email,
+                        border: const OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 10),
 
-            // Feedback
-            ListTile(
-              leading: const Icon(Icons.feedback_outlined, color: Colors.green),
-              title: Text(local.giveFeedback,
-                  style: TextStyle(color: Colors.black)),
-              onTap: () => _showFeedbackDialog(),
-            ),
-            const Divider(color: Colors.grey),
+                    // Phone
+                    TextField(
+                      controller: _phoneController,
+                      decoration: InputDecoration(
+                        labelText: local.phoneNumber,
+                        border: const OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 10),
 
-            ListTile(
-              leading: const Icon(Icons.language_outlined, color: Colors.green),
-              title:
-                  Text(local.language, style: TextStyle(color: Colors.black)),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(local.language),
-                    content: LanguageSwitcher(),
-                  ),
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
+                    // Save Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.save),
+                        label: Text(local.save),
+                        onPressed: _updateProfile,
+                      ),
+                    ),
 
-            ListTile(
-              leading: const Icon(Icons.accessibility, color: Colors.green),
-              title: const Text(
-                "Accessibility Options",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Text(
-                isWheelchairAccessible ? "ON" : "OFF",
-                style: TextStyle(
-                  color: isWheelchairAccessible ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => AccessibilitySettingsScreen(
-                      initialValue: isWheelchairAccessible,
-                      onChanged: (value) {
-                        setState(() {
-                          isWheelchairAccessible = value;
-                        });
+                    const SizedBox(height: 20),
+                    const Divider(color: Colors.grey),
+
+                    // ───────────── Help & Support ─────────────
+                    ListTile(
+                      leading: const Icon(Icons.help_outline, color: Colors.green),
+                      title: Text(local.helpAndSupport,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(local.contactSupport),
+                              content: Text('${local.pleaseContactUs}\nsupport@example.com'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(local.close),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
-                  ),
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
+                    const Divider(color: Colors.grey),
 
-            ListTile(
-              leading: const Icon(Icons.admin_panel_settings_outlined,
-                  color: Colors.green),
-              title: Text(local.appaManager,
-                  style: TextStyle(color: Colors.black)),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AdminPage()),
-                );
-              },
-            ),
-            const Divider(color: Colors.grey),
-          ],
-        ),
+                    // ───────────── Feedback ─────────────
+                    ListTile(
+                      leading: const Icon(Icons.feedback_outlined, color: Colors.green),
+                      title: Text(local.giveFeedback,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(local.giveFeedback),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(local.rateUs),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(5, (index) {
+                                      return IconButton(
+                                        icon: const Icon(Icons.star_border),
+                                        onPressed: () {
+                                          // Handle star rating logic
+                                        },
+                                      );
+                                    }),
+                                  ),
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      labelText: local.yourFeedback,
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(local.cancel),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    // Handle feedback submission
+                                  },
+                                  child: Text(local.submit),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const Divider(color: Colors.grey),
+
+                    // ───────────── Language ─────────────
+                    ListTile(
+                      leading: const Icon(Icons.language_outlined, color: Colors.green),
+                      title: Text(local.language,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(local.language),
+                            content: LanguageSwitcher(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(color: Colors.grey),
+
+                    // ───────────── Accessibility ─────────────
+                    ListTile(
+                      leading: const Icon(Icons.accessibility, color: Colors.green),
+                      title: const Text(
+                        "Accessibility Options",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      trailing: Text(
+                        isWheelchairAccessible ? "ON" : "OFF",
+                        style: TextStyle(
+                          color: isWheelchairAccessible ? Colors.green : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AccessibilitySettingsScreen(
+                              initialValue: isWheelchairAccessible,
+                              onChanged: (value) {
+                                setState(() {
+                                  isWheelchairAccessible = value;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(color: Colors.grey),
+
+                    // ───────────── Admin ─────────────
+                    ListTile(
+                      leading: const Icon(Icons.admin_panel_settings_outlined,
+                          color: Colors.green),
+                      title: Text(local.appaManager,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AdminPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(color: Colors.grey),
+                  ],
+                ),
+              ),
       ),
     );
   }

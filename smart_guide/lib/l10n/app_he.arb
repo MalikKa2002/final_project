@@ -13,6 +13,11 @@
     "arCampusGuide": "מדריך הקמפוס עם מציאות רבודה",
   
     "universityAndCollege": " אוניברסיטאות ומכללות",
+    "placesLabel": "מקומות",
+    "addPlace": "הוסף מקום",
+    "place": "מקום",
+    "enterPlaceName": "הזן שם מקום",
+    "coverRequiredError": "אנא בחרו תמונת שער",
   
 
     "startANew":"מחדש תתחיל",
@@ -135,5 +140,38 @@
     "forgotMessage": "הזן את כתובת המייל שלך ואנחנו נשלח לך הוראות לאיפוס הסיסמה.",
     "enterEmail": "אנא הזן את כתובת הדוא\"ל שלך.",
     "instructionsSent": "הוראות לאיפוס הסיסמה נשלחו לכתובת הדוא\"ל שלך.",
-    "resetError": "אירעה שגיאה. אנא נסה שוב."
+    "resetError": "אירעה שגיאה. אנא נסה שוב.",
+
+      "managerPage": "דף ניהול",
+  "search": "חיפוש...",
+  "request": "בקשות",
+  "users": "משתמשים",
+  "buildings": "קמפוסים",
+  "confirmDelete": "אישור מחיקה",
+  "confirmDeleteUser": "האם אתה בטוח שברצונך למחוק את המשתמש? פעולה זו אינה ניתנת לביטול.",
+  "cancel": "ביטול",
+  "delete": "מחק",
+  "userDeleted": "המשתמש נמחק בהצלחה.",
+  "errorDeletingUser": "שגיאה במחיקת המשתמש.",
+  "noUsersFound": "לא נמצאו משתמשים.",
+  "unknownUser": "משתמש לא ידוע",
+  "noCampusesPending": "אין קמפוסים בהמתנה לאישור.",
+  "campusNotFound": "הקמפוס לא נמצא.",
+  "createdBy": "נוצר על ידי",
+  "confirmDeleteCampus": "האם אתה בטוח שברצונך למחוק את הקמפוס וכל התמונות שלו? פעולה זו אינה ניתנת לביטול.",
+  "campusDeleted": "הקמפוס נמחק בהצלחה.",
+  "errorDeletingCampus": "שגיאה במחיקת הקמפוס.",
+  "noImagesFound": "לא נמצאו תמונות עבור הקמפוס הזה.",
+  "confirmDeleteImage": "למחוק תמונה זו?",
+  "imageDeleted": "התמונה נמחקה בהצלחה.",
+  "errorDeletingImage": "שגיאה במחיקת התמונה.",
+  "noRequests": "אין בקשות ברגע זה",
+  "unknown":"אין זהוי",
+  
+  "tapCoverToDelete": "הקש על התמונה למחיקת הקמפוס",
+  "albumImages": "תמונות אלבום",
+  "confirmDeleteCampus": "האם אתה בטוח שאתה רוצה למחוק את הקמפוס וכל התמונות שלו? פעולה זו אינה ניתנת לביטול.",
+  "campusDeleted": "הקמפוס נמחק בהצלחה.",
+  "errorDeletingCampus": "שגיאה במחיקת הקמפוס.",
+  "noImagesFound": "לא נמצאו תמונות עבור הקמפוס הזה."
   }

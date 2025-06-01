@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_guide/Buttons/quick_button.dart';
+// import 'package:smart_guide/Buttons/quick_button.dart';
 import 'package:smart_guide/Screens/destination.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_guide/components/place_selectionList.dart';
