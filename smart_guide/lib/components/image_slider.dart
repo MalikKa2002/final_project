@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smart_guide/Buttons/blurry_circle_button.dart';
-import 'package:smart_guide/Screens/home_screen.dart';
 
 class ImageSlider extends StatefulWidget {
-  const ImageSlider({super.key});
+  final List<String> imageUrls;
+  final VoidCallback onBack;
 
-  //TO  DO  the images should be passed as a parameter
-  // TODO   final List<String> images;
+  const ImageSlider({
+    required this.imageUrls,
+    required this.onBack,
+    super.key,
+  });
 
   @override
   createState() => _ImageSliderState();
@@ -18,11 +21,7 @@ class _ImageSliderState extends State<ImageSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> images = [
-      'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-      'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-      'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    ];
+    final images = widget.imageUrls;
 
     return Center(
       child: Container(
@@ -69,17 +68,14 @@ class _ImageSliderState extends State<ImageSlider> {
                   },
                 ),
               ),
+
+              // ← Back arrow in top-left:
               Positioned(
                 top: 40,
                 left: 20,
                 child: BlurryCircleButton(
                   icon: Icons.arrow_back,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    );
-                  },
+                  onPressed: widget.onBack,
                 ),
               ),
 

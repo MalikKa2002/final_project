@@ -223,7 +223,21 @@
   "requestRejectedBody": "تم رفض طلبك. السبب: {reason}",
   "requestRejectedBodyNoReason": "تم رفض طلبك.",
   "notificationDeleted": "تم حذف الإشعار.",
-  "errorDeletingNotification": "تعذر حذف الإشعار. حاول مرة أخرى."
+  "errorDeletingNotification": "تعذر حذف الإشعار. حاول مرة أخرى.",
+
+  "details": "تفاصيل",
+  "daysAndHours": "الأيام والساعات",
+  "currentStatus": "الحالة الحالية",
+  "workingHours": "ساعات العمل",
+  "sundayToThursday": "الأحد - الخميس",
+  "friday": "الجمعة",
+  "saturday": "السبت",
+  "closed": "مغلق",
+  "noOperatingHours": "لا يوجد ساعات عمل متوفرة.",
+  
+  "noDataFound": "لا توجد بيانات",
+  "collegeInfo": "معلومات الكلية"
+  
 
 
   }

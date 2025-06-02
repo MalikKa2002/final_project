@@ -229,7 +229,19 @@
   "requestRejectedBody": "Your request was rejected. Reason: {reason}",
   "requestRejectedBodyNoReason": "Your request was rejected.",
   "notificationDeleted": "Notification deleted.",
-  "errorDeletingNotification": "Could not delete notification. Please try again."
+  "errorDeletingNotification": "Could not delete notification. Please try again.",
+
+  "details": "Details",
+  "daysAndHours": "Days & Hours",
+  "currentStatus": "Current Status",
+  "workingHours": "Working Hours",
+  "sundayToThursday": "Sunday - Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "closed": "Closed",
+  "noOperatingHours": "No operating hours available.",
+  "noDataFound": "No data found",
+  "collegeInfo": "College Info"
 
 
 

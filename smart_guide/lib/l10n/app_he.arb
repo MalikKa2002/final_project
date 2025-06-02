@@ -227,6 +227,19 @@
   "requestRejectedBody": "הבקשה שלך נדחתה. סיבה: {reason}",
   "requestRejectedBodyNoReason": "הבקשה שלך נדחתה.",
   "notificationDeleted": "ההתראה נמחקה.",
-  "errorDeletingNotification": "לא ניתן למחוק את ההתראה. נא לנסות שוב."
+  "errorDeletingNotification": "לא ניתן למחוק את ההתראה. נא לנסות שוב.",
+
+  "details": "פרטים",
+  "daysAndHours": "ימים ושעות",
+  "currentStatus": "סטטוס נוכחי",
+  "workingHours": "שעות פעילות",
+  "sundayToThursday": "ראשון - חמישי",
+  "friday": "שישי",
+  "saturday": "שבת",
+  "closed": "סגור",
+  "noOperatingHours": "אין שעות פעילות זמינות.",
+
+  "noDataFound": "לא נמצאו נתונים",
+  "collegeInfo": "מידע על המכללה"
 
   }
