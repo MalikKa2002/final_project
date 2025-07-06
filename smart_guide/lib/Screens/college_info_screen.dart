@@ -34,8 +34,10 @@ class _CollegeInfoScreenState extends State<CollegeInfoScreen> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => MapWithBottomSheet()),
-        );
+          MaterialPageRoute(
+          builder: (_) => MapWithBottomSheet(campusId: widget.campusId),
+        ),
+      );
         break;
       case 2:
         Navigator.push(

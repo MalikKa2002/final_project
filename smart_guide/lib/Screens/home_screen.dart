@@ -63,12 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             } else {
               // If on another tab, push MapWithBottomSheet
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MapWithBottomSheet(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => MapWithBottomSheet(),
+              //   ),
+              // );
             }
           },
           shape: const CircleBorder(),
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCurrentPage() {
     switch (_currentIndex) {
       case 1:
-        return MapWithBottomSheet();
+        return MapWithBottomSheet(campusId:"");
       case 2:
         return SettingsScreen();
       case 0:
