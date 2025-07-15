@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:smart_guide/Buttons/login_up_but.dart';
 import 'package:smart_guide/Buttons/main_button.dart';
 import 'package:smart_guide/Buttons/secondary_button.dart';
 import 'package:smart_guide/Screens/signup_screen.dart';
 import 'package:smart_guide/Screens/forgot_password_screen.dart';
 import 'package:smart_guide/Screens/home_screen.dart';
 // import 'package:smart_guide/Services/auth_service.dart';
+// import 'package:smart_guide/Services/auth_service.dart';
 import 'package:smart_guide/Texts/body_text.dart';
 import 'package:smart_guide/Texts/heading_text.dart';
-import 'package:smart_guide/Texts/text_with_divider.dart';
+// import 'package:smart_guide/Texts/text_with_divider.dart';
 import 'package:smart_guide/components/custom_text.dart';
-import 'package:smart_guide/icons/icons_button.dart';
+import 'package:smart_guide/Services/validators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,9 +26,71 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool _obscurePassword = true; // Password visibility toggle
+
+  Future<void> _loginUser() async {
+    try {
+      String username = _usernameController.text.trim();
+      String password = _passwordController.text.trim();
+
+      String? validationMessage =
+          Validators.validateUsernameAndPassword(username, password);
+      if (validationMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(validationMessage)),
+        );
+        return;
+      }
+      // Check if username exists and get the corresponding email
+      String? email = await _getEmailFromUsername(username);
+      if (email == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Username not found. Please register.")),
+        );
+        return;
+      }
+
+      // Authenticate the user with the retrieved email
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Navigate to HomeScreen on successful login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Login successful!")),
+      // );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login failed. Please try again.")),
+      );
+    }
+  }
+
+  // Method to get the email associated with a username
+  Future<String?> _getEmailFromUsername(String username) async {
+    QuerySnapshot query = await _firestore
+        .collection("users")
+        .where("username", isEqualTo: username)
+        .limit(1)
+        .get();
+
+    if (query.docs.isNotEmpty) {
+      return query.docs.first["email"];
+    }
+    return null; // Username not found
+  }
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -37,126 +104,129 @@ class _LoginScreenState extends State<LoginScreen> {
               child: IntrinsicHeight(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width *
-                        0.1, // 10% of screen width
-                    vertical: MediaQuery.of(context).size.height *
-                        0.03, // 5% of screen height
+                    horizontal: MediaQuery.of(context).size.width * 0.1,
+                    vertical: MediaQuery.of(context).size.height * 0.03,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      //Heading Text
-                      HeadingText('Welcome to Smart Guide'),
+                      Image.asset(
+                        'assets/app.png',
+                        height: 200,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      ),
 
-                      // Body Text
-                      // BodyText(
-                      //     text: 'welcome back we missed you', fontSize: 15),
-                      const SizedBox(height: 40),
-                      // username text field
-                      // Aligns the text to the left
+                      HeadingText(local.welcomeBack, 29),
+                      const SizedBox(height: 20),
                       Align(
-                        alignment: Alignment.centerLeft,
-                        child: BodyText(text: 'Username', fontSize: 16),
+                        alignment:
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                        child: BodyText(text: local.userName, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       CustomText(
                         controller: _usernameController,
-                        labelText: 'Username',
+                        labelText: local.userName,
                         prefixIcon: Icons.person,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your username';
-                          }
-                          return null;
-                        },
+                        validator: Validators().validateUsername,
                       ),
                       const SizedBox(height: 20),
-                      // password text field
-                      // Aligns the text to the left
+
+                      // Align(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: BodyText(text: local.password, fontSize: 16),
+                      // ),
+
                       Align(
                         alignment:
-                            Alignment.centerLeft, // Aligns the text to the left
-                        child: BodyText(text: 'Password', fontSize: 16),
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                        child: BodyText(text: local.password, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
-                      CustomText(
+                      TextFormField(
                         controller: _passwordController,
-                        labelText: 'Password',
-                        prefixIcon: Icons.key,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
+                        obscureText: _obscurePassword,
+                        validator: Validators().validatePassword,
+                        decoration: InputDecoration(
+                          labelText: local.password,
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                        ),
                       ),
 
                       Align(
                         alignment: Alignment.centerRight,
                         child: SecondaryButton(
-                            child: Text(
-                              'Forgot Password?',
-                              style: TextStyle(fontSize: 15.0),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgotPasswordScreen()),
-                              );
-
-                              print('forget button Pressed');
-                            }),
+                          child: Text(
+                            local.forgotPassword,
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPasswordScreen()),
+                            );
+                          },
+                        ),
                       ),
-                      // THe sign in Button
 
                       const SizedBox(height: 30),
                       MainButton(
+                        onPressed: _loginUser,
                         child: Text(
-                          'Sign in ',
+                          local.signIn,
                           style: TextStyle(fontSize: 20.0),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
-                          );
-                          // Navigate or perform an action
-                          print('sign in');
-                        },
                       ),
                       const SizedBox(height: 25),
                       // another way to sign in
-                      TextWithDivider(
-                        text: 'Or continue with',
-                        fontSize: 15.0,
-                        dividerColor: Colors.grey,
-                        dividerThickness: 1.0,
-                      ),
-                      const SizedBox(height: 10),
+                      // TextWithDivider(
+                      //   text: local.orContinueWith,
+                      //   fontSize: 15.0,
+                      //   dividerColor: Colors.grey,
+                      //   dividerThickness: 1.0,
+                      // ),
+                      // const SizedBox(height: 25),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Expanded(
+                      //         child: SquareTile(
+                      //       text: local.loginWithGoogle,
+                      //       iconData: Icons
+                      //           .g_mobiledata_outlined, // Use any of the predefined icons or custom ones
+                      //       onTap: () => AuthService().signInWithGoogle(),
+                      //     )),
+                      //   ],
+                      // ),
+                      SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconsButton(
-                            icon: Icons.g_mobiledata_sharp,
-                            onPressed: () {
-                              // Navigate or perform an action
-                              print('Button Pressed');
-                            },
-                          ),
-                        ],
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          BodyText(text: 'Not a member?', fontSize: 15),
+                          BodyText(text: local.notAMember, fontSize: 15),
                           SecondaryButton(
-                            child: Text('Register Now'),
+                            child: Text(local.registerNow),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -166,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
